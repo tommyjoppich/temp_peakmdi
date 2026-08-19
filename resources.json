@@ -1,0 +1,138 @@
+[
+  {
+    "id": "r001",
+    "type": "video",
+    "title": "Sample Surgical Technique Video",
+    "description": "A demonstration of proper surgical technique using PEAK instruments.",
+    "thumbnail": "",
+    "resource": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  },
+  {
+    "id": "r003",
+    "type": "article",
+    "title": "Understanding Cardiac Retractors",
+    "description": "An in-depth reading on the history and proper use of cardiac retractors in modern surgery.",
+    "thumbnail": "",
+    "resource": "https://example.com/article"
+  },
+  {
+    "id": "r004",
+    "type": "ifu",
+    "title": "PEAK Premium Scissors IFU",
+    "description": "Instructions for Use documentation for the PEAK Premium Scissors product line.",
+    "thumbnail": "Resource_Thumbnails/logo 11.jpeg",
+    "resource": ""
+  },
+  {
+    "id": "r731143",
+    "type": "video",
+    "title": "Test_Video",
+    "description": "sdhjkc ds adfivhy qwqsa wiu. yuiahs",
+    "thumbnail": "Resource_Thumbnails/thumbnail_test.jpg",
+    "resource": "https://www.youtube.com/watch?v=_2H0gwg1pA8"
+  },
+  {
+    "id": "r842296",
+    "type": "pdf",
+    "title": "PEAK Instrument Catalogue",
+    "description": "Surgical Instrumentation",
+    "thumbnail": "Resource_Thumbnails/thumnail_test2.jpg",
+    "resource": "Resource_PDFs/Catalogs/TestDoc - Google Docs.pdf"
+  },
+  {
+    "id": "r891289",
+    "type": "article",
+    "title": "Test_EducationMaterial",
+    "description": "sdvhk akuvc as jdvhk sdvkhjb akshcv asdbcasd xzizx aox zxocwq qisdc zxvvsz asck qawo osxcv really long name test",
+    "thumbnail": "Resource_Thumbnails/thumbnail_test3.jpg",
+    "resource": "https://www.webpagetest.org/"
+  },
+  {
+    "id": "r365924",
+    "type": "ifu",
+    "title": "IFU Stainless Steel",
+    "description": "STAINLESS STEEL INSTRUMENTS CLEANING, MAINTENANCE & STERILIZATION",
+    "thumbnail": "Resource_Thumbnails/logo.jpg",
+    "resource": "Resource_PDFs/IFUs/STAINLESS STEEL PEAK INSTRUMENTS CLEANING, STERILIZATION & MAINTENANCE 1.1.2023.pdf"
+  },
+  {
+    "id": "r971685",
+    "type": "ifu",
+    "title": "IFU Stainless Cannulas and Needles",
+    "description": "STAINLESS STEEL CANNULAS AND NEEDLES\nCLEANING, MAINTENANCE & STERILIZATION",
+    "thumbnail": "Resource_Thumbnails/logo 2 for IFU.jpg",
+    "resource": "Resource_PDFs/IFUs/PEAK STAINLESS STEEL CANNULAS AND NEEDLES IFU 11.1.2021.pdf"
+  },
+  {
+    "id": "r509994",
+    "type": "ifu",
+    "title": "PEAK Cannulated Flushable Kerrison Rongeurs IFU",
+    "description": "Validated Instructions For Use (IFUs)",
+    "thumbnail": "Resource_Thumbnails/logo 3 for IFU copy.jpg",
+    "resource": "Resource_PDFs/IFUs/ClearFlush Kerrison IFU 5-25-2023.pdf"
+  },
+  {
+    "id": "r932468",
+    "type": "ifu",
+    "title": "PEAK RETRACT ROBOT MAINTENANCE IFU",
+    "description": "",
+    "thumbnail": "Resource_Thumbnails/logo 4 for IFU copy 2.jpg",
+    "resource": "Resource_PDFs/IFUs/PEAK RETRACT ROBOT MAINTENANCE – 0817.pdf"
+  },
+  {
+    "id": "r699024",
+    "type": "video",
+    "title": "CT-0100 Minimally Invasive Retractor",
+    "description": "Inspection & Troubleshooting Of the MIS Retractor Tray for AVR/MVR",
+    "thumbnail": "Resource_Thumbnails/logo 5 for IFU copy 3.jpg",
+    "resource": "https://www.youtube.com/watch?v=OTn-v_pCDeU"
+  },
+  {
+    "id": "r066539",
+    "type": "pdf",
+    "title": "PEAK MEDICAL Grade Spoons",
+    "description": "SPECIALTY MEDICAL GRADE STAINLESS STEEL SPOONS FOR SURGICAL APPLICATIONS",
+    "thumbnail": "Resource_Thumbnails/logo 6.jpg",
+    "resource": "Resource_PDFs/Catalogs/Medical Grade Spoons FNL.pdf"
+  },
+  {
+    "id": "r659674",
+    "type": "pdf",
+    "title": "Nathenson Retractors Brochure",
+    "description": "PEAK Nathanson Liver Retractors for Martin’s Arm",
+    "thumbnail": "Resource_Thumbnails/logo 7.jpg",
+    "resource": "Resource_PDFs/Catalogs/Nathenson Retractors Brochure FL.pdf"
+  },
+  {
+    "id": "r067979",
+    "type": "pdf",
+    "title": "PEAK Goose Neck MultiFlex Frame Retractor",
+    "description": "PEAK Goose Neck Retractor In Laparoscopic Surgery",
+    "thumbnail": "Resource_Thumbnails/logo 8.jpg",
+    "resource": "Resource_PDFs/Catalogs/PEAK Goose MultiFlex Frame Retractor FL.pdf"
+  },
+  {
+    "id": "r449616",
+    "type": "pdf",
+    "title": "PEAK MARTIN's Arm",
+    "description": "SINGLE ARM INSTRUMENT WITH FIXED UNIVERSAL INSTRUMENT CLAMP",
+    "thumbnail": "Resource_Thumbnails/logo 9.jpg",
+    "resource": "Resource_PDFs/Catalogs/PEAK MARTIN's Arm FL.pdf"
+  },
+  {
+    "id": "r862756",
+    "type": "pdf",
+    "title": "PEAK PREMIUM CUT Scissors",
+    "description": "Consistent cutting quality with sustained precision over repeated use.",
+    "thumbnail": "Resource_Thumbnails/logo 10.jpg",
+    "resource": "Resource_PDFs/Catalogs/PEAK PREMIUM CUT Brochure FL.pdf-39.pdf"
+  },
+  {
+    "id": "r130342",
+    "type": "ifu",
+    "title": "IFU Aluminum Trays or Containers",
+    "description": "ALUMINUM TRAYS OR CONTAINERS CLEANING, STERILIZATION & MAINTENANCE",
+    "thumbnail": "",
+    "resource": "Resource_PDFs/IFUs/PEAK ALUMINUM TRAYS OR CONTAINERS STERILIZATION & MAINTENANCE PDF (1).pdf"
+  }
+]

@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PEAK MDI – Built for the Surgeon</title>
+  <link rel="icon" type="image/png" href="peak-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+      color: #1a1a1a;
+      background: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; font-family: inherit; }
+
+    /* ── CSS Variables ────────────────────────────────────────── */
+    :root {
+      --navy:       #1a2f4a;
+      --navy-dark:  #111e2e;
+      --blue:       #2e6da4;
+      --gold:       #f2a900;
+      --gold-dark:  #d99400;
+      --cyan:       #6fe9ef;
+      --cream:      #f2e9d3;
+      --white:      #ffffff;
+      --off-white:  #f8f8f8;
+      --card-hover: #eceef1;
+      --text:       #1a1a1a;
+      --muted:      #666;
+      --border:     #e0e0e0;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.09);
+      --card-shadow-hover: 0 6px 22px rgba(0,0,0,0.14);
+      --radius:     12px;
+    }
+
+    /* NOTE: exact brand hex codes (gold / cyan / cream) are best-guess
+       approximations from the mockup. Send exact hex values any time
+       and these five variables are the only thing that needs updating. */
+
+    /* ══════════════════════════════════════════════════════════
+       NAVBAR
+    ══════════════════════════════════════════════════════════ */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--white);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      height: 72px;
+    }
+    .navbar__inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 28px;
+    }
+
+    .navbar__logo { justify-self: start; }
+    .navbar__logo img { height: 52px; width: auto; }
+
+    .navbar__center {
+      display: flex;
+      justify-content: center;
+    }
+
+    .navbar__right {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    @media (min-width: 1024px) {
+      .navbar { height: 80px; }
+      .navbar__logo img { height: 68px; }
+    }
+
+    .navbar__desktop { display: none; }
+
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+    }
+
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > a {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      transition: color 0.15s;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+    }
+    .nav-dropdown > a:hover  { color: var(--blue); }
+    .nav-dropdown > a.active { color: var(--blue); }
+    .nav-dropdown > a .chevron {
+      width: 12px; height: 12px;
+      stroke: currentColor; fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 18px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+      width: 220px;
+      padding: 6px;
+      z-index: 9999;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .nav-dropdown.open .dropdown-menu { display: flex; }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .dropdown-menu a:hover { background: #f0f0f0; color: var(--blue); }
+
+    .nav-group > a {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+    .nav-group > a:hover  { color: var(--blue); }
+    .nav-group > a.active { color: var(--blue); }
+
+    .nav-search-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+      padding: 0;
+      cursor: pointer;
+      transition: color 0.15s;
+      background: none;
+      border: none;
+    }
+    .nav-search-link:hover { color: var(--blue); }
+
+    /* Quote Cart button — gold default, navy on hover */
+    .btn-quote {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      border-radius: 8px;
+      padding: 11px 22px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      background: var(--gold);
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+      position: relative;
+    }
+    .btn-quote:hover { background: var(--navy); color: var(--white); }
+
+    .navbar__tablet { display: none; }
+
+    .navbar__mobile {
+      display: none;
+      align-items: center;
+      gap: 12px;
+    }
+    .navbar__mobile .cart-btn {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      border: 2px solid var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      background: transparent;
+      color: var(--navy);
+    }
+    .navbar__mobile .hamburger {
+      background: none;
+      border: none;
+      color: var(--navy);
+      display: flex; align-items: center;
+      padding: 4px;
+    }
+
+    @media (min-width: 1024px) {
+      .navbar__desktop { display: flex; align-items: center; gap: 40px; }
+      .navbar__tablet  { display: none !important; }
+      .navbar__mobile  { display: none !important; }
+      .btn-quote       { display: flex !important; }
+    }
+    @media (min-width: 769px) and (max-width: 1023px) {
+      .navbar__desktop { display: none !important; }
+      .navbar__tablet  { display: flex; align-items: center; gap: 8px; }
+      .navbar__mobile  { display: none !important; }
+      .btn-quote       { display: flex !important; }
+      .navbar__right .cart-btn { display: none !important; }
+    }
+    @media (max-width: 768px) {
+      .navbar__desktop { display: none !important; }
+      .navbar__tablet  { display: none !important; }
+      .navbar__mobile  { display: flex; }
+      .btn-quote       { display: none !important; }
+      .navbar__right > .cart-btn { display: none !important; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      width: 100%;
+      overflow: visible;
+      background: linear-gradient(120deg, var(--navy-dark) 0%, #16324f 45%, #1f4a68 100%);
+      padding: 0;
+    }
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(100deg, rgba(15,26,41,0.88) 0%, rgba(15,26,41,0.60) 42%, rgba(15,26,41,0.30) 68%, rgba(15,26,41,0.10) 100%),
+        url('https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=1600&q=65') right center/cover no-repeat;
+    }
+    .hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 64px 28px 56px;
+    }
+    .hero__title {
+      font-size: 60px;
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 28px;
+      max-width: 640px;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.3);
+    }
+
+    .hero__panel {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+      box-sizing: border-box;
+      width: 925px;
+      min-height: 235px;
+      max-width: 100%;
+      padding: 26px 28px 22px;
+      display: flex;
+      flex-direction: column;
+    }
+    .hero__panel-label {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 14px;
+    }
+    .search-bar {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      width: 100%;
+    }
+    .search-field {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      width: 750px;
+      max-width: 100%;
+      height: 55px;
+      background: #fff;
+      border: 1.5px solid var(--navy);
+      border-right: none;
+      border-radius: 10px 0 0 10px;
+      padding: 0 18px;
+      box-sizing: border-box;
+    }
+    .search-field input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--navy);
+      background: transparent;
+      min-width: 0;
+    }
+    .search-field input::placeholder { color: var(--navy); opacity: 0.55; }
+    .search-bar__btn {
+      flex-shrink: 0;
+      width: 55px; height: 55px;
+      border-radius: 0 10px 10px 0;
+      background: var(--gold);
+      border: 1.5px solid var(--navy);
+      border-left: none;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .search-bar__btn:hover { background: var(--gold-dark); }
+
+    .hero__quicklinks {
+      display: flex;
+      align-items: stretch;
+      margin-top: 20px;
+      gap: 20px;
+    }
+    .hero__quicklink {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 260px;
+      height: 64px;
+      padding: 0 0 0 20px;
+      border-radius: 8px;
+      transition: background 0.15s;
+      cursor: pointer;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .hero__quicklink:first-child { padding-left: 0; }
+    .hero__quicklink:not(:first-child)::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2px;
+      height: 48px;
+      background: var(--border);
+    }
+    .hero__quicklink:hover { background: var(--off-white); }
+    .hero__quicklink-icon {
+      flex-shrink: 0;
+      height: 40px;
+      width: auto;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--navy);
+    }
+    .hero__quicklink-icon img { height: 40px; width: auto; display: block; }
+    .hero__quicklink-text { min-width: 0; flex: 1; }
+    .hero__quicklink-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.3;
+    }
+    .hero__quicklink-sub {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.3;
+      margin-top: 2px;
+    }
+    .hero__quicklink-chevron {
+      flex-shrink: 0;
+      width: 10px;
+      height: 16px;
+      color: var(--navy);
+      align-self: center;
+      margin-left: auto;
+    }
+
+    @media (max-width: 1023px) {
+      .hero__title { font-size: 42px; max-width: 480px; }
+      .hero__panel { width: 100%; }
+      .search-field { width: 100%; }
+      .hero__quicklinks { flex-wrap: wrap; gap: 16px 0; }
+      .hero__quicklink { width: calc(50% - 8px); }
+      .hero__quicklink:nth-child(2)::before { display: none; }
+    }
+    @media (max-width: 900px) {
+      .hero__quicklinks { flex-direction: column; gap: 0; }
+      .hero__quicklink { width: 100%; height: auto; padding: 12px 0; }
+      .hero__quicklink:not(:first-child)::before {
+        left: 0; top: 0; transform: none;
+        width: 100%; height: 2px;
+      }
+    }
+    @media (max-width: 640px) {
+      .hero__title { font-size: 30px; }
+      .hero__panel { padding: 20px 20px 18px; }
+      .hero__panel-label { font-size: 15px; }
+      .search-field { height: 48px; }
+      .search-field input { font-size: 15px; }
+      .search-bar__btn { width: 48px; height: 48px; }
+      .hero__quicklink-icon, .hero__quicklink-icon img { height: 30px; }
+      .hero__quicklink-title { font-size: 15px; }
+      .hero__quicklink-sub { font-size: 13px; }
+    }
+
+    .search-bar-wrap { position: relative; width: 100%; }
+    .search-suggestions {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0; right: 0;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      overflow: hidden;
+      z-index: 150;
+      border: 1.5px solid var(--border);
+    }
+    .search-suggestions.visible { display: block; }
+    .suggestion-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px; cursor: pointer;
+      transition: background 0.12s; border-bottom: 1px solid #f0f0f0;
+      text-align: left;
+    }
+    .suggestion-item:last-child { border-bottom: none; }
+    .suggestion-item:hover { background: #f4f7fb; }
+    .suggestion-item svg { flex-shrink: 0; color: #aaa; }
+    .suggestion-item__text { display: flex; flex-direction: column; gap: 2px; }
+    .suggestion-item__name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+    .suggestion-item__name em { color: var(--blue); font-style: normal; }
+    .suggestion-item__meta { font-size: 12px; color: #999; font-weight: 400; }
+    .suggestion-all {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 20px; cursor: pointer; background: #f8f9fc;
+      font-size: 13px; font-weight: 700; color: var(--blue);
+      transition: background 0.12s;
+    }
+    .suggestion-all:hover { background: #edf2fa; }
+
+    /* ══════════════════════════════════════════════════════════
+       SECTION WRAPPER
+    ══════════════════════════════════════════════════════════ */
+    .section {
+      padding: 56px 24px;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       FEATURED PRODUCTS (interactive showcase)
+    ══════════════════════════════════════════════════════════ */
+    .featured-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      margin-bottom: 36px;
+    }
+    .featured-header__title {
+      justify-self: start;
+      font-size: 34px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--navy);
+      text-transform: uppercase;
+    }
+    .btn-outline {
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 208px;
+      height: 40px;
+      border: 1.5px solid var(--navy);
+      border-radius: 8px;
+      padding: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--navy);
+      background: var(--white);
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .btn-outline:hover { background: var(--navy); color: var(--white); }
+
+    .featured-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      margin-bottom: 36px;
+    }
+    .featured-showcase__image {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 4 / 3;
+      cursor: pointer;
+    }
+    .featured-showcase__image img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: transform 0.2s;
+    }
+    .featured-showcase__image:hover img { transform: scale(1.03); }
+
+    .featured-showcase__details {
+      width: 600px;
+      min-height: 382px;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .featured-showcase__name {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 18px;
+    }
+    .fs-row {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 22px;
+    }
+    .fs-row:first-of-type { border-top: 1px solid var(--border); }
+    .fs-label { width: 200px; flex-shrink: 0; color: var(--text); font-weight: 400; }
+    .fs-value { flex: 1; color: var(--text); font-weight: 700; text-align: left; line-height: 1.4; }
+
+    .btn-add-quote {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 160px;
+      min-width: 160px;
+      height: 48px;
+      min-height: 48px;
+      flex-shrink: 0;
+      margin-top: 48px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 8px;
+      padding: 0;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background 0.15s;
+    }
+    .btn-add-quote:hover { background: var(--gold-dark); }
+
+    .featured-thumbs {
+      display: flex;
+      gap: 32px;
+    }
+    .featured-thumb {
+      position: relative;
+      flex: 1;
+      max-width: 340px;
+      border-radius: 10px;
+      padding: 14px 14px 16px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border: 1.5px solid transparent;
+    }
+    .featured-thumb:not(:first-child)::before {
+      content: '';
+      position: absolute;
+      left: -16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 196px;
+      background: var(--border);
+    }
+    .featured-thumb:hover { background: var(--card-hover); }
+    .featured-thumb.active { background: var(--card-hover); border-color: var(--border); }
+    .featured-thumb__img {
+      width: 340px;
+      height: 236px;
+      max-width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 10px;
+    }
+    .featured-thumb__img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .featured-thumb__name {
+      font-size: 13px; font-weight: 700; color: var(--navy);
+      line-height: 1.35; margin-bottom: 3px;
+    }
+    .featured-thumb__sku { font-size: 12px; font-weight: 400; color: var(--navy); }
+
+    @media (max-width: 1250px) {
+      .featured-showcase__details { width: 100%; height: auto; }
+      .fs-label { width: 160px; }
+    }
+    @media (max-width: 1023px) {
+      .featured-header { grid-template-columns: 1fr; gap: 16px; }
+      .featured-header__title { font-size: 26px; }
+      .featured-showcase { grid-template-columns: 1fr; gap: 28px; }
+      .featured-thumbs { flex-wrap: wrap; gap: 20px; }
+      .featured-thumb { flex: 1 1 calc(50% - 20px); max-width: none; }
+      .featured-thumb__img { width: 100%; height: auto; aspect-ratio: 340 / 236; }
+      .featured-thumb:not(:first-child)::before { display: none; }
+    }
+    @media (max-width: 640px) {
+      .featured-showcase__name { font-size: 24px; }
+      .fs-row { font-size: 16px; }
+      .fs-label { width: 130px; }
+      .btn-add-quote { margin-top: 28px; }
+      .featured-thumb { flex: 1 1 100%; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       TRUST SECTION (navy, mountain watermark)
+    ══════════════════════════════════════════════════════════ */
+    .trust-section {
+      position: relative;
+      background: var(--navy);
+      overflow: hidden;
+      padding: 60px 24px;
+      min-height: 430px;
+      display: flex;
+      align-items: center;
+    }
+    .trust-section__mountains {
+      position: absolute;
+      left: 240px; bottom: 0;
+      width: 1030px;
+      height: 330px;
+      pointer-events: none;
+    }
+    .trust-section__inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 600px;
+      gap: 48px;
+      align-items: start;
+    }
+    .trust-section__heading {
+      font-size: 33px;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.35;
+      min-width: 420px;
+      max-width: 420px;
+    }
+    .trust-item {
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+    }
+    .trust-item:first-child { padding-top: 0; }
+    .trust-item__title {
+      font-size: 22px;
+      font-weight: 400;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .trust-item__desc {
+      font-size: 18px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
+    }
+    @media (max-width: 1023px) {
+      .trust-section__mountains { left: 80px; width: 720px; height: 231px; }
+      .trust-section__heading { font-size: 26px; min-width: 0; max-width: none; }
+      .trust-item__title { font-size: 19px; }
+      .trust-item__desc { font-size: 15px; }
+    }
+    @media (max-width: 900px) {
+      .trust-section__inner { grid-template-columns: 1fr; gap: 24px; }
+    }
+    @media (max-width: 640px) {
+      .trust-section { padding: 44px 20px; }
+      .trust-section__mountains { left: 20px; width: 420px; height: 135px; }
+      .trust-section__heading { font-size: 22px; }
+      .trust-item__title { font-size: 16px; }
+      .trust-item__desc { font-size: 14px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       TESTIMONIAL
+    ══════════════════════════════════════════════════════════ */
+    .testimonial-section {
+      background: var(--cyan);
+      padding: 0 24px 56px;
+    }
+    .testimonial-section__inner {
+      max-width: 1050px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      gap: 28px;
+    }
+    .testimonial-section__quote-mark {
+      flex-shrink: 0;
+      width: 304px;
+      height: 250px;
+      display: flex;
+      gap: 4px;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    .testimonial-section__quote-mark span {
+      display: block;
+      width: 150px;
+      height: 250px;
+      flex-shrink: 0;
+      background-color: rgba(31, 46, 92, 0.25);
+      -webkit-mask-image: url('quote-mark.png');
+      mask-image: url('quote-mark.png');
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
+    .testimonial-section__text {
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.5;
+      max-width: 720px;
+      margin-top: 90px;
+    }
+    .testimonial-section__by {
+      margin-top: 16px;
+      font-size: 20px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--navy);
+    }
+    @media (max-width: 1023px) {
+      .testimonial-section__quote-mark { width: 204px; height: 166px; }
+      .testimonial-section__quote-mark span { width: 100px; height: 166px; }
+      .testimonial-section__text { font-size: 22px; margin-top: 56px; }
+      .testimonial-section__by { font-size: 16px; }
+    }
+    @media (max-width: 640px) {
+      .testimonial-section { padding: 0 20px 40px; }
+      .testimonial-section__inner { gap: 18px; }
+      .testimonial-section__quote-mark { width: 120px; height: 96px; }
+      .testimonial-section__quote-mark span { width: 58px; height: 96px; }
+      .testimonial-section__text { font-size: 17px; margin-top: 20px; }
+      .testimonial-section__by { font-size: 14px; margin-top: 12px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RESOURCES ("Get more from every product")
+    ══════════════════════════════════════════════════════════ */
+    .resources-promo {
+      background: var(--cream);
+      padding: 75px 24px;
+    }
+    .resources-promo__inner { max-width: 1220px; margin: 0 auto; }
+    .resources-promo__eyebrow {
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--navy);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .resources-promo__title {
+      font-size: 46px;
+      font-weight: 400;
+      color: var(--navy);
+      margin-bottom: 32px;
+    }
+    .resources-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .resource-tile {
+      width: 268px;
+      height: 306px;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 26px 24px 28px;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+      box-shadow: var(--card-shadow);
+      cursor: pointer;
+    }
+    .resource-tile:hover {
+      background: var(--card-hover);
+      box-shadow: var(--card-shadow-hover);
+      transform: translateY(-2px);
+    }
+    .resource-tile__icon {
+      color: var(--navy);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      height: 52px;
+    }
+    .resource-tile__icon img { height: 52px; width: auto; max-width: 83px; display: block; }
+    .resource-tile__title {
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .resource-tile__desc {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--navy);
+      line-height: 1.4;
+    }
+    @media (max-width: 1023px) {
+      .resources-promo { padding: 60px 24px; }
+      .resources-promo__title { font-size: 34px; }
+      .resource-tile { width: calc(50% - 10px); height: auto; min-height: 260px; }
+    }
+    @media (max-width: 640px) {
+      .resources-promo { padding: 40px 20px; }
+      .resources-promo__eyebrow { font-size: 14px; }
+      .resources-promo__title { font-size: 26px; margin-bottom: 24px; }
+      .resources-grid { gap: 12px; }
+      .resource-tile { width: 100%; height: auto; min-height: 0; padding: 20px 18px 22px; }
+      .resource-tile__icon { height: 36px; margin-bottom: 12px; }
+      .resource-tile__icon img { height: 36px; width: auto; max-width: 48px; }
+      .resource-tile__title { font-size: 18px; margin-bottom: 6px; }
+      .resource-tile__desc { font-size: 14px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       CAN'T FIND WHAT YOU NEED
+    ══════════════════════════════════════════════════════════ */
+    .contact-cta {
+      background: var(--off-white);
+      padding: 75px 24px;
+    }
+    .contact-cta__inner {
+      max-width: 1110px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .contact-cta__icon {
+      flex-shrink: 0;
+      width: 150px;
+      height: 150px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--navy);
+    }
+    .contact-cta__icon img { width: 150px; height: 150px; object-fit: contain; }
+    .contact-cta__left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex: 1;
+      min-width: 280px;
+    }
+    .contact-cta__text { flex: 1; min-width: 240px; }
+    .contact-cta__title {
+      font-size: 36px;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .contact-cta__desc { font-size: 24px; color: #000000; }
+    .btn-gold {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 48px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 8px;
+      padding: 0 24px;
+      font-size: 16px;
+      font-weight: 800;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .btn-gold:hover { background: var(--gold-dark); }
+
+    @media (max-width: 1023px) {
+      .contact-cta { padding: 56px 24px; }
+      .contact-cta__icon { width: 110px; height: 110px; }
+      .contact-cta__icon img { width: 110px; height: 110px; }
+      .contact-cta__title { font-size: 28px; }
+      .contact-cta__desc { font-size: 18px; }
+    }
+    @media (max-width: 640px) {
+      .contact-cta { padding: 40px 20px; }
+      .contact-cta__icon { width: 72px; height: 72px; }
+      .contact-cta__icon img { width: 72px; height: 72px; }
+      .contact-cta__left { gap: 14px; min-width: 0; }
+      .contact-cta__title { font-size: 22px; }
+      .contact-cta__desc { font-size: 15px; }
+      .btn-gold { height: 44px; font-size: 14px; padding: 0 20px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════════════ */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.65);
+      padding-top: 48px;
+      margin-top: auto;
+      overflow: hidden;
+    }
+    .footer__top {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 32px 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 44px;
+    }
+    .footer__logo img { height: 130px; }
+
+    .footer__columns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .footer__col { display: flex; flex-direction: column; gap: 14px; }
+    .footer__col .footer__col-title {
+      font-weight: 600;
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .footer__col a, .footer__col span {
+      font-size: 20px;
+      font-weight: 400;
+      color: #ffffff;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      display: block;
+    }
+    .footer__col a:hover { opacity: 0.75; text-decoration: underline; }
+    .footer__col button {
+      background: none; border: none; padding: 0; text-align: left;
+      font-size: 20px; font-weight: 400; color: #ffffff;
+      transition: opacity 0.15s; font-family: inherit;
+    }
+    .footer__col button:hover { opacity: 0.75; text-decoration: underline; }
+    .footer__contact-row {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .footer__contact-row svg { flex-shrink: 0; color: #ffffff; }
+
+    .footer__watermark {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 4px 32px 8px;
+      box-sizing: border-box;
+      overflow: hidden;
+      font-size: clamp(20px, 6.2vw, 82px);
+      font-weight: 200;
+      letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.4);
+      user-select: none;
+    }
+    .footer__watermark span { white-space: nowrap; }
+    .footer__bottom {
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding: 18px 32px 22px;
+      max-width: 1440px;
+      margin: 0 auto;
+      font-size: 14px;
+      color: #ffffff;
+    }
+
+    @media (max-width: 1023px) {
+      .footer__columns { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .footer__logo img { height: 92px; }
+    }
+    @media (max-width: 768px) {
+      .navbar__inner { padding: 0 16px; }
+      .navbar__logo img { height: 44px; }
+      .hero__content { padding: 40px 18px 44px; }
+      .hero__panel { padding: 20px 18px 18px; }
+      .section { padding: 40px 18px; }
+      .footer__top { padding: 0 20px 32px; gap: 32px; }
+      .footer__logo img { height: 56px; }
+      .footer__columns { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .footer__col .footer__col-title { font-size: 16px; }
+      .footer__col a, .footer__col span, .footer__col button { font-size: 14px; }
+      .footer__watermark { padding-left: 20px; padding-right: 20px; }
+      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 12px; }
+      footer { padding-top: 36px; }
+      .contact-cta__inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ── Mobile menu ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0,0,0,0.45);
+      flex-direction: row;
+      align-items: stretch;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu__backdrop { flex: 0 0 18%; min-width: 48px; cursor: pointer; }
+    .mobile-menu__panel {
+      flex: 1; background: var(--white); display: flex; flex-direction: column;
+      padding: 24px; overflow-y: auto; max-width: 82vw;
+    }
+    .mobile-menu__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .mobile-menu__header img { height: 48px; }
+    .mobile-menu__close { background: none; border: none; color: var(--navy); display: flex; align-items: center; }
+    .mobile-menu__panel nav { display: flex; flex-direction: column; width: 100%; }
+    .mobile-menu__panel nav a {
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 600; font-size: 18px; padding: 16px 0;
+      border-bottom: 1px solid var(--border); color: var(--text);
+      text-decoration: none;
+    }
+    .mobile-nav-row { display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+    .mobile-nav-link { flex: 1; font-weight: 600; font-size: 18px; padding: 16px 0; color: var(--text); display: block; text-decoration: none; }
+    .mobile-nav-chevron { background: none; border: none; padding: 16px 8px; cursor: pointer; display: flex; align-items: center; color: var(--navy); }
+    .mobile-nav-chevron .chevron { width: 16px; height: 16px; stroke: var(--navy); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s; }
+    .mobile-nav-chevron.open .chevron { transform: rotate(180deg); }
+    .mobile-submenu { display: none; flex-direction: column; padding: 4px 0 4px 16px; border-bottom: 1px solid var(--border); }
+    .mobile-submenu.open { display: flex; }
+    .mobile-submenu a { font-size: 13px; font-weight: 500; color: var(--muted); padding: 10px 0; border-bottom: 1px solid #f0f0f0; text-decoration: none; display: block; }
+    .mobile-submenu a:last-child { border-bottom: none; }
+
+    /* ── Nested Products dropdown (desktop/tablet) ── */
+    .dd-cat-row { display: flex; align-items: stretch; border-radius: 6px; position: relative; }
+    .dd-cat-row:hover .dd-cat-link, .dd-cat-row:hover .dd-cat-chevron { background: #f0f0f0; }
+    .dd-cat-link {
+      flex: 1; padding: 10px 6px 10px 14px; font-size: 14px; font-weight: 600;
+      color: var(--text); display: flex; align-items: center;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      transition: background 0.15s; border-radius: 6px 0 0 6px; max-width: 180px;
+    }
+    .dd-cat-link:hover { background: #f0f0f0; color: var(--blue); }
+    .dd-cat-chevron {
+      background: none; border: none; padding: 0 12px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 0 6px 6px 0; transition: background 0.15s; flex-shrink: 0; align-self: stretch;
+    }
+    .dd-cat-chevron:hover { background: #f0f0f0; }
+    .dd-cat-chevron svg { width: 12px; height: 12px; stroke: var(--text); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s; }
+    .dd-cat-chevron.open svg { transform: rotate(180deg); }
+    .dd-cat-chevron.open { background: #e4edf6; }
+    .dd-cat-row.open .dd-cat-link { background: #e4edf6; color: var(--blue); }
+    .dd-cat-row.open .dd-cat-chevron { background: #e4edf6; }
+    .dd-cat-row.open .dd-cat-chevron svg { stroke: var(--blue); }
+    .dd-cat-row.sub-active .dd-sub-link { background: #e4edf6; color: var(--blue); }
+    .dd-cat-row.sub-active .dd-cat-chevron { background: #e4edf6; }
+    .dd-cat-row.sub-active .dd-cat-chevron svg { stroke: var(--blue); }
+
+    .dd-sub-list {
+      display: none; position: absolute; left: calc(100% + 2px); top: 0;
+      min-width: 200px; background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 10px; box-shadow: 0 8px 28px rgba(0,0,0,0.12); padding: 6px;
+      z-index: 10000; flex-direction: column; gap: 2px;
+    }
+    .dd-sub-list.open { display: flex; }
+    .dd-sub-link {
+      display: flex; align-items: center; flex: 1; padding: 10px 14px;
+      font-size: 13px; font-weight: 500; color: var(--muted); border-radius: 6px;
+      white-space: normal; word-break: break-word; transition: background 0.15s, color 0.15s;
+    }
+    .dd-cat-row:hover .dd-sub-link { background: #f0f0f0; color: var(--blue); }
+    .dd-sub-list::before { content: ''; position: absolute; top: 0; bottom: 0; left: -8px; width: 8px; }
+
+    .dd-type-list {
+      display: none; position: fixed; min-width: 200px; background: var(--white);
+      border: 1.5px solid var(--border); border-radius: 10px; box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+      padding: 6px; z-index: 10002; flex-direction: column; gap: 2px;
+    }
+    .dd-type-list.open { display: flex; }
+    .dd-type-list::before { content: ''; position: absolute; top: 0; bottom: 0; left: -8px; width: 8px; }
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="navbar__inner">
+    <a href="index.html" class="navbar__logo">
+      <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" />
+    </a>
+
+    <div class="navbar__center">
+      <!-- Desktop -->
+      <nav class="navbar__desktop">
+        <div class="nav-group">
+          <div class="nav-dropdown" id="dd-products-desktop">
+            <a href="products.html">Products
+              <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+            </a>
+            <div class="dropdown-menu" id="nav-dd-desktop-products"></div>
+          </div>
+          <div class="nav-dropdown" id="dd-resources-desktop">
+            <a href="resources.html">Resources
+              <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+            </a>
+            <div class="dropdown-menu">
+              <a href="video-archive.html">Video Archive</a>
+              <a href="pdf-catalogs.html">PDF Catalogs</a>
+              <a href="education-materials.html">Education Materials</a>
+              <a href="product-ifus.html">Product IFUs</a>
+            </div>
+          </div>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <button class="nav-search-link" onclick="window.location.href='products.html'" aria-label="Search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search
+        </button>
+      </nav>
+
+      <!-- Tablet -->
+      <nav class="navbar__tablet">
+        <div class="nav-group">
+          <div class="nav-dropdown" id="dd-products-tablet">
+            <a href="products.html">Products
+              <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+            </a>
+            <div class="dropdown-menu" id="nav-dd-tablet-products"></div>
+          </div>
+          <div class="nav-dropdown" id="dd-resources-tablet">
+            <a href="resources.html">Resources
+              <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+            </a>
+            <div class="dropdown-menu">
+              <a href="video-archive.html">Video Archive</a>
+              <a href="pdf-catalogs.html">PDF Catalogs</a>
+              <a href="education-materials.html">Education Materials</a>
+              <a href="product-ifus.html">Product IFUs</a>
+            </div>
+          </div>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="navbar__right">
+      <button class="btn-quote">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        Quote Cart
+      </button>
+      <div class="navbar__mobile">
+        <button class="cart-btn" aria-label="Cart">
+          <img src="cart-icon.png" alt="" style="width:18px;height:18px;" />
+        </button>
+        <button class="hamburger" aria-label="Open menu" onclick="openMenu()">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__backdrop" onclick="closeMenu()"></div>
+    <div class="mobile-menu__panel">
+      <div class="mobile-menu__header">
+        <a href="index.html"><img src="peak-logo.png" alt="PEAK" /></a>
+        <button class="mobile-menu__close" onclick="closeMenu()">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <div class="mobile-nav-row">
+          <a href="products.html" class="mobile-nav-link">Products</a>
+          <button class="mobile-nav-chevron" id="mob-toggle-products" onclick="toggleMobileSubmenu('mob-products','mob-toggle-products')">
+            <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="mobile-submenu" id="mob-products"></div>
+        <div class="mobile-nav-row">
+          <a href="resources.html" class="mobile-nav-link">Resources</a>
+          <button class="mobile-nav-chevron" id="mob-toggle-resources" onclick="toggleMobileSubmenu('mob-resources','mob-toggle-resources')">
+            <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="mobile-submenu" id="mob-resources">
+          <a href="video-archive.html">Video Archive</a>
+          <a href="pdf-catalogs.html">PDF Catalogs</a>
+          <a href="education-materials.html">Education Materials</a>
+          <a href="product-ifus.html">Product IFUs</a>
+        </div>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__content">
+      <h1 class="hero__title">Built to keep surgical teams moving.</h1>
+
+      <div class="hero__panel">
+        <div class="hero__panel-label">FIND WHAT YOU NEED FAST</div>
+        <div class="search-bar-wrap">
+          <div class="search-bar" id="hero-search-bar">
+            <div class="search-field">
+              <input
+                type="text"
+                id="hero-search-input"
+                placeholder="Search products, SKUs, IFUs or resources."
+                autocomplete="off"
+                oninput="onSearchInput()"
+                onkeydown="onSearchKey(event)"
+                onfocus="onSearchInput()"
+              />
+            </div>
+            <button class="search-bar__btn" onclick="doSearch()" aria-label="Search">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2f4a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+          </div>
+          <div class="search-suggestions" id="search-suggestions"></div>
+        </div>
+
+        <div class="hero__quicklinks">
+          <a class="hero__quicklink" href="products.html">
+            <span class="hero__quicklink-icon">
+              <img src="box-icon.png" alt="" />
+            </span>
+            <span class="hero__quicklink-text">
+              <span class="hero__quicklink-title">Browse Products</span>
+              <span class="hero__quicklink-sub">Shop by category</span>
+            </span>
+            <svg class="hero__quicklink-chevron" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 9 8 1 15"/></svg>
+          </a>
+          <a class="hero__quicklink" href="resources.html">
+            <span class="hero__quicklink-icon">
+              <img src="document-icon.png" alt="" />
+            </span>
+            <span class="hero__quicklink-text">
+              <span class="hero__quicklink-title">Access Resources</span>
+              <span class="hero__quicklink-sub">IFUs, catalogs, and clinical info</span>
+            </span>
+            <svg class="hero__quicklink-chevron" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 9 8 1 15"/></svg>
+          </a>
+          <a class="hero__quicklink" href="contact.html">
+            <span class="hero__quicklink-icon">
+              <img src="get-expert-help-icon.png" alt="" />
+            </span>
+            <span class="hero__quicklink-text">
+              <span class="hero__quicklink-title">Get Expert Help</span>
+              <span class="hero__quicklink-sub">Talk to a product specialist</span>
+            </span>
+            <svg class="hero__quicklink-chevron" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 9 8 1 15"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       FEATURED PRODUCTS — interactive showcase
+  ══════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="featured-header">
+      <h2 class="featured-header__title">Featured Products</h2>
+      <a href="products.html" class="btn-outline">Browse&nbsp; All Products</a>
+    </div>
+    <div id="featured-showcase-wrap"></div>
+    <div class="featured-thumbs" id="featured-thumbs"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TRUST SECTION
+  ══════════════════════════════════════════════════════════ -->
+  <div class="trust-section">
+    <img class="trust-section__mountains" src="mountain-graphic.png" alt="" />
+    <div class="trust-section__inner">
+      <div class="trust-section__heading">Trusted products, expert support and faster access to what you need.</div>
+      <div>
+        <div class="trust-item">
+          <div class="trust-item__title">Products Selected With Purpose</div>
+          <div class="trust-item__desc">A focused range shaped around real surgical needs.</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-item__title">Information Available Anytime</div>
+          <div class="trust-item__desc">Product details and resources available when you need them.</div>
+        </div>
+        <div class="trust-item" style="border-bottom:none;">
+          <div class="trust-item__title">Real People Behind the Products</div>
+          <div class="trust-item__desc">Knowledgeable help when a question calls for a person.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TESTIMONIAL
+  ══════════════════════════════════════════════════════════ -->
+  <div class="testimonial-section">
+    <div class="testimonial-section__inner">
+      <div class="testimonial-section__quote-mark">
+        <span></span>
+        <span></span>
+      </div>
+      <div>
+        <div class="testimonial-section__text">The product selection is reliable, the information is easy to access and the PEAK team is always responsive when we need additional guidance.</div>
+        <div class="testimonial-section__by">Surgical Service Manager</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       RESOURCES — "Get more from every product"
+  ══════════════════════════════════════════════════════════ -->
+  <div class="resources-promo">
+    <div class="resources-promo__inner">
+      <div class="resources-promo__eyebrow">Resources</div>
+      <div class="resources-promo__title">Get more from every product.</div>
+      <div class="resources-grid">
+
+        <a href="video-archive.html" class="resource-tile">
+          <div class="resource-tile__icon">
+            <img src="video-icon.png" alt="" />
+          </div>
+          <div class="resource-tile__title">Video Archive</div>
+          <div class="resource-tile__desc">Watch practical videos and troubleshooting tips.</div>
+        </a>
+
+        <a href="pdf-catalogs.html" class="resource-tile">
+          <div class="resource-tile__icon">
+            <img src="digital-catalog-icon.png" alt="" />
+          </div>
+          <div class="resource-tile__title">Digital Catalogs</div>
+          <div class="resource-tile__desc">Browse and download catalogs with product details and specifications.</div>
+        </a>
+
+        <a href="education-materials.html" class="resource-tile">
+          <div class="resource-tile__icon">
+            <img src="educational-materials-icon.png" alt="" />
+          </div>
+          <div class="resource-tile__title">Educational Materials</div>
+          <div class="resource-tile__desc">Find helpful guidance on instrumentation, product applications and best practices.</div>
+        </a>
+
+        <a href="product-ifus.html" class="resource-tile">
+          <div class="resource-tile__icon">
+            <img src="document-icon.png" alt="" />
+          </div>
+          <div class="resource-tile__title">Product IFUs</div>
+          <div class="resource-tile__desc">Access instructions for use and proper handling, use and care.</div>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       CAN'T FIND WHAT YOU NEED
+  ══════════════════════════════════════════════════════════ -->
+  <div class="contact-cta">
+    <div class="contact-cta__inner">
+      <div class="contact-cta__left">
+        <div class="contact-cta__icon">
+          <img src="chat-help-icon.png" alt="" />
+        </div>
+        <div class="contact-cta__text">
+          <div class="contact-cta__title">Can't find what you need?</div>
+          <div class="contact-cta__desc">Our team can help you find the right product or resource.</div>
+        </div>
+      </div>
+      <a href="contact.html" class="btn-gold">Contact Us</a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════════ -->
+  <footer>
+    <div class="footer__top">
+
+      <div class="footer__logo">
+        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" style="filter:brightness(0) invert(1);" />
+      </div>
+
+      <div class="footer__columns">
+
+        <div class="footer__col">
+          <span class="footer__col-title">Products</span>
+          <div id="footer-products-col" style="display:contents;"></div>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">Resources</span>
+          <a href="video-archive.html">Video Archive</a>
+          <a href="pdf-catalogs.html">Digital Catalogs</a>
+          <a href="education-materials.html">Educational Materials</a>
+          <a href="product-ifus.html">Product IFUs</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">About</span>
+          <a href="about.html">Our Story</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">Support</span>
+          <button onclick="cartOpenModal()">Get a Quote</button>
+          <a href="contact.html">Contact Us</a>
+          <div style="height:4px; border-top:1px solid rgba(255,255,255,0.2); margin-top:8px;"></div>
+          <div style="height:6px;"></div>
+          <span>info@peakmdi.com</span>
+          <span>630-520-5023</span>
+          <span>866-557-8437 (Fax)</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer__watermark">
+      <span>BUILT</span><span>FOR</span><span>THE</span><span>SURGEON</span>
+    </div>
+
+    <div class="footer__bottom">
+      © Copyright 2026 PEAK Medical Distribution INC. &nbsp;Glen Ellyn, IL
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════════════════════════
+       JS
+  ══════════════════════════════════════════════════════════ -->
+  <script>
+    /* ── Populate nav dropdowns from products.json ── */
+    async function populateNavDropdowns() {
+      let products = [];
+      try {
+        const res = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+        products = await res.json();
+      } catch(e) { return; }
+
+      const tree = {};
+      products.forEach(p => {
+        if (!p.category) return;
+        if (!tree[p.category]) tree[p.category] = {};
+        if (p.subcategory) {
+          if (!tree[p.category][p.subcategory]) tree[p.category][p.subcategory] = new Set();
+          if (p.type) tree[p.category][p.subcategory].add(p.type);
+        }
+      });
+
+      function buildDropdownHTML(tree) {
+        document.querySelectorAll('.dd-type-list').forEach(el => el.remove());
+        return Object.entries(tree).map(([cat, subs]) => {
+          const catURL  = `products.html?cat=${encodeURIComponent(cat)}`;
+          const catId   = 'navdd-' + cat.replace(/\s+/g, '_');
+          const hasSubs = Object.keys(subs).length > 0;
+
+          let h = `<div class="dd-cat-row">
+            <a class="dd-cat-link" href="${catURL}">${cat}</a>
+            ${hasSubs ? `<button class="dd-cat-chevron" onclick="toggleNavSub(event,'${catId}')">
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>` : ''}
+          </div>`;
+
+          if (hasSubs) {
+            h += `<div class="dd-sub-list" id="${catId}">`;
+            Object.keys(subs).forEach(sub => {
+              const types    = subs[sub];
+              const subURL   = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
+              const subId    = 'navtype-' + cat.replace(/\s+/g,'_') + '__' + sub.replace(/\s+/g,'_');
+              const hasTypes = types.size > 0;
+              h += `<div class="dd-cat-row">
+                <a class="dd-sub-link" href="${subURL}">${sub}</a>
+                ${hasTypes ? `<button class="dd-cat-chevron dd-type-chevron" data-typeid="${subId}" onclick="toggleNavType(event,'${subId}')">
+                  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>` : ''}
+              </div>`;
+            });
+            h += `</div>`;
+          }
+          return h;
+        }).join('');
+      }
+
+      function buildTypePanels(tree) {
+        document.querySelectorAll('.dd-type-list').forEach(el => el.remove());
+        Object.entries(tree).forEach(([cat, subs]) => {
+          Object.keys(subs).forEach(sub => {
+            const types = subs[sub];
+            if (!types.size) return;
+            const subId = 'navtype-' + cat.replace(/\s+/g,'_') + '__' + sub.replace(/\s+/g,'_');
+            const panel = document.createElement('div');
+            panel.className = 'dd-type-list';
+            panel.id = subId;
+            [...types].forEach(type => {
+              const a = document.createElement('a');
+              a.className = 'dd-sub-link';
+              a.href = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}`;
+              a.textContent = type;
+              panel.appendChild(a);
+            });
+            document.body.appendChild(panel);
+          });
+        });
+      }
+
+      function buildMobileHTML(tree) {
+        return Object.entries(tree).map(([cat, subs]) => {
+          const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
+          let html = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
+          Object.keys(subs).forEach(sub => {
+            const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
+            html += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
+          });
+          return html;
+        }).join('');
+      }
+
+      const ddHTML = buildDropdownHTML(tree);
+      const mobHTML = buildMobileHTML(tree);
+
+      const desktopDD = document.getElementById('nav-dd-desktop-products');
+      const tabletDD  = document.getElementById('nav-dd-tablet-products');
+      const mobileDD  = document.getElementById('mob-products');
+
+      if (desktopDD) desktopDD.innerHTML = ddHTML;
+      if (tabletDD)  tabletDD.innerHTML  = ddHTML;
+      if (mobileDD)  mobileDD.innerHTML  = mobHTML;
+      buildTypePanels(tree);
+    }
+
+    populateNavDropdowns();
+    loadFeaturedProducts();
+
+    /* ══════════════════════════════════════════════════════════
+       FEATURED PRODUCTS — interactive showcase + thumbnail strip
+    ══════════════════════════════════════════════════════════ */
+    let _featuredProducts = [];
+    let _featuredIndex = 0;
+
+    function productImagePath(p) {
+      return p.image ? 'Product_Pictures/' + p.image.replace('Product_Pictures/', '') : '';
+    }
+
+    function getDescriptionLines(p) {
+      let text = p.categoryThree || '';
+      const colonIdx = text.indexOf(':');
+      if (colonIdx !== -1) text = text.slice(colonIdx + 1).trim();
+      if (p.title && text.startsWith(p.title)) text = text.slice(p.title.length).trim();
+      text = text.replace(/^,\s*/, '');
+      text = text.split('\n')[0];
+      return text.split(',').map(s => s.trim()).filter(Boolean);
+    }
+
+    async function loadFeaturedProducts() {
+      const wrap = document.getElementById('featured-showcase-wrap');
+      if (!wrap) return;
+
+      let products = [];
+      try {
+        const r = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+        products = await r.json();
+      } catch(e) {
+        wrap.innerHTML = '<p style="color:#aaa;text-align:center">Could not load products.</p>';
+        return;
+      }
+
+      _featuredProducts = products.filter(p => p.featured === true).slice(0, 4);
+
+      if (!_featuredProducts.length) {
+        wrap.innerHTML = '<p style="color:#aaa;text-align:center">No featured products found.</p>';
+        return;
+      }
+
+      _featuredIndex = 0;
+      renderFeaturedMain(_featuredIndex);
+      renderFeaturedThumbs(_featuredIndex);
+    }
+
+    function renderFeaturedMain(idx) {
+      const wrap = document.getElementById('featured-showcase-wrap');
+      const p = _featuredProducts[idx];
+      if (!wrap || !p) return;
+      const lines = getDescriptionLines(p);
+      const img = productImagePath(p);
+
+      wrap.innerHTML = `
+        <div class="featured-showcase">
+          <div class="featured-showcase__image" onclick="window.location.href='product-detail.html?id=${p.id}'">
+            ${img
+              ? `<img src="${img}" alt="${p.title}" />`
+              : `<div style="width:60%;aspect-ratio:1/1;background:rgba(0,0,0,0.06);border-radius:12px;"></div>`
+            }
+          </div>
+          <div class="featured-showcase__details">
+            <div class="featured-showcase__name">${p.title}</div>
+            <div class="fs-row"><span class="fs-label">Product Number</span><span class="fs-value">${p.sku || ''}</span></div>
+            <div class="fs-row"><span class="fs-label">Category</span><span class="fs-value">${p.category || ''}</span></div>
+            <div class="fs-row"><span class="fs-label">Sub-Category</span><span class="fs-value">${p.subcategory || ''}</span></div>
+            <div class="fs-row"><span class="fs-label">Description</span><span class="fs-value">${lines.join('<br>')}</span></div>
+            <button class="btn-add-quote" onclick="addFeaturedToQuote(${idx})">Add to Quote</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderFeaturedThumbs(activeIdx) {
+      const thumbs = document.getElementById('featured-thumbs');
+      if (!thumbs) return;
+      thumbs.innerHTML = _featuredProducts.map((p, i) => {
+        const img = productImagePath(p);
+        return `
+          <div class="featured-thumb ${i === activeIdx ? 'active' : ''}" onclick="selectFeatured(${i})">
+            <div class="featured-thumb__img">
+              ${img ? `<img src="${img}" alt="${p.title}" />` : `<div style="width:60%;aspect-ratio:1/1;background:rgba(0,0,0,0.06);border-radius:8px;"></div>`}
+            </div>
+            <div class="featured-thumb__name">${p.title}</div>
+            <div class="featured-thumb__sku">${p.sku || ''}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectFeatured(idx) {
+      _featuredIndex = idx;
+      renderFeaturedMain(idx);
+      renderFeaturedThumbs(idx);
+    }
+
+    function addFeaturedToQuote(idx) {
+      const p = _featuredProducts[idx];
+      if (!p) return;
+      cartAdd({ id: p.id, title: p.title, sku: p.sku, image: p.image || '' });
+    }
+
+    /* ── Mobile overlay ── */
+    function openMenu()  { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow = ''; }
+    document.getElementById('mobileMenu').addEventListener('click', function(e) {
+      if (e.target === this) closeMenu();
+    });
+
+    /* Close dropdowns when clicking outside */
+    document.addEventListener('click', e => {
+      const inDropdown  = e.target.closest('.nav-dropdown');
+      const inTypePanel = e.target.closest('.dd-type-list');
+
+      if (!inDropdown && !inTypePanel) {
+        document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+        document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
+        document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
+      } else if (inDropdown && !e.target.closest('.dd-sub-list') && !e.target.closest('.dd-cat-chevron') && !e.target.closest('.dd-type-chevron')) {
+        document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
+        document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
+      }
+    });
+
+    document.addEventListener('mousemove', e => {
+      const openTypePanel = document.querySelector('.dd-type-list.open');
+      if (!openTypePanel) return;
+      const inDropdown  = e.target.closest('.nav-dropdown');
+      const inTypePanel = e.target.closest('.dd-type-list');
+      const inSubList   = e.target.closest('.dd-sub-list');
+      if (!inDropdown && !inTypePanel && !inSubList) {
+        openTypePanel.classList.remove('open');
+        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
+      }
+    });
+
+    /* Hover-based dropdown behavior (desktop/tablet) */
+    document.querySelectorAll('.nav-dropdown').forEach(dd => {
+      dd.addEventListener('mouseenter', () => {
+        const menu = dd.querySelector('.dropdown-menu');
+        if (menu) menu.style.display = 'flex';
+      });
+      dd.addEventListener('mouseleave', () => {
+        if (!dd.classList.contains('type-open')) {
+          const menu = dd.querySelector('.dropdown-menu');
+          if (menu) menu.style.display = 'none';
+        }
+      });
+    });
+
+    /* ── Mobile submenu toggle ── */
+    function toggleMobileSubmenu(submenuId, toggleId) {
+      const submenu = document.getElementById(submenuId);
+      const toggle  = document.getElementById(toggleId);
+      const isOpen  = submenu.classList.contains('open');
+      submenu.classList.toggle('open', !isOpen);
+      toggle.classList.toggle('open', !isOpen);
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       HERO SEARCH — autocomplete + navigation
+    ══════════════════════════════════════════════════════════ */
+    let _searchProducts = [];
+    let _suggestionIndex = -1;
+
+    (async () => {
+      try {
+        const r = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+        _searchProducts = await r.json();
+      } catch(e) { _searchProducts = []; }
+    })();
+
+    function onSearchInput() {
+      const query = document.getElementById('hero-search-input').value.trim().toLowerCase();
+      const box   = document.getElementById('search-suggestions');
+      _suggestionIndex = -1;
+
+      if (!query || query.length < 1) {
+        box.innerHTML = '';
+        box.classList.remove('visible');
+        return;
+      }
+
+      const matches = _searchProducts.filter(p =>
+        p.title.toLowerCase().includes(query) ||
+        (p.category    || '').toLowerCase().includes(query) ||
+        (p.subcategory || '').toLowerCase().includes(query) ||
+        (p.sku         || '').toLowerCase().includes(query)
+      ).slice(0, 5);
+
+      if (!matches.length) {
+        box.innerHTML = '';
+        box.classList.remove('visible');
+        return;
+      }
+
+      function highlight(text, q) {
+        const i = text.toLowerCase().indexOf(q);
+        if (i === -1) return text;
+        return text.slice(0, i) + '<em>' + text.slice(i, i + q.length) + '</em>' + text.slice(i + q.length);
+      }
+
+      const searchIcon = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
+
+      const itemsHTML = matches.map(p => `
+        <div class="suggestion-item" onclick="goToSearch('${p.id}')">
+          ${searchIcon}
+          <div class="suggestion-item__text">
+            <span class="suggestion-item__name">${highlight(p.title, query)}</span>
+            <span class="suggestion-item__meta">${p.category}${p.subcategory ? ' › ' + p.subcategory : ''}</span>
+          </div>
+        </div>
+      `).join('');
+
+      const allHTML = `
+        <div class="suggestion-all" onclick="doSearch()">
+          ${searchIcon}
+          See all results for "<strong>${document.getElementById('hero-search-input').value.trim()}</strong>"
+        </div>
+      `;
+
+      box.innerHTML = itemsHTML + allHTML;
+      box.classList.add('visible');
+    }
+
+    function onSearchKey(e) {
+      const box   = document.getElementById('search-suggestions');
+      const items = box.querySelectorAll('.suggestion-item, .suggestion-all');
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        _suggestionIndex = Math.min(_suggestionIndex + 1, items.length - 1);
+        items.forEach((el, i) => el.style.background = i === _suggestionIndex ? '#f4f7fb' : '');
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        _suggestionIndex = Math.max(_suggestionIndex - 1, -1);
+        items.forEach((el, i) => el.style.background = i === _suggestionIndex ? '#f4f7fb' : '');
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (_suggestionIndex >= 0 && items[_suggestionIndex]) {
+          items[_suggestionIndex].click();
+        } else {
+          doSearch();
+        }
+      } else if (e.key === 'Escape') {
+        closeSuggestions();
+      }
+    }
+
+    function doSearch() {
+      const query = document.getElementById('hero-search-input').value.trim();
+      if (!query) return;
+      window.location.href = 'products.html?search=' + encodeURIComponent(query);
+    }
+
+    function goToSearch(productId) {
+      window.location.href = 'product-detail.html?id=' + productId;
+    }
+
+    function closeSuggestions() {
+      const box = document.getElementById('search-suggestions');
+      box.innerHTML = '';
+      box.classList.remove('visible');
+    }
+
+    /* ── Toggle nested nav submenu ── */
+    function toggleNavType(e, id) {
+      e.preventDefault();
+      e.stopPropagation();
+      const typePanel = document.getElementById(id);
+      const btn = e.currentTarget;
+      if (!typePanel) return;
+
+      const isOpen = typePanel.classList.contains('open');
+
+      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
+      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('sub-active'));
+
+      if (!isOpen) {
+        const row = btn.closest('.dd-cat-row');
+        const subList = btn.closest('.dd-sub-list');
+        const navDropdown = btn.closest('.nav-dropdown');
+        const rowRect     = row ? row.getBoundingClientRect() : btn.getBoundingClientRect();
+        const subListRect = subList ? subList.getBoundingClientRect() : rowRect;
+
+        typePanel.style.top  = rowRect.top + 'px';
+        typePanel.style.left = (subListRect.right + 6) + 'px';
+        typePanel.classList.add('open');
+        btn.classList.add('open');
+        if (row) row.classList.add('sub-active');
+        if (navDropdown) navDropdown.classList.add('type-open');
+      }
+    }
+
+    function toggleNavSub(e, id) {
+      e.preventDefault(); e.stopPropagation();
+      const sub = document.getElementById(id);
+      const btn = e.currentTarget;
+      if (!sub) return;
+      const isOpen = sub.classList.contains('open');
+      document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
+      document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
+      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('sub-active'));
+      if (!isOpen) {
+        const row = btn.closest('.dd-cat-row');
+        const menu = btn.closest('.dropdown-menu');
+        let offsetTop = 0, el = row;
+        while (el && el !== menu) { offsetTop += el.offsetTop; el = el.offsetParent; }
+        sub.style.top = offsetTop + 'px';
+        sub.classList.add('open');
+        btn.classList.add('open');
+        row.classList.add('open');
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-bar-wrap')) closeSuggestions();
+    });
+  </script>
+
+  <script>
+    /* ── Populate footer Products column from products.json ── */
+    async function populateFooter() {
+      let products = [];
+      try {
+        const r = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+        products = await r.json();
+      } catch(e) { return; }
+
+      const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+      const col = document.getElementById('footer-products-col');
+      if (!col) return;
+
+      col.innerHTML = categories.map(cat =>
+        `<a href="products.html?cat=${encodeURIComponent(cat)}">${cat}</a>`
+      ).join('');
+    }
+    populateFooter();
+  </script>
+  <script src="cart.js"></script>
+</body>
+</html>

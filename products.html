@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products – PEAK MDI</title>
+  <link rel="icon" type="image/png" href="peak-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', sans-serif; color: #1a1a1a; background: #fff; min-height: 100vh; display: flex; flex-direction: column; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; font-family: inherit; }
+
+    :root {
+      --navy: #1a2f4a; --navy-dark: #111e2e; --blue: #2e6da4;
+      --white: #ffffff; --off-white: #f8f8f8; --text: #1a1a1a;
+      --muted: #666; --border: #e0e0e0;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.09);
+      --card-shadow-hover: 0 6px 22px rgba(0,0,0,0.14);
+      --radius: 12px;
+    }
+
+    /* ── NAVBAR (same as index.html) ── */
+    .navbar {
+      position: sticky; top: 0; z-index: 200;
+      background: var(--white); box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      height: 72px;
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center; padding: 0 28px;
+    }
+    .navbar__logo { justify-self: start; }
+    .navbar__logo img { height: 52px; width: auto; }
+    .navbar__center { display: flex; justify-content: center; }
+    .navbar__right { justify-self: end; display: flex; align-items: center; }
+    @media (min-width: 1024px) { .navbar { height: 80px; } .navbar__logo img { height: 68px; } }
+
+    .navbar__desktop { display: none; }
+    .nav-group {
+      display: flex; align-items: center;
+      border: 1.5px solid var(--border); border-radius: 9px;
+      padding: 4px 6px; gap: 2px;
+    }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > a, .nav-group > a {
+      font-size: 14px; font-weight: 600; color: var(--text);
+      padding: 8px 14px; border-radius: 6px;
+      display: flex; align-items: center; gap: 5px;
+      white-space: nowrap; transition: background 0.15s; cursor: pointer;
+    }
+    .nav-dropdown > a:hover, .nav-group > a:hover { background: #f0f0f0; }
+    .nav-dropdown > a.active, .nav-group > a.active { background: #e4edf6; color: var(--blue); }
+    .nav-dropdown > a .chevron, .nav-group > a .chevron {
+      width: 12px; height: 12px; stroke: currentColor; fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+      transition: transform 0.2s;
+    }
+    .nav-dropdown.open > a .chevron { transform: rotate(180deg); }
+    .dropdown-menu {
+      display: none; position: absolute; top: calc(100% + 10px); left: 50%;
+      transform: translateX(-50%); background: var(--white);
+      border: 1.5px solid var(--border); border-radius: 10px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12); width: 220px;
+      padding: 6px; z-index: 9999; flex-direction: column; gap: 2px;
+    }
+    .nav-dropdown.open .dropdown-menu { display: flex; }
+    .dropdown-menu a {
+      display: block; padding: 10px 14px; font-size: 14px; font-weight: 500;
+      color: var(--text); border-radius: 6px; white-space: nowrap; transition: background 0.15s;
+    }
+    .dropdown-menu a:hover { background: #f0f0f0; color: var(--blue); }
+    .dropdown-menu .dd-cat-link { border-radius: 6px 0 0 6px; }
+    .dropdown-menu .dd-sub-link { border-radius: 6px 0 0 6px; }
+    .btn-quote {
+      display: flex; align-items: center; gap: 10px;
+      border: 2px solid var(--navy); border-radius: 8px;
+      padding: 10px 20px; font-size: 14px; font-weight: 700;
+      color: var(--navy); background: var(--white);
+      transition: background 0.15s, color 0.15s; white-space: nowrap;
+    }
+    .btn-quote:hover { background: var(--navy); color: var(--white); }
+    .navbar__tablet { display: none; }
+    .navbar__mobile { display: none; align-items: center; gap: 12px; }
+    .navbar__mobile .cart-btn, .navbar__right .cart-btn {
+      width: 42px; height: 42px; border-radius: 50%;
+      border: 2px solid var(--navy); display: flex; align-items: center;
+      justify-content: center; background: transparent; color: var(--navy);
+    }
+    .navbar__mobile .hamburger { background: none; border: none; color: var(--navy); display: flex; align-items: center; padding: 4px; }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    @media (min-width: 1024px) { .navbar__desktop { display: flex; } .navbar__tablet { display: none !important; } .navbar__mobile { display: none !important; } .btn-quote { display: flex !important; } }
+    @media (min-width: 769px) and (max-width: 1023px) { .navbar__desktop { display: none !important; } .navbar__tablet { display: flex; } .navbar__mobile { display: none !important; } .btn-quote { display: flex !important; } }
+    @media (max-width: 768px) { .navbar { padding: 0 16px; } .navbar__logo img { height: 44px; } .navbar__desktop { display: none !important; } .navbar__tablet { display: none !important; } .navbar__mobile { display: flex; } .btn-quote { display: none !important; } }
+
+    /* ── HERO BANNER ── */
+    .page-hero {
+      position: relative; width: 100%; height: 140px;
+      background: linear-gradient(135deg, var(--navy-dark) 0%, #1e4060 55%, #2e6da4 100%);
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .page-hero__bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(17,30,46,0.55), rgba(17,30,46,0.45)),
+        url('https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=1400&q=60') center/cover no-repeat;
+    }
+    .page-hero h1 {
+      position: relative; z-index: 1;
+      font-size: 32px; font-weight: 800; color: #fff;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      padding: 12px 32px; font-size: 13px; color: var(--muted);
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    }
+    .breadcrumb a { color: var(--muted); }
+    .breadcrumb a:hover { color: var(--blue); }
+    .breadcrumb span { color: #bbb; }
+
+    /* ── MAIN LAYOUT ── */
+    .products-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 28px;
+      padding: 0 32px 56px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      align-items: start;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      position: sticky;
+      top: 88px;
+    }
+    .sidebar__title {
+      font-size: 15px; font-weight: 800; color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    /* Category tree */
+    .cat-item { margin-bottom: 4px; }
+    /* Category row: label navigates/filters, chevron expands */
+    .cat-row {
+      display: flex;
+      align-items: stretch; /* stretch so both children fill the same height */
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 2px;
+    }
+    .cat-row:hover .cat-label,
+    .cat-row:hover .cat-chevron { background: #f0f0f0; }
+
+    .cat-label {
+      flex: 1; background: none; border: none;
+      font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700;
+      color: var(--text); padding: 8px 4px 8px 10px;
+      cursor: pointer; text-align: left; transition: background 0.15s;
+      border-radius: 6px 0 0 6px;
+      /* let the row height be set by label content */
+    }
+    .cat-label.active { color: var(--blue); background: #e4edf6; }
+    .cat-label.active + .cat-chevron { background: #e4edf6; color: var(--blue); }
+
+    .cat-chevron {
+      background: none; border: none; padding: 0 10px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; border-radius: 0 6px 6px 0;
+      flex-shrink: 0;
+      /* No fixed height — stretches to match label via align-items:stretch */
+    }
+    .cat-chevron svg {
+      width: 14px; height: 14px; stroke: currentColor; fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+      transition: transform 0.2s;
+    }
+    /* Chevron rotates when open */
+    .cat-chevron.open svg { transform: rotate(180deg); }
+
+    .subcat-list { display: none; flex-direction: column; margin-top: 2px; padding-left: 12px; }
+    /* New 3-level sidebar styles */
+    .sub-list  { display: none; flex-direction: column; padding: 4px 0 4px 0; gap: 4px; }
+    .sub-list.open  { display: flex; }
+    .sub-item  { display: flex; flex-direction: column; width: 100%; }
+    .sub-row   { display: flex; align-items: stretch; border-radius: 6px; width: 100%; }
+    .sub-label {
+      flex: 1; background: none; border: none; text-align: left;
+      padding: 8px 6px 8px 24px; font-size: 13px; font-weight: 500;
+      color: var(--muted); cursor: pointer; border-radius: 6px 0 0 6px;
+      transition: background 0.15s;
+    }
+    .sub-row:hover .sub-label,
+    .sub-row:hover .cat-chevron { background: #f0f0f0; }
+    .sub-row:hover .sub-label   { color: var(--blue); }
+    .sub-row:hover .cat-chevron svg { stroke: var(--blue); }
+    .sub-label.active           { background: #e4edf6; color: var(--blue); }
+    .sub-label.active + .cat-chevron { background: #e4edf6; }
+    .sub-label.active + .cat-chevron svg { stroke: var(--blue); }
+    .type-list { display: none; flex-direction: column; padding: 4px 0 4px 0; gap: 2px; }
+    .type-list.open { display: flex; }
+    .type-label {
+      background: none; border: none; text-align: left;
+      padding: 6px 8px 6px 38px; font-size: 12px; font-weight: 500;
+      color: #888; cursor: pointer; border-radius: 6px;
+      transition: background 0.15s; width: 100%;
+    }
+    .type-label:hover { background: #f0f0f0; color: var(--blue); }
+    .type-label.active { background: #e4edf6; color: var(--blue); }
+    .subcat-list.open { display: flex; }
+    .subcat-btn {
+      display: block; width: 100%; background: none; border: none;
+      font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 500;
+      color: var(--muted); padding: 7px 10px; border-radius: 6px;
+      cursor: pointer; text-align: left; transition: background 0.15s, color 0.15s;
+    }
+    .subcat-btn:hover { background: #f0f0f0; color: var(--text); }
+    .subcat-btn.active { background: #e4edf6; color: var(--blue); font-weight: 700; }
+
+    /* All Products button */
+    .all-products-btn {
+      display: block; width: 100%; background: none; border: none;
+      font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700;
+      color: var(--text); padding: 8px 10px; border-radius: 6px;
+      cursor: pointer; text-align: left; transition: background 0.15s;
+      margin-bottom: 8px;
+    }
+    .all-products-btn:hover { background: #f0f0f0; }
+    .all-products-btn.active { color: var(--blue); background: #e4edf6; }
+
+    /* ── PRODUCTS MAIN AREA ── */
+    .products-main { min-width: 0; padding-top: 20px; }
+
+    .products-main__header {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;
+    }
+    .products-main__title {
+      font-size: 26px; font-weight: 800; color: var(--text);
+    }
+    .products-count {
+      font-size: 13px; color: var(--muted); font-weight: 500;
+    }
+
+    /* Search bar */
+    .products-search {
+      display: flex; align-items: center; gap: 10px;
+      border: 1.5px solid var(--border); border-radius: 50px;
+      padding: 11px 20px; background: var(--white);
+      margin-bottom: 24px; transition: border-color 0.15s;
+    }
+    .products-search:focus-within { border-color: var(--blue); }
+    .products-search svg { flex-shrink: 0; color: #999; }
+    .products-search input {
+      border: none; outline: none; flex: 1;
+      font-family: 'Montserrat', sans-serif; font-size: 14px;
+      color: var(--text); background: transparent;
+    }
+    .products-search input::placeholder { color: #aaa; }
+
+    /* Product grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .product-card {
+      background: var(--white); border-radius: var(--radius);
+      box-shadow: var(--card-shadow); overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;
+      border: 1.5px solid transparent;
+    }
+    .product-card:hover { transform: translateY(-3px); box-shadow: var(--card-shadow-hover); border-color: var(--border); }
+
+    .product-card__img {
+      width: 100%; aspect-ratio: 1 / 1;
+      background: #fff; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .product-card__img img { width: 100%; height: 100%; object-fit: contain; }
+    .product-card__img .no-img {
+      font-size: 12px; color: #bbb; font-weight: 500;
+    }
+    .product-card__body { padding: 14px 16px 18px; }
+    .product-card__name { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 5px; line-height: 1.3; }
+    .product-card__sku { font-size: 12px; color: var(--muted); }
+
+    /* Empty state */
+    .empty-state {
+      grid-column: 1 / -1; text-align: center;
+      padding: 60px 20px; color: var(--muted);
+    }
+    .empty-state svg { margin: 0 auto 16px; opacity: 0.3; }
+    .empty-state p { font-size: 15px; font-weight: 600; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--navy); color: rgba(255,255,255,0.65); padding: 48px 32px 36px; margin-top: auto; }
+    .footer__inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: auto auto auto 1fr; gap: 40px; align-items: start; }
+    .footer__col { display: flex; flex-direction: column; gap: 9px; }
+    .footer__col-title { font-weight: 700; font-size: 13px; color: rgba(255,255,255,0.9); margin-bottom: 2px; }
+    .footer__col a, .footer__col span { font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.6); cursor: pointer; display: block; }
+    .footer__col a:hover { color: rgba(255,255,255,0.9); }
+    .footer__copyright { text-align: right; display: flex; flex-direction: column; gap: 4px; justify-self: end; }
+    .footer__copyright span { font-size: 12px; color: rgba(255,255,255,0.55); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .products-layout { grid-template-columns: 1fr; padding: 0 16px 40px; }
+      .sidebar { position: static; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer__inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .footer__copyright { grid-column: 1/-1; text-align: left; justify-self: start; }
+    }
+    @media (max-width: 480px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .breadcrumb { padding: 12px 16px; }
+    }
+
+    /* Hover-based dropdown */
+    .nav-dropdown:hover > a { background: #f0f0f0; }
+    .nav-dropdown:hover > a .chevron { transform: rotate(180deg); }
+    .nav-dropdown:hover .dropdown-menu { display: flex; }
+    .nav-dropdown.type-open .dropdown-menu { display: flex; }
+    .nav-dropdown.type-open .dd-sub-list.open { display: flex; }
+    /* Bridge to prevent mouseout gap between trigger and panel */
+    .nav-dropdown::after {
+      content: ''; position: absolute;
+      top: 100%; left: 0; right: 0;
+      height: 14px; background: transparent;
+    }
+    .dropdown-menu { top: calc(100% + 14px); }
+
+    
+    
+    
+    /* ── Nested Products dropdown ── */
+    .dd-cat-row {
+      display: flex;
+      align-items: stretch;
+      border-radius: 6px;
+      position: relative;
+    }
+    .dd-cat-row:hover .dd-cat-link,
+    .dd-cat-row:hover .dd-cat-chevron { background: #f0f0f0; }
+
+    .dd-cat-link {
+      flex: 1;
+      padding: 10px 6px 10px 14px;
+      font-size: 14px; font-weight: 600;
+      color: var(--text); display: flex; align-items: center;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      transition: background 0.15s;
+      border-radius: 6px 0 0 6px;
+      max-width: 180px;
+    }
+    .dd-cat-link:hover { background: #f0f0f0; color: var(--blue); }
+
+    .dd-cat-chevron {
+      background: none; border: none;
+      padding: 0 12px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 0 6px 6px 0;
+      transition: background 0.15s; flex-shrink: 0;
+      align-self: stretch;
+    }
+    .dd-cat-chevron:hover { background: #f0f0f0; }
+    .dd-cat-chevron svg {
+      width: 12px; height: 12px; stroke: var(--text); fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+      transition: transform 0.2s;
+    }
+    .dd-cat-chevron.open svg { transform: rotate(180deg); }
+    /* Active state — row is open */
+    .dd-cat-chevron.open { background: #e4edf6; }
+    .dd-cat-chevron.open + * { /* sibling trick doesn't work here — use JS class on row */ }
+    .dd-cat-row.open .dd-cat-link { background: #e4edf6; color: var(--blue); }
+    .dd-cat-row.open .dd-cat-chevron { background: #e4edf6; }
+    .dd-cat-row.open .dd-cat-chevron svg { stroke: var(--blue); }
+
+    /* Sub-list flies out to the RIGHT of the main dropdown panel.
+       position:absolute relative to the .dropdown-menu container.
+       top is set per-row by JS so it aligns with the clicked row. */
+    .dd-sub-list {
+      display: none;
+      position: absolute;
+      left: calc(100% + 2px);
+      top: 0; /* overridden by JS */
+      min-width: 200px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+      padding: 6px;
+      z-index: 10000;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .dd-sub-list.open { display: flex; }
+
+    .dd-sub-link {
+      display: flex; align-items: center; flex: 1;
+      padding: 10px 14px;
+      font-size: 13px; font-weight: 500;
+      color: var(--muted); border-radius: 6px 0 0 6px;
+      white-space: normal; word-break: break-word;
+      transition: background 0.15s, color 0.15s;
+    }
+    .dd-cat-row:hover .dd-sub-link { background: #f0f0f0; color: var(--blue); }
+    .dd-type-list .dd-sub-link:hover { background: #f0f0f0; color: var(--blue); }
+    .dd-cat-row:hover .dd-sub-link ~ .dd-cat-chevron { background: #f0f0f0; }
+    .dd-cat-row:hover .dd-sub-link ~ .dd-cat-chevron svg { stroke: var(--blue); }
+    .dd-sub-link.active { background: #e4edf6; color: var(--blue); }
+    .dd-sub-link.active + .dd-cat-chevron { background: #e4edf6; }
+    .dd-sub-link.active + .dd-cat-chevron svg { stroke: var(--blue); }
+        .dd-cat-link.active { background: #e4edf6; color: var(--blue); }
+    .dd-cat-link.active + .dd-cat-chevron { background: #e4edf6; }
+    .dd-cat-link.active + .dd-cat-chevron svg { stroke: var(--blue); }
+
+
+    
+    
+    
+    
+    
+    
+
+    /* ── Mobile menu ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0,0,0,0.45);
+      flex-direction: row;
+      align-items: stretch;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu__backdrop {
+      flex: 0 0 18%;
+      min-width: 48px;
+      cursor: pointer;
+    }
+    .mobile-menu__panel {
+      flex: 1;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      overflow-y: auto;
+      max-width: 82vw;
+    }
+    .mobile-menu__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .mobile-menu__header img { height: 48px; }
+    .mobile-menu__close {
+      background: none; border: none;
+      color: var(--navy); display: flex; align-items: center;
+    }
+    .mobile-menu__panel nav {
+      display: flex; flex-direction: column; width: 100%;
+    }
+    .mobile-menu__panel nav a,
+    .mobile-menu__panel nav .mobile-nav-toggle {
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 600; font-size: 18px; padding: 16px 0;
+      border-bottom: 1px solid var(--border); color: var(--text);
+      background: none; border-left: none; border-right: none; border-top: none;
+      width: 100%; text-align: left; cursor: pointer; text-decoration: none;
+    }
+    .mobile-nav-row {
+      display: flex; align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-nav-link {
+      flex: 1; font-weight: 600; font-size: 18px;
+      padding: 16px 0; color: var(--text);
+      display: block; text-decoration: none;
+    }
+    .mobile-nav-chevron {
+      background: none; border: none; padding: 16px 8px;
+      cursor: pointer; display: flex; align-items: center; color: var(--navy);
+    }
+    .mobile-nav-chevron .chevron, .mobile-nav-toggle .chevron {
+      width: 16px; height: 16px; stroke: var(--navy); fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+      transition: transform 0.2s;
+    }
+    .mobile-nav-chevron.open .chevron,
+    .mobile-nav-toggle.open .chevron { transform: rotate(180deg); }
+    .mobile-submenu {
+      display: none; flex-direction: column;
+      padding: 4px 0 4px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-submenu.open { display: flex; }
+    .mobile-submenu a {
+      font-size: 13px; font-weight: 500; color: var(--muted);
+      padding: 10px 0; border-bottom: 1px solid #f0f0f0;
+      text-decoration: none; display: block;
+    }
+    .mobile-submenu a:last-child { border-bottom: none; }
+/* ── Type panel (3rd level flyout) ── */
+    .dd-type-list {
+      display: none;
+      position: fixed;
+      min-width: 200px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+      padding: 6px;
+      z-index: 10002;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .dd-type-list.open { display: flex; }
+    .dd-type-list::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      left: -8px; width: 8px;
+    }
+
+    .dd-cat-row.sub-active .dd-sub-link { background: #e4edf6; color: var(--blue); }
+    .dd-cat-row.sub-active .dd-cat-chevron { background: #e4edf6; }
+    .dd-cat-row.sub-active .dd-cat-chevron svg { stroke: var(--blue); }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <header class="navbar">
+    <a href="index.html" class="navbar__logo">
+      <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" />
+    </a>
+
+    <div class="navbar__center">
+      <!-- Desktop -->
+      <nav class="navbar__desktop">
+        <div class="nav-group">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <div class="nav-dropdown" id="dd-products-desktop">
+            <a href="products.html" class="active">Products
+              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </a>
+            <div class="dropdown-menu" id="nav-dd-desktop-products"></div>
+          </div>
+          <div class="nav-dropdown" id="dd-resources-desktop">
+            <a href="resources.html">Resources
+              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </a>
+            <div class="dropdown-menu">
+              <a href="video-archive.html">Video Archive</a>
+              <a href="pdf-catalogs.html">PDF Catalogs</a>
+              <a href="education-materials.html">Education Materials</a>
+              <a href="product-ifus.html">Product IFUs</a>
+            </div>
+          </div>
+          <a href="contact.html">Contact Us</a>
+        </div>
+      </nav>
+
+      <!-- Tablet -->
+      <nav class="navbar__tablet">
+        <div class="nav-group">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <div class="nav-dropdown" id="dd-products-tablet">
+            <a href="products.html" class="active">Products
+              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </a>
+            <div class="dropdown-menu" id="nav-dd-tablet-products"></div>
+          </div>
+          <div class="nav-dropdown" id="dd-resources-tablet">
+            <a href="resources.html">Resources
+              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </a>
+            <div class="dropdown-menu">
+              <a href="video-archive.html">Video Archive</a>
+              <a href="pdf-catalogs.html">PDF Catalogs</a>
+              <a href="education-materials.html">Education Materials</a>
+              <a href="product-ifus.html">Product IFUs</a>
+            </div>
+          </div>
+          <a href="contact.html">Contact Us</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="navbar__right">
+      <button class="btn-quote">Get A Quote
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      </button>
+      <div class="navbar__mobile">
+        <button class="cart-btn" aria-label="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        </button>
+        <button class="hamburger" aria-label="Open menu" onclick="openMenu()">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__backdrop" onclick="closeMenu()"></div>
+    <div class="mobile-menu__panel">
+      <div class="mobile-menu__header">
+        <a href="index.html"><img src="peak-logo.png" alt="PEAK" /></a>
+        <button class="mobile-menu__close" onclick="closeMenu()">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <div class="mobile-nav-row">
+          <a href="products.html" class="mobile-nav-link">Products</a>
+          <button class="mobile-nav-chevron" id="mob-toggle-products" onclick="toggleMobileSubmenu('mob-products','mob-toggle-products')">
+            <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="mobile-submenu" id="mob-products"></div>
+        <div class="mobile-nav-row">
+          <a href="resources.html" class="mobile-nav-link">Resources</a>
+          <button class="mobile-nav-chevron" id="mob-toggle-resources" onclick="toggleMobileSubmenu('mob-resources','mob-toggle-resources')">
+            <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="mobile-submenu" id="mob-resources">
+          <a href="video-archive.html">Video Archive</a>
+          <a href="pdf-catalogs.html">PDF Catalogs</a>
+          <a href="education-materials.html">Education Materials</a>
+          <a href="product-ifus.html">Product IFUs</a>
+        </div>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ── HERO ── -->
+  <div class="page-hero">
+    <div class="page-hero__bg"></div>
+    <h1>Products</h1>
+  </div>
+
+  <!-- ── BREADCRUMB ── -->
+  <div class="breadcrumb" id="breadcrumb">
+    <a href="index.html">Home</a><span>›</span>
+    <a href="products.html">Products</a>
+    <span id="bc-cat-sep" style="display:none">›</span>
+    <a href="#" id="bc-cat" style="color:var(--muted);display:none;"></a>
+    <span id="bc-sub-sep" style="display:none">›</span>
+    <a href="#" id="bc-sub" style="color:var(--muted);display:none;"></a>
+    <span id="bc-type-sep" style="display:none">›</span>
+    <span id="bc-type" style="display:none;"></span>
+    <span id="bc-all" style="">All Products</span>
+  </div>
+
+  <!-- ── MAIN LAYOUT ── -->
+  <div class="products-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar__title">Product Categories</div>
+      <button class="all-products-btn active" id="btn-all" onclick="filterAll()">All Products</button>
+      <div id="category-tree"></div>
+    </aside>
+
+    <!-- PRODUCTS AREA -->
+    <main class="products-main">
+      <div class="products-main__header">
+        <h2 class="products-main__title" id="section-title">All Products</h2>
+        <span class="products-count" id="product-count"></span>
+      </div>
+
+      <div class="products-search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" placeholder="Search Products by Name, Description, or SKU" oninput="applyFilters()" />
+      </div>
+
+      <div class="product-grid" id="product-grid"></div>
+    </main>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer__inner">
+
+      <!-- Col 1: Primary nav links -->
+      <div class="footer__col">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+
+      <!-- Col 2: Products categories — populated dynamically from products.json -->
+      <div class="footer__col">
+        <a href="products.html" style="color:rgba(255,255,255,0.9);font-weight:700;font-size:13px;display:block;margin-bottom:2px;text-decoration:none;">Products</a>
+        <div id="footer-products-col" style="display:contents;"></div>
+      </div>
+
+      <!-- Col 3: Resources -->
+      <div class="footer__col">
+        <a href="resources.html" style="color:rgba(255,255,255,0.9);font-weight:700;font-size:13px;display:block;margin-bottom:2px;text-decoration:none;">Resources</a>
+        <a href="video-archive.html">Video Archive</a>
+        <a href="pdf-catalogs.html">PDF Catalogs</a>
+        <a href="education-materials.html">Education Materials</a>
+        <a href="product-ifus.html">Product IFUs</a>
+      </div>
+
+      <!-- Copyright -->
+      <div class="footer__copyright">
+        <span>© Copyright 2026 PEAK Medical Distribution INC.<br>Glen Ellyn, IL</span>
+        <span>Phone: 630 - 520 - 5023 &nbsp; Fax: 866 - 557 - 8437</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    // ── State ──────────────────────────────────────────────────
+    let allProducts = [];
+    let activeCategory = null;
+    let activeSubcategory = null;
+    let activeType = null;
+
+    // ── Load products.json ─────────────────────────────────────
+    async function loadProducts() {
+      try {
+        const res = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const text = await res.text();
+        try {
+          allProducts = JSON.parse(text);
+        } catch(parseErr) {
+          throw new Error('JSON parse error: ' + parseErr.message);
+        }
+        buildCategoryTree();
+        populateNavDropdowns();
+        applyURLParams();
+        applyActiveStatesToTree();
+        applyFilters();
+      } catch (e) {
+        console.error('loadProducts error:', e);
+        document.getElementById('product-grid').innerHTML =
+          `<div class="empty-state"><p>Could not load products.json: ${e.message}</p><p style="font-size:12px;color:#aaa;margin-top:8px;">Check the browser console (F12) for details.</p></div>`;
+      }
+    }
+
+    // ── Populate nav dropdowns from live product data ───────────
+    function populateNavDropdowns() {
+      const tree = {};
+      allProducts.forEach(p => {
+        if (!tree[p.category]) tree[p.category] = {};
+        if (p.subcategory) {
+          if (!tree[p.category][p.subcategory]) tree[p.category][p.subcategory] = new Set();
+          if (p.type) tree[p.category][p.subcategory].add(p.type);
+        }
+      });
+
+      function buildDropdownHTML(tree) {
+        // Remove any stale type panels from previous builds
+        document.querySelectorAll('.dd-type-list').forEach(el => el.remove());
+
+        // Build HTML string only — no DOM manipulation here
+        return Object.entries(tree).map(([cat, subs]) => {
+          const catURL  = `products.html?cat=${encodeURIComponent(cat)}`;
+          const catId   = 'navdd-' + cat.replace(/\s+/g, '_');
+          const hasSubs = Object.keys(subs).length > 0;
+
+          let h = `<div class="dd-cat-row">
+            <a class="dd-cat-link" href="${catURL}">${cat}</a>
+            ${hasSubs ? `<button class="dd-cat-chevron" onclick="toggleNavSub(event,'${catId}')">
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>` : ''}
+          </div>`;
+
+          if (hasSubs) {
+            h += `<div class="dd-sub-list" id="${catId}">`;
+            Object.keys(subs).forEach(sub => {
+              const types    = subs[sub];
+              const subURL   = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
+              const subId    = 'navtype-' + cat.replace(/\s+/g,'_') + '__' + sub.replace(/\s+/g,'_');
+              const hasTypes = types.size > 0;
+              h += `<div class="dd-cat-row">
+                <a class="dd-sub-link" href="${subURL}">${sub}</a>
+                ${hasTypes ? `<button class="dd-cat-chevron dd-type-chevron" data-typeid="${subId}" onclick="toggleNavType(event,'${subId}')">
+                  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>` : ''}
+              </div>`;
+            });
+            h += `</div>`;
+          }
+          return h;
+        }).join('');
+      }
+
+      function buildTypePanels(tree) {
+        // Called AFTER innerHTML is set — creates body-level type panels
+        document.querySelectorAll('.dd-type-list').forEach(el => el.remove());
+        Object.entries(tree).forEach(([cat, subs]) => {
+          Object.keys(subs).forEach(sub => {
+            const types = subs[sub];
+            if (!types.size) return;
+            const subId = 'navtype-' + cat.replace(/\s+/g,'_') + '__' + sub.replace(/\s+/g,'_');
+            const panel = document.createElement('div');
+            panel.className = 'dd-type-list';
+            panel.id = subId;
+            [...types].forEach(type => {
+              const a = document.createElement('a');
+              a.className = 'dd-sub-link';
+              a.href = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}`;
+              a.textContent = type;
+              panel.appendChild(a);
+            });
+            document.body.appendChild(panel);
+          });
+        });
+      }
+
+      function buildMobileHTML(tree) {
+        return Object.entries(tree).map(([cat, subs]) => {
+          const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
+          let h = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
+          Object.keys(subs).forEach(sub => {
+            const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
+            h += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
+          });
+          return h;
+        }).join('');
+      }
+
+      const ddHTML  = buildDropdownHTML(tree);
+      const mobHTML = buildMobileHTML(tree);
+      const desktopDD = document.getElementById('nav-dd-desktop-products');
+      const tabletDD  = document.getElementById('nav-dd-tablet-products');
+      const mobileDD  = document.getElementById('mob-products');
+      if (desktopDD) desktopDD.innerHTML = ddHTML;
+      if (tabletDD)  tabletDD.innerHTML  = ddHTML;
+      if (mobileDD)  mobileDD.innerHTML  = mobHTML;
+      buildTypePanels(tree);
+
+      // Now that dropdown DOM exists, apply active states from URL
+      highlightNavDropdown();
+    }
+
+    // ── Highlight active category/subcategory in nav dropdown ──
+    function highlightNavDropdown() {
+      const params = new URLSearchParams(window.location.search);
+      const cat  = params.get('cat');
+      const sub  = params.get('sub');
+      const type = params.get('type');
+      if (!cat) return;
+
+      // Only mark active states on links — never force-open sub-lists or type panels.
+      // The dropdown should always open fresh on hover; active state = blue text only.
+      document.querySelectorAll('.dd-cat-link').forEach(link => {
+        if (link.textContent.trim() !== cat) return;
+        link.classList.add('active');
+        const row = link.closest('.dd-cat-row');
+
+        if (!sub || !row) return;
+
+        // Open the category row (chevron rotates) but NOT the sub-list
+        row.classList.add('open');
+        const chevron = row.querySelector('.dd-cat-chevron');
+        if (chevron) chevron.classList.add('open');
+
+        // Find the sub-list and mark the matching sub-link blue — but keep sub-list closed
+        const subList = row.nextElementSibling;
+        if (!subList || !subList.classList.contains('dd-sub-list')) return;
+
+        subList.querySelectorAll('.dd-cat-row').forEach(subRow => {
+          const subLink = subRow.querySelector('.dd-sub-link');
+          if (!subLink || subLink.textContent.trim() !== sub) return;
+          subLink.classList.add('active');
+
+          if (!type) return;
+          // Mark the type link active inside its panel (panel stays closed until hovered)
+          const typeChev = subRow.querySelector('.dd-type-chevron');
+          if (!typeChev) return;
+          const onclickVal = typeChev.getAttribute('onclick') || '';
+          const match      = onclickVal.match(/'(navtype-[^']+)'/);
+          const typeId     = match ? match[1] : null;
+          const typePanel  = typeId ? document.getElementById(typeId) : null;
+          if (!typePanel) return;
+          typePanel.querySelectorAll('.dd-sub-link').forEach(typeLink => {
+            if (typeLink.textContent.trim() === type) typeLink.classList.add('active');
+          });
+        });
+      });
+    }
+
+    // ── Apply ?cat=, ?sub=, and ?search= URL params ──────────
+    function applyURLParams() {
+      const params = new URLSearchParams(window.location.search);
+      const cat    = params.get('cat');
+      const sub    = params.get('sub');
+      const type   = params.get('type');
+      const search = params.get('search');
+
+      // Pre-fill search box if ?search= present
+      if (search) {
+        const input = document.getElementById('search-input');
+        if (input) input.value = search;
+      }
+
+      if (!cat) return;
+
+      activeCategory    = cat;
+      activeSubcategory = sub  || null;
+      activeType        = type || null;
+
+      document.getElementById('btn-all').classList.remove('active');
+
+      // Highlight category in sidebar
+      document.querySelectorAll('.cat-label').forEach(btn => {
+        if (btn.textContent.trim() === cat) btn.classList.add('active');
+      });
+
+      // The sidebar is built by buildCategoryTree() using dynamic DOM elements.
+      // Active states on sub-list/type-list items are applied after the tree is built
+      // via applyActiveStatesToTree() which is called from buildCategoryTree().
+    }
+
+    function applyActiveStatesToTree() {
+      if (!activeCategory) return;
+
+      // Find and open/activate the matching category row
+      document.querySelectorAll('.cat-item').forEach(item => {
+        const label = item.querySelector('.cat-label');
+        if (!label || label.textContent.trim() !== activeCategory) return;
+
+        label.classList.add('active');
+        const chevron = item.querySelector('.cat-chevron');
+        const subList = item.querySelector('.sub-list');
+        if (subList) { subList.classList.add('open'); }
+        if (chevron) { chevron.classList.add('open'); }
+
+        if (!activeSubcategory) return;
+
+        // Find matching sub-label
+        subList && subList.querySelectorAll('.sub-label').forEach(subBtn => {
+          if (subBtn.textContent.trim() !== activeSubcategory) return;
+
+          subBtn.classList.add('active');
+          const subItem  = subBtn.closest('.sub-item');
+          const typeList = subItem ? subItem.querySelector('.type-list') : null;
+          const typeChev = subItem ? subItem.querySelector('.cat-chevron') : null;
+
+          if (!activeType) return;
+
+          if (typeList) { typeList.classList.add('open'); }
+          if (typeChev) { typeChev.classList.add('open'); }
+
+          typeList && typeList.querySelectorAll('.type-label').forEach(typeBtn => {
+            if (typeBtn.textContent.trim() === activeType) {
+              typeBtn.classList.add('active');
+            }
+          });
+        });
+      });
+    }
+
+    // ── Build sidebar category tree from data ──────────────────
+    function buildCategoryTree() {
+      // Build tree: cat → sub → Set(types)
+      const tree = {};
+      allProducts.forEach(p => {
+        if (!p.category) return;
+        if (!tree[p.category]) tree[p.category] = {};
+        if (p.subcategory) {
+          if (!tree[p.category][p.subcategory]) tree[p.category][p.subcategory] = new Set();
+          if (p.type) tree[p.category][p.subcategory].add(p.type);
+        }
+      });
+
+      const container = document.getElementById('category-tree');
+      container.innerHTML = '';
+
+      Object.entries(tree).forEach(([cat, subs]) => {
+        const item = document.createElement('div');
+        item.className = 'cat-item';
+
+        // Category row
+        const row = document.createElement('div');
+        row.className = 'cat-row';
+        const catBtn = document.createElement('button');
+        catBtn.className = 'cat-label';
+        catBtn.textContent = cat;
+        catBtn.onclick = () => { activeCategory = cat; activeSubcategory = null; activeType = null; applyFilters(); updateSidebarActive(); };
+        row.appendChild(catBtn);
+
+        const hasSubs = Object.keys(subs).length > 0;
+        if (hasSubs) {
+          const chevBtn = document.createElement('button');
+          chevBtn.className = 'cat-chevron';
+          chevBtn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+          chevBtn.onclick = () => {
+            const sl = item.querySelector('.sub-list');
+            const open = sl.classList.toggle('open');
+            chevBtn.classList.toggle('open', open);
+          };
+          row.appendChild(chevBtn);
+        }
+        item.appendChild(row);
+
+        if (hasSubs) {
+          const subList = document.createElement('div');
+          subList.className = 'sub-list';
+          Object.entries(subs).forEach(([sub, types]) => {
+            const subItem = document.createElement('div');
+            subItem.className = 'sub-item';
+
+            const subRow = document.createElement('div');
+            subRow.className = 'sub-row';
+            const subBtn = document.createElement('button');
+            subBtn.className = 'sub-label';
+            subBtn.textContent = sub;
+            subBtn.onclick = () => { activeCategory = cat; activeSubcategory = sub; activeType = null; applyFilters(); updateSidebarActive(); };
+            subRow.appendChild(subBtn);
+
+            const hasTypes = types.size > 0;
+            if (hasTypes) {
+              const typeChev = document.createElement('button');
+              typeChev.className = 'cat-chevron';
+              typeChev.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
+              typeChev.onclick = () => {
+                const tl = subItem.querySelector('.type-list');
+                const open = tl.classList.toggle('open');
+                typeChev.classList.toggle('open', open);
+              };
+              subRow.appendChild(typeChev);
+            }
+            subItem.appendChild(subRow);
+
+            if (hasTypes) {
+              const typeList = document.createElement('div');
+              typeList.className = 'type-list';
+              types.forEach(type => {
+                const typeBtn = document.createElement('button');
+                typeBtn.className = 'type-label';
+                typeBtn.textContent = type;
+                typeBtn.onclick = () => { activeCategory = cat; activeSubcategory = sub; activeType = type; applyFilters(); updateSidebarActive(); };
+                typeList.appendChild(typeBtn);
+              });
+              subItem.appendChild(typeList);
+            }
+
+            subList.appendChild(subItem);
+          });
+          item.appendChild(subList);
+        }
+
+        container.appendChild(item);
+      });
+    }
+
+
+    function handleCategoryClick(cat, chevronEl) {
+      const subList = document.getElementById('subcat-' + cat.replace(/\s+/g,'_'));
+      clearAllActive();
+      activeCategory = cat;
+      activeSubcategory = null;
+      // Mark label active
+      document.querySelectorAll('.cat-label').forEach(b => {
+        if (b.dataset.category === cat) b.classList.add('active');
+      });
+      // Expand subs
+      if (subList) { subList.classList.add('open'); chevronEl.classList.add('open'); }
+      applyFilters();
+    }
+
+    // Click chevron → toggle expand only, never changes the active filter
+    function toggleCatExpand(cat, chevronEl) {
+      const subList = document.getElementById('subcat-' + cat.replace(/\s+/g,'_'));
+      if (!subList) return;
+      const isOpen = subList.classList.contains('open');
+      // Toggle the list and chevron regardless of active state
+      subList.classList.toggle('open', !isOpen);
+      chevronEl.classList.toggle('open', !isOpen);
+      // Also sync the has-active-sub class so CSS doesn't force it back open
+      const catItem = subList.closest('.cat-item');
+      if (catItem) catItem.classList.toggle('has-active-sub', !isOpen);
+    }
+
+    function handleSubcategoryClick(cat, sub, btnEl) {
+      clearAllActive();
+      activeCategory = cat;
+      activeSubcategory = sub;
+
+      // Keep parent subcat list open and chevron pointing up
+      const subList = document.getElementById('subcat-' + cat.replace(/\s+/g,'_'));
+      const catItem = subList ? subList.closest('.cat-item') : null;
+      const chevron = catItem ? catItem.querySelector('.cat-chevron') : null;
+
+      if (subList) subList.classList.add('open');
+      if (chevron) chevron.classList.add('open');
+      if (catItem) catItem.classList.add('has-active-sub');
+
+      // Mark parent label active too
+      document.querySelectorAll('.cat-label').forEach(b => {
+        if (b.dataset.category === cat) b.classList.add('active');
+      });
+
+      btnEl.classList.add('active');
+      applyFilters();
+    }
+
+    function filterAll() {
+      clearAllActive();
+      activeCategory = null;
+      activeSubcategory = null;
+      activeType = null;
+      document.getElementById('btn-all').classList.add('active');
+      applyFilters();
+      updateSidebarActive();
+    }
+
+    function clearAllActive() {
+      document.querySelectorAll('.cat-label').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.cat-chevron').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.subcat-list').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.subcat-btn').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.cat-item').forEach(el => el.classList.remove('has-active-sub'));
+      document.getElementById('btn-all').classList.remove('active');
+    }
+
+    function updateSidebarActive() {
+      // Clear all sidebar active states
+      document.querySelectorAll('.cat-label').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.sub-label').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.type-label').forEach(el => el.classList.remove('active'));
+      document.getElementById('btn-all').classList.remove('active');
+
+      // Clear and refresh nav dropdown active states
+      document.querySelectorAll('.dd-cat-link').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.dd-sub-link').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open', 'sub-active'));
+      document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
+      document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
+
+      // Update URL to reflect current filter state
+      const params = new URLSearchParams();
+      if (activeCategory)    params.set('cat',  activeCategory);
+      if (activeSubcategory) params.set('sub',  activeSubcategory);
+      if (activeType)        params.set('type', activeType);
+      const newURL = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+      window.history.pushState({}, '', newURL);
+
+      // Re-highlight nav based on new URL
+      highlightNavDropdown();
+
+      if (!activeCategory) {
+        document.getElementById('btn-all').classList.add('active');
+        return;
+      }
+
+      // Walk the live DOM to find and activate the right sidebar elements
+      document.querySelectorAll('.cat-item').forEach(item => {
+        const catLabel = item.querySelector('.cat-label');
+        if (!catLabel || catLabel.textContent.trim() !== activeCategory) return;
+        catLabel.classList.add('active');
+
+        if (!activeSubcategory) return;
+        const subList = item.querySelector('.sub-list');
+        if (!subList) return;
+        subList.classList.add('open');
+        const catChev = item.querySelector('.cat-row .cat-chevron');
+        if (catChev) catChev.classList.add('open');
+
+        subList.querySelectorAll('.sub-label').forEach(subLabel => {
+          if (subLabel.textContent.trim() !== activeSubcategory) return;
+          subLabel.classList.add('active');
+
+          if (!activeType) return;
+          const subItem  = subLabel.closest('.sub-item');
+          const typeList = subItem ? subItem.querySelector('.type-list') : null;
+          const typeChev = subItem ? subItem.querySelector('.cat-chevron') : null;
+          if (typeList) typeList.classList.add('open');
+          if (typeChev) typeChev.classList.add('open');
+          typeList && typeList.querySelectorAll('.type-label').forEach(typeLabel => {
+            if (typeLabel.textContent.trim() === activeType) typeLabel.classList.add('active');
+          });
+        });
+      });
+    }
+
+    // ── Filter + render ────────────────────────────────────────
+    function applyFilters() {
+      const query = document.getElementById('search-input').value.toLowerCase().trim();
+
+      let filtered = allProducts.filter(p => {
+        const matchCat    = !activeCategory    || p.category    === activeCategory;
+        const matchSub    = !activeSubcategory || p.subcategory === activeSubcategory;
+        const matchType   = !activeType        || p.type        === activeType;
+        const matchSearch = !query ||
+          p.title.toLowerCase().includes(query) ||
+          p.sku.toLowerCase().includes(query) ||
+          (p.categoryThree || '').toLowerCase().includes(query);
+        return matchCat && matchSub && matchType && matchSearch;
+      });
+
+      // Update heading
+      let title;
+      if (activeType && activeSubcategory) {
+        title = activeSubcategory + ' - ' + activeType;
+      } else {
+        title = activeSubcategory || activeCategory || 'All Products';
+      }
+      document.getElementById('section-title').textContent = title;
+
+      // Update breadcrumb trail
+      const bcCat    = document.getElementById('bc-cat');
+      const bcCatSep = document.getElementById('bc-cat-sep');
+      const bcSub    = document.getElementById('bc-sub');
+      const bcSubSep = document.getElementById('bc-sub-sep');
+      const bcAll    = document.getElementById('bc-all');
+
+      const bcType    = document.getElementById('bc-type');
+      const bcTypeSep = document.getElementById('bc-type-sep');
+
+      if (activeCategory && activeSubcategory && activeType) {
+        // Home > Products > Category > Subcategory > Type
+        bcAll.style.display    = 'none';
+        bcCat.textContent      = activeCategory;
+        bcCat.href             = `products.html?cat=${encodeURIComponent(activeCategory)}`;
+        bcCat.style.display    = 'inline';
+        bcCatSep.style.display = 'inline';
+        bcSub.textContent      = activeSubcategory;
+        bcSub.href             = `products.html?cat=${encodeURIComponent(activeCategory)}&sub=${encodeURIComponent(activeSubcategory)}`;
+        bcSub.style.display    = 'inline';
+        bcSubSep.style.display = 'inline';
+        bcType.textContent     = activeType;
+        bcType.style.display   = 'inline';
+        bcTypeSep.style.display= 'inline';
+      } else if (activeCategory && activeSubcategory) {
+        // Home > Products > Category > Subcategory
+        bcAll.style.display    = 'none';
+        bcCat.textContent      = activeCategory;
+        bcCat.href             = `products.html?cat=${encodeURIComponent(activeCategory)}`;
+        bcCat.style.display    = 'inline';
+        bcCatSep.style.display = 'inline';
+        bcSub.textContent      = activeSubcategory;
+        bcSub.href             = `products.html?cat=${encodeURIComponent(activeCategory)}&sub=${encodeURIComponent(activeSubcategory)}`;
+        bcSub.style.display    = 'inline';
+        bcSubSep.style.display = 'inline';
+        bcType.style.display   = 'none';
+        bcTypeSep.style.display= 'none';
+      } else if (activeCategory) {
+        // Home > Products > Category
+        bcAll.style.display    = 'none';
+        bcCat.textContent      = activeCategory;
+        bcCat.href             = `products.html?cat=${encodeURIComponent(activeCategory)}`;
+        bcCat.style.display    = 'inline';
+        bcCatSep.style.display = 'inline';
+        bcSub.style.display    = 'none';
+        bcSubSep.style.display = 'none';
+        bcType.style.display   = 'none';
+        bcTypeSep.style.display= 'none';
+      } else {
+        // Home > Products > All Products
+        bcAll.style.display    = 'inline';
+        bcCat.style.display    = 'none';
+        bcCatSep.style.display = 'none';
+        bcSub.style.display    = 'none';
+        bcSubSep.style.display = 'none';
+        bcType.style.display   = 'none';
+        bcTypeSep.style.display= 'none';
+      }
+      document.getElementById('product-count').textContent =
+        `Showing ${filtered.length} of ${allProducts.length} results`;
+
+      renderProducts(filtered);
+    }
+
+
+    // Helper: always load product images from Product_Pictures/ folder
+    function imgSrc(filename) {
+      if (!filename) return '';
+      if (filename.startsWith('Product_Pictures/') || filename.startsWith('http')) return filename;
+      return 'Product_Pictures/' + filename;
+    }
+    function renderProducts(products) {
+      const grid = document.getElementById('product-grid');
+      if (products.length === 0) {
+        grid.innerHTML = `<div class="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <p>No products found. Try a different search or category.</p>
+        </div>`;
+        return;
+      }
+
+      grid.innerHTML = products.map(p => `
+        <div class="product-card" onclick="goToProduct('${p.id}')">
+          <div class="product-card__img">
+            ${p.image
+              ? `<img src="${imgSrc(p.image)}" alt="${p.title}" />`
+              : `<span class="no-img">Image Coming Soon!</span>`}
+          </div>
+          <div class="product-card__body">
+            <div class="product-card__name">${p.title}</div>
+            <div class="product-card__sku">SKU: ${p.sku}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function goToProduct(id) {
+      window.location.href = `product-detail.html?id=${id}`;
+    }
+
+    // ── Navbar JS ──────────────────────────────────────────────
+    function openMenu()  { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow='hidden'; }
+    function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow=''; }
+    function toggleDropdown(e, id) {
+      // Allow href to navigate; dropdowns open on hover
+      const el = document.getElementById(id);
+      if (el) document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+    }
+    
+      // Also close type panels when dropdown area is left
+      document.querySelectorAll('.nav-dropdown').forEach(dd => {
+        dd.addEventListener('mouseleave', () => {
+          // Small delay so user can move to type panel
+          setTimeout(() => {
+            const typeHovered = document.querySelector('.dd-type-list:hover');
+            if (!typeHovered) {
+              document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
+              document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
+            }
+          }, 150);
+        });
+      });
+
+    document.addEventListener('click', e => {
+      const inDropdown  = e.target.closest('.nav-dropdown');
+      const inTypePanel = e.target.closest('.dd-type-list');
+
+      if (!inDropdown && !inTypePanel) {
+        // Clicked completely outside everything — close all
+        document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+        document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
+        document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
+      } else if (inDropdown && !e.target.closest('.dd-sub-list') && !e.target.closest('.dd-cat-chevron') && !e.target.closest('.dd-type-chevron')) {
+        // Clicked on a top-level category link — close sub and type panels
+        document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
+        document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
+      }
+      // inTypePanel or inside dd-sub-list/chevron: let the event pass through naturally
+    });
+
+    // Close type panel when mouse leaves the nav area — use mousemove to check
+    // if mouse is over neither the dropdown nor the type panel
+    document.addEventListener('mousemove', e => {
+      const openTypePanel = document.querySelector('.dd-type-list.open');
+      if (!openTypePanel) return;
+      const inDropdown  = e.target.closest('.nav-dropdown');
+      const inTypePanel = e.target.closest('.dd-type-list');
+      const inSubList   = e.target.closest('.dd-sub-list');
+      if (!inDropdown && !inTypePanel && !inSubList) {
+        openTypePanel.classList.remove('open');
+        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
+        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
+      }
+    });
+    function toggleMobileSubmenu(submenuId, toggleId) {
+      document.getElementById(submenuId).classList.toggle('open');
+      document.getElementById(toggleId).classList.toggle('open');
+    }
+
+    // ── Init ───────────────────────────────────────────────────
+    loadProducts();
+
+    /* ── Toggle nested nav submenu — positioned alongside the triggering row ── */
+        function toggleNavType(e, id) {
+      e.preventDefault();
+      e.stopPropagation();
+      const typePanel = document.getElementById(id);
+      const btn = e.currentTarget;
+      if (!typePanel) return;
+
+      const isOpen = typePanel.classList.contains('open');
+
+      // Close all type panels and remove lock from all nav-dropdowns
+      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
+      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('sub-active'));
+
+      if (!isOpen) {
+        const row = btn.closest('.dd-cat-row');
+        const subList = btn.closest('.dd-sub-list');
+        const navDropdown = btn.closest('.nav-dropdown');
+        const rowRect     = row ? row.getBoundingClientRect() : btn.getBoundingClientRect();
+        const subListRect = subList ? subList.getBoundingClientRect() : rowRect;
+
+        typePanel.style.top  = rowRect.top + 'px';
+        typePanel.style.left = (subListRect.right + 6) + 'px';
+        typePanel.classList.add('open');
+        btn.classList.add('open');
+        // Highlight the sub-category row the same way categories are highlighted when open
+        if (row) row.classList.add('sub-active');
+
+        // Lock the parent nav-dropdown open so CSS :hover loss doesn't close it
+        if (navDropdown) navDropdown.classList.add('type-open');
+      }
+    }
+
+    function toggleNavSub(e, id) {
+      e.preventDefault(); e.stopPropagation();
+      const sub = document.getElementById(id);
+      const btn = e.currentTarget;
+      if (!sub) return;
+      const isOpen = sub.classList.contains('open');
+      document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
+      document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
+      // Always close any open type panel when switching categories
+      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
+      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('sub-active'));
+      if (!isOpen) {
+        const row = btn.closest('.dd-cat-row');
+        const menu = btn.closest('.dropdown-menu');
+        let offsetTop = 0, el = row;
+        while (el && el !== menu) { offsetTop += el.offsetTop; el = el.offsetParent; }
+        sub.style.top = offsetTop + 'px';
+        sub.classList.add('open');
+        btn.classList.add('open');
+        row.classList.add('open');
+      }
+    }
+
+  </script>
+  <script>
+
+    /* ── Populate footer Products column from products.json ── */
+    async function populateFooter() {
+      let products = [];
+      try {
+        const r = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+        products = await r.json();
+      } catch(e) { return; }
+
+      // Get unique categories
+      const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+      const col = document.getElementById('footer-products-col');
+      if (!col) return;
+
+      col.innerHTML = categories.map(cat =>
+        `<a href="products.html?cat=${encodeURIComponent(cat)}" style="color:rgba(255,255,255,0.6);font-size:12px;font-weight:400;display:block;transition:color 0.15s;"
+           onmouseover="this.style.color='rgba(255,255,255,0.9)'"
+           onmouseout="this.style.color='rgba(255,255,255,0.6)'">${cat}</a>`
+      ).join('');
+    }
+    populateFooter();
+
+  </script>
+  <script src="cart.js"></script>
+</body>
+</html>
