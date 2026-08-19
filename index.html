@@ -302,11 +302,10 @@
       width: 100%;
     }
     .search-field {
-      flex-shrink: 0;
+      flex: 0 1 750px;
+      min-width: 0;
       display: flex;
       align-items: center;
-      width: 750px;
-      max-width: 100%;
       height: 55px;
       background: #fff;
       border: 1.5px solid var(--navy);
@@ -405,7 +404,6 @@
     @media (max-width: 1023px) {
       .hero__title { font-size: 42px; max-width: 480px; }
       .hero__panel { width: 100%; }
-      .search-field { width: 100%; }
       .hero__quicklinks { flex-wrap: wrap; gap: 16px 0; }
       .hero__quicklink { width: calc(50% - 8px); }
       .hero__quicklink:nth-child(2)::before { display: none; }
@@ -417,6 +415,7 @@
         left: 0; top: 0; transform: none;
         width: 100%; height: 2px;
       }
+      .hero__quicklink:nth-child(2)::before { display: block; }
     }
     @media (max-width: 640px) {
       .hero__title { font-size: 30px; }
@@ -526,6 +525,8 @@
       justify-content: center;
       aspect-ratio: 4 / 3;
       cursor: pointer;
+      min-width: 0;
+      overflow: hidden;
     }
     .featured-showcase__image img {
       max-width: 100%;
@@ -588,6 +589,7 @@
     .featured-thumb {
       position: relative;
       flex: 1;
+      min-width: 0;
       max-width: 340px;
       border-radius: 10px;
       padding: 14px 14px 16px;
@@ -621,13 +623,55 @@
     }
     .featured-thumb__sku { font-size: 12px; font-weight: 400; color: var(--navy); }
 
+    .featured-carousel-nav {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .carousel-arrow {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid var(--navy);
+      background: var(--white);
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .carousel-arrow:hover { background: var(--navy); color: var(--white); }
+    .carousel-dots {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: 0;
+      border: none;
+    }
+    .carousel-dot.active {
+      width: 22px;
+      border-radius: 4px;
+      background: var(--navy);
+    }
+
     @media (max-width: 1250px) {
       .featured-showcase__details { width: 100%; height: auto; }
       .fs-label { width: 160px; }
     }
     @media (max-width: 1023px) {
       .featured-header { grid-template-columns: 1fr; gap: 16px; }
-      .featured-header__title { font-size: 26px; }
+      .featured-header__title { font-size: 26px; justify-self: center; text-align: center; }
+      .btn-outline { justify-self: center; }
       .featured-showcase { grid-template-columns: 1fr; gap: 28px; }
       .featured-thumbs { flex-wrap: wrap; gap: 20px; }
       .featured-thumb { flex: 1 1 calc(50% - 20px); max-width: none; }
@@ -638,8 +682,9 @@
       .featured-showcase__name { font-size: 24px; }
       .fs-row { font-size: 16px; }
       .fs-label { width: 130px; }
-      .btn-add-quote { margin-top: 28px; }
-      .featured-thumb { flex: 1 1 100%; }
+      .btn-add-quote { margin-top: 28px; align-self: center; }
+      .featured-thumbs { display: none; }
+      .featured-carousel-nav { display: flex; }
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -1322,6 +1367,15 @@
     </div>
     <div id="featured-showcase-wrap"></div>
     <div class="featured-thumbs" id="featured-thumbs"></div>
+    <div class="featured-carousel-nav" id="featured-carousel-nav">
+      <button class="carousel-arrow" onclick="cycleFeatured(-1)" aria-label="Previous product">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="carousel-dots" id="featured-dots"></div>
+      <button class="carousel-arrow" onclick="cycleFeatured(1)" aria-label="Next product">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════
@@ -1630,6 +1684,7 @@
       _featuredIndex = 0;
       renderFeaturedMain(_featuredIndex);
       renderFeaturedThumbs(_featuredIndex);
+      renderFeaturedDots(_featuredIndex);
     }
 
     function renderFeaturedMain(idx) {
@@ -1676,10 +1731,25 @@
       }).join('');
     }
 
+    function renderFeaturedDots(activeIdx) {
+      const dots = document.getElementById('featured-dots');
+      if (!dots) return;
+      dots.innerHTML = _featuredProducts.map((p, i) =>
+        `<button class="carousel-dot ${i === activeIdx ? 'active' : ''}" onclick="selectFeatured(${i})" aria-label="Show ${p.title}"></button>`
+      ).join('');
+    }
+
     function selectFeatured(idx) {
       _featuredIndex = idx;
       renderFeaturedMain(idx);
       renderFeaturedThumbs(idx);
+      renderFeaturedDots(idx);
+    }
+
+    function cycleFeatured(direction) {
+      const n = _featuredProducts.length;
+      if (!n) return;
+      selectFeatured((_featuredIndex + direction + n) % n);
     }
 
     function addFeaturedToQuote(idx) {
