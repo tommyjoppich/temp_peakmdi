@@ -99,13 +99,14 @@
 
     .nav-dropdown { position: relative; }
     .nav-dropdown > a {
-      font-size: 15px;
-      font-weight: 600;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
       color: var(--navy);
       padding: 0;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 8px;
       white-space: nowrap;
       transition: color 0.15s;
       cursor: pointer;
@@ -118,6 +119,12 @@
       width: 12px; height: 12px;
       stroke: currentColor; fill: none;
       stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .chevron-img {
+      width: 9px;
+      height: 12px;
+      display: block;
+      align-self: center;
     }
 
     .dropdown-menu {
@@ -151,8 +158,9 @@
     .dropdown-menu a:hover { background: #f0f0f0; color: var(--blue); }
 
     .nav-group > a {
-      font-size: 15px;
-      font-weight: 600;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
       color: var(--navy);
       padding: 0;
       display: flex;
@@ -168,8 +176,9 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 15px;
-      font-weight: 600;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
       color: var(--navy);
       padding: 0;
       cursor: pointer;
@@ -178,6 +187,11 @@
       border: none;
     }
     .nav-search-link:hover { color: var(--blue); }
+    .nav-search-icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
 
     /* Quote Cart button — gold default, navy on hover */
     .btn-quote {
@@ -185,7 +199,7 @@
       align-items: center;
       gap: 10px;
       border: none;
-      border-radius: 8px;
+      border-radius: 0;
       padding: 11px 22px;
       font-size: 14px;
       font-weight: 700;
@@ -256,7 +270,7 @@
       inset: 0;
       background:
         linear-gradient(100deg, rgba(15,26,41,0.88) 0%, rgba(15,26,41,0.60) 42%, rgba(15,26,41,0.30) 68%, rgba(15,26,41,0.10) 100%),
-        url('https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=1600&q=65') right center/cover no-repeat;
+        url('hero-background.png') right center/cover no-repeat;
     }
     .hero__content {
       position: relative;
@@ -1187,13 +1201,13 @@
         <div class="nav-group">
           <div class="nav-dropdown" id="dd-products-desktop">
             <a href="products.html">Products
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+              <img class="chevron-img" src="Arrow.png" alt="" />
             </a>
             <div class="dropdown-menu" id="nav-dd-desktop-products"></div>
           </div>
           <div class="nav-dropdown" id="dd-resources-desktop">
             <a href="resources.html">Resources
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+              <img class="chevron-img" src="Arrow.png" alt="" />
             </a>
             <div class="dropdown-menu">
               <a href="video-archive.html">Video Archive</a>
@@ -1206,7 +1220,7 @@
           <a href="contact.html">Contact</a>
         </div>
         <button class="nav-search-link" onclick="window.location.href='products.html'" aria-label="Search">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <img class="nav-search-icon" src="Magnify.png" alt="" />
           Search
         </button>
       </nav>
@@ -1216,13 +1230,13 @@
         <div class="nav-group">
           <div class="nav-dropdown" id="dd-products-tablet">
             <a href="products.html">Products
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+              <img class="chevron-img" src="Arrow.png" alt="" />
             </a>
             <div class="dropdown-menu" id="nav-dd-tablet-products"></div>
           </div>
           <div class="nav-dropdown" id="dd-resources-tablet">
             <a href="resources.html">Resources
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+              <img class="chevron-img" src="Arrow.png" alt="" />
             </a>
             <div class="dropdown-menu">
               <a href="video-archive.html">Video Archive</a>
@@ -1244,7 +1258,7 @@
       </button>
       <div class="navbar__mobile">
         <button class="cart-btn" aria-label="Cart">
-          <img src="cart-icon.png" alt="" style="width:18px;height:18px;" />
+          <img src="cart-icon.png?v=2" alt="" style="width:18px;height:18px;" />
         </button>
         <button class="hamburger" aria-label="Open menu" onclick="openMenu()">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
