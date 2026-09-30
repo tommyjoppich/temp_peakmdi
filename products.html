@@ -9,445 +9,1261 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Montserrat', sans-serif; color: #1a1a1a; background: #fff; min-height: 100vh; display: flex; flex-direction: column; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+      color: #1a1a1a;
+      background: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
     a { text-decoration: none; color: inherit; }
     img { display: block; max-width: 100%; }
     button { cursor: pointer; font-family: inherit; }
 
+    /* ── CSS Variables ────────────────────────────────────────── */
     :root {
-      --navy: #1a2f4a; --navy-dark: #111e2e; --blue: #2e6da4;
-      --white: #ffffff; --off-white: #f8f8f8; --text: #1a1a1a;
-      --muted: #666; --border: #e0e0e0;
+      --navy:       #1a2f4a;
+      --navy-dark:  #111e2e;
+      --blue:       #2e6da4;
+      --gold:       #F2C300;
+      --gold-dark:  #EFA500;
+      --gold-active:#FFDE55;
+      --cyan:       #6fe9ef;
+      --cream:      #f2e9d3;
+      --white:      #ffffff;
+      --off-white:  #f8f8f8;
+      --card-hover: #eceef1;
+      --text:       #1a1a1a;
+      --muted:      #666;
+      --border:     #e0e0e0;
       --card-shadow: 0 2px 8px rgba(0,0,0,0.09);
       --card-shadow-hover: 0 6px 22px rgba(0,0,0,0.14);
-      --radius: 12px;
+      --radius:     12px;
     }
 
-    /* ── NAVBAR (same as index.html) ── */
+    /* NOTE: exact brand hex codes (gold / cyan / cream) are best-guess
+       approximations from the mockup. Send exact hex values any time
+       and these five variables are the only thing that needs updating. */
+
+    /* ══════════════════════════════════════════════════════════
+       NAVBAR
+    ══════════════════════════════════════════════════════════ */
     .navbar {
-      position: sticky; top: 0; z-index: 200;
-      background: var(--white); box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--white);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       height: 72px;
-      display: grid; grid-template-columns: 1fr auto 1fr;
-      align-items: center; padding: 0 28px;
     }
+    .navbar__inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 28px;
+    }
+
     .navbar__logo { justify-self: start; }
     .navbar__logo img { height: 52px; width: auto; }
-    .navbar__center { display: flex; justify-content: center; }
-    .navbar__right { justify-self: end; display: flex; align-items: center; }
-    @media (min-width: 1024px) { .navbar { height: 80px; } .navbar__logo img { height: 68px; } }
+
+    .navbar__center {
+      display: flex;
+      justify-content: center;
+    }
+
+    .navbar__right {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    @media (min-width: 1024px) {
+      .navbar { height: 80px; }
+      .navbar__logo img { height: 68px; }
+    }
 
     .navbar__desktop { display: none; }
+
     .nav-group {
-      display: flex; align-items: center;
-      border: 1.5px solid var(--border); border-radius: 9px;
-      padding: 4px 6px; gap: 2px;
+      display: flex;
+      align-items: center;
+      gap: 34px;
     }
+
     .nav-dropdown { position: relative; }
-    .nav-dropdown > a, .nav-group > a {
-      font-size: 14px; font-weight: 600; color: var(--text);
-      padding: 8px 14px; border-radius: 6px;
-      display: flex; align-items: center; gap: 5px;
-      white-space: nowrap; transition: background 0.15s; cursor: pointer;
-    }
-    .nav-dropdown > a:hover, .nav-group > a:hover { background: #f0f0f0; }
-    .nav-dropdown > a.active, .nav-group > a.active { background: #e4edf6; color: var(--blue); }
-    .nav-dropdown > a .chevron, .nav-group > a .chevron {
-      width: 12px; height: 12px; stroke: currentColor; fill: none;
-      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
-      transition: transform 0.2s;
-    }
-    .nav-dropdown.open > a .chevron { transform: rotate(180deg); }
-    .dropdown-menu {
-      display: none; position: absolute; top: calc(100% + 10px); left: 50%;
-      transform: translateX(-50%); background: var(--white);
-      border: 1.5px solid var(--border); border-radius: 10px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.12); width: 220px;
-      padding: 6px; z-index: 9999; flex-direction: column; gap: 2px;
-    }
-    .nav-dropdown.open .dropdown-menu { display: flex; }
-    .dropdown-menu a {
-      display: block; padding: 10px 14px; font-size: 14px; font-weight: 500;
-      color: var(--text); border-radius: 6px; white-space: nowrap; transition: background 0.15s;
-    }
-    .dropdown-menu a:hover { background: #f0f0f0; color: var(--blue); }
-    .dropdown-menu .dd-cat-link { border-radius: 6px 0 0 6px; }
-    .dropdown-menu .dd-sub-link { border-radius: 6px 0 0 6px; }
-    .btn-quote {
-      display: flex; align-items: center; gap: 10px;
-      border: 2px solid var(--navy); border-radius: 8px;
-      padding: 10px 20px; font-size: 14px; font-weight: 700;
-      color: var(--navy); background: var(--white);
-      transition: background 0.15s, color 0.15s; white-space: nowrap;
-    }
-    .btn-quote:hover { background: var(--navy); color: var(--white); }
-    .navbar__tablet { display: none; }
-    .navbar__mobile { display: none; align-items: center; gap: 12px; }
-    .navbar__mobile .cart-btn, .navbar__right .cart-btn {
-      width: 42px; height: 42px; border-radius: 50%;
-      border: 2px solid var(--navy); display: flex; align-items: center;
-      justify-content: center; background: transparent; color: var(--navy);
-    }
-    .navbar__mobile .hamburger { background: none; border: none; color: var(--navy); display: flex; align-items: center; padding: 4px; }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @media (min-width: 1024px) { .navbar__desktop { display: flex; } .navbar__tablet { display: none !important; } .navbar__mobile { display: none !important; } .btn-quote { display: flex !important; } }
-    @media (min-width: 769px) and (max-width: 1023px) { .navbar__desktop { display: none !important; } .navbar__tablet { display: flex; } .navbar__mobile { display: none !important; } .btn-quote { display: flex !important; } }
-    @media (max-width: 768px) { .navbar { padding: 0 16px; } .navbar__logo img { height: 44px; } .navbar__desktop { display: none !important; } .navbar__tablet { display: none !important; } .navbar__mobile { display: flex; } .btn-quote { display: none !important; } }
-
-    /* ── HERO BANNER ── */
-    .page-hero {
-      position: relative; width: 100%; height: 140px;
-      background: linear-gradient(135deg, var(--navy-dark) 0%, #1e4060 55%, #2e6da4 100%);
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
-    }
-    .page-hero__bg {
-      position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(17,30,46,0.55), rgba(17,30,46,0.45)),
-        url('https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=1400&q=60') center/cover no-repeat;
-    }
-    .page-hero h1 {
-      position: relative; z-index: 1;
-      font-size: 32px; font-weight: 800; color: #fff;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
-    }
-
-    /* ── BREADCRUMB ── */
-    .breadcrumb {
-      padding: 12px 32px; font-size: 13px; color: var(--muted);
-      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-    }
-    .breadcrumb a { color: var(--muted); }
-    .breadcrumb a:hover { color: var(--blue); }
-    .breadcrumb span { color: #bbb; }
-
-    /* ── MAIN LAYOUT ── */
-    .products-layout {
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      gap: 28px;
-      padding: 0 32px 56px;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-      align-items: start;
-    }
-
-    /* ── SIDEBAR ── */
-    .sidebar {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      position: sticky;
-      top: 88px;
-    }
-    .sidebar__title {
-      font-size: 15px; font-weight: 800; color: var(--text);
-      margin-bottom: 16px;
-    }
-
-    /* Category tree */
-    .cat-item { margin-bottom: 4px; }
-    /* Category row: label navigates/filters, chevron expands */
-    .cat-row {
+    .nav-dropdown > a {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
+      color: var(--navy);
+      padding: 0;
       display: flex;
-      align-items: stretch; /* stretch so both children fill the same height */
-      border-radius: 6px;
-      overflow: hidden;
-      margin-bottom: 2px;
-    }
-    .cat-row:hover .cat-label,
-    .cat-row:hover .cat-chevron { background: #f0f0f0; }
-
-    .cat-label {
-      flex: 1; background: none; border: none;
-      font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700;
-      color: var(--text); padding: 8px 4px 8px 10px;
-      cursor: pointer; text-align: left; transition: background 0.15s;
-      border-radius: 6px 0 0 6px;
-      /* let the row height be set by label content */
-    }
-    .cat-label.active { color: var(--blue); background: #e4edf6; }
-    .cat-label.active + .cat-chevron { background: #e4edf6; color: var(--blue); }
-
-    .cat-chevron {
-      background: none; border: none; padding: 0 10px;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: color 0.15s;
       cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.15s; border-radius: 0 6px 6px 0;
-      flex-shrink: 0;
-      /* No fixed height — stretches to match label via align-items:stretch */
+      user-select: none;
+      text-decoration: none;
     }
-    .cat-chevron svg {
-      width: 14px; height: 14px; stroke: currentColor; fill: none;
+    .nav-dropdown > a:hover  { color: var(--blue); }
+    .nav-dropdown > a.active { color: var(--blue); }
+    .nav-dropdown > a .chevron {
+      width: 12px; height: 12px;
+      stroke: currentColor; fill: none;
       stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
-      transition: transform 0.2s;
     }
-    /* Chevron rotates when open */
-    .cat-chevron.open svg { transform: rotate(180deg); }
-
-    .subcat-list { display: none; flex-direction: column; margin-top: 2px; padding-left: 12px; }
-    /* New 3-level sidebar styles */
-    .sub-list  { display: none; flex-direction: column; padding: 4px 0 4px 0; gap: 4px; }
-    .sub-list.open  { display: flex; }
-    .sub-item  { display: flex; flex-direction: column; width: 100%; }
-    .sub-row   { display: flex; align-items: stretch; border-radius: 6px; width: 100%; }
-    .sub-label {
-      flex: 1; background: none; border: none; text-align: left;
-      padding: 8px 6px 8px 24px; font-size: 13px; font-weight: 500;
-      color: var(--muted); cursor: pointer; border-radius: 6px 0 0 6px;
-      transition: background 0.15s;
-    }
-    .sub-row:hover .sub-label,
-    .sub-row:hover .cat-chevron { background: #f0f0f0; }
-    .sub-row:hover .sub-label   { color: var(--blue); }
-    .sub-row:hover .cat-chevron svg { stroke: var(--blue); }
-    .sub-label.active           { background: #e4edf6; color: var(--blue); }
-    .sub-label.active + .cat-chevron { background: #e4edf6; }
-    .sub-label.active + .cat-chevron svg { stroke: var(--blue); }
-    .type-list { display: none; flex-direction: column; padding: 4px 0 4px 0; gap: 2px; }
-    .type-list.open { display: flex; }
-    .type-label {
-      background: none; border: none; text-align: left;
-      padding: 6px 8px 6px 38px; font-size: 12px; font-weight: 500;
-      color: #888; cursor: pointer; border-radius: 6px;
-      transition: background 0.15s; width: 100%;
-    }
-    .type-label:hover { background: #f0f0f0; color: var(--blue); }
-    .type-label.active { background: #e4edf6; color: var(--blue); }
-    .subcat-list.open { display: flex; }
-    .subcat-btn {
-      display: block; width: 100%; background: none; border: none;
-      font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 500;
-      color: var(--muted); padding: 7px 10px; border-radius: 6px;
-      cursor: pointer; text-align: left; transition: background 0.15s, color 0.15s;
-    }
-    .subcat-btn:hover { background: #f0f0f0; color: var(--text); }
-    .subcat-btn.active { background: #e4edf6; color: var(--blue); font-weight: 700; }
-
-    /* All Products button */
-    .all-products-btn {
-      display: block; width: 100%; background: none; border: none;
-      font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700;
-      color: var(--text); padding: 8px 10px; border-radius: 6px;
-      cursor: pointer; text-align: left; transition: background 0.15s;
-      margin-bottom: 8px;
-    }
-    .all-products-btn:hover { background: #f0f0f0; }
-    .all-products-btn.active { color: var(--blue); background: #e4edf6; }
-
-    /* ── PRODUCTS MAIN AREA ── */
-    .products-main { min-width: 0; padding-top: 20px; }
-
-    .products-main__header {
-      display: flex; justify-content: space-between;
-      align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;
-    }
-    .products-main__title {
-      font-size: 26px; font-weight: 800; color: var(--text);
-    }
-    .products-count {
-      font-size: 13px; color: var(--muted); font-weight: 500;
-    }
-
-    /* Search bar */
-    .products-search {
-      display: flex; align-items: center; gap: 10px;
-      border: 1.5px solid var(--border); border-radius: 50px;
-      padding: 11px 20px; background: var(--white);
-      margin-bottom: 24px; transition: border-color 0.15s;
-    }
-    .products-search:focus-within { border-color: var(--blue); }
-    .products-search svg { flex-shrink: 0; color: #999; }
-    .products-search input {
-      border: none; outline: none; flex: 1;
-      font-family: 'Montserrat', sans-serif; font-size: 14px;
-      color: var(--text); background: transparent;
-    }
-    .products-search input::placeholder { color: #aaa; }
-
-    /* Product grid */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .product-card {
-      background: var(--white); border-radius: var(--radius);
-      box-shadow: var(--card-shadow); overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;
-      border: 1.5px solid transparent;
-    }
-    .product-card:hover { transform: translateY(-3px); box-shadow: var(--card-shadow-hover); border-color: var(--border); }
-
-    .product-card__img {
-      width: 100%; aspect-ratio: 1 / 1;
-      background: #fff; overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .product-card__img img { width: 100%; height: 100%; object-fit: contain; }
-    .product-card__img .no-img {
-      font-size: 12px; color: #bbb; font-weight: 500;
-    }
-    .product-card__body { padding: 14px 16px 18px; }
-    .product-card__name { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 5px; line-height: 1.3; }
-    .product-card__sku { font-size: 12px; color: var(--muted); }
-
-    /* Empty state */
-    .empty-state {
-      grid-column: 1 / -1; text-align: center;
-      padding: 60px 20px; color: var(--muted);
-    }
-    .empty-state svg { margin: 0 auto 16px; opacity: 0.3; }
-    .empty-state p { font-size: 15px; font-weight: 600; }
-
-    /* ── FOOTER ── */
-    footer { background: var(--navy); color: rgba(255,255,255,0.65); padding: 48px 32px 36px; margin-top: auto; }
-    .footer__inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: auto auto auto 1fr; gap: 40px; align-items: start; }
-    .footer__col { display: flex; flex-direction: column; gap: 9px; }
-    .footer__col-title { font-weight: 700; font-size: 13px; color: rgba(255,255,255,0.9); margin-bottom: 2px; }
-    .footer__col a, .footer__col span { font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.6); cursor: pointer; display: block; }
-    .footer__col a:hover { color: rgba(255,255,255,0.9); }
-    .footer__copyright { text-align: right; display: flex; flex-direction: column; gap: 4px; justify-self: end; }
-    .footer__copyright span { font-size: 12px; color: rgba(255,255,255,0.55); }
-
-    /* Responsive */
-    @media (max-width: 900px) {
-      .products-layout { grid-template-columns: 1fr; padding: 0 16px 40px; }
-      .sidebar { position: static; }
-      .product-grid { grid-template-columns: repeat(2, 1fr); }
-      .footer__inner { grid-template-columns: 1fr 1fr; gap: 24px; }
-      .footer__copyright { grid-column: 1/-1; text-align: left; justify-self: start; }
-    }
-    @media (max-width: 480px) {
-      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      .breadcrumb { padding: 12px 16px; }
-    }
-
-    /* Hover-based dropdown */
-    .nav-dropdown:hover > a { background: #f0f0f0; }
-    .nav-dropdown:hover > a .chevron { transform: rotate(180deg); }
-    .nav-dropdown:hover .dropdown-menu { display: flex; }
-    .nav-dropdown.type-open .dropdown-menu { display: flex; }
-    .nav-dropdown.type-open .dd-sub-list.open { display: flex; }
-    /* Bridge to prevent mouseout gap between trigger and panel */
-    .nav-dropdown::after {
-      content: ''; position: absolute;
-      top: 100%; left: 0; right: 0;
-      height: 14px; background: transparent;
-    }
-    .dropdown-menu { top: calc(100% + 14px); }
-
-    
-    
-    
-    /* ── Nested Products dropdown ── */
-    .dd-cat-row {
-      display: flex;
-      align-items: stretch;
-      border-radius: 6px;
-      position: relative;
-    }
-    .dd-cat-row:hover .dd-cat-link,
-    .dd-cat-row:hover .dd-cat-chevron { background: #f0f0f0; }
-
-    .dd-cat-link {
-      flex: 1;
-      padding: 10px 6px 10px 14px;
-      font-size: 14px; font-weight: 600;
-      color: var(--text); display: flex; align-items: center;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      transition: background 0.15s;
-      border-radius: 6px 0 0 6px;
-      max-width: 180px;
-    }
-    .dd-cat-link:hover { background: #f0f0f0; color: var(--blue); }
-
-    .dd-cat-chevron {
-      background: none; border: none;
-      padding: 0 12px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 0 6px 6px 0;
-      transition: background 0.15s; flex-shrink: 0;
-      align-self: stretch;
-    }
-    .dd-cat-chevron:hover { background: #f0f0f0; }
-    .dd-cat-chevron svg {
-      width: 12px; height: 12px; stroke: var(--text); fill: none;
-      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
-      transition: transform 0.2s;
-    }
-    .dd-cat-chevron.open svg { transform: rotate(180deg); }
-    /* Active state — row is open */
-    .dd-cat-chevron.open { background: #e4edf6; }
-    .dd-cat-chevron.open + * { /* sibling trick doesn't work here — use JS class on row */ }
-    .dd-cat-row.open .dd-cat-link { background: #e4edf6; color: var(--blue); }
-    .dd-cat-row.open .dd-cat-chevron { background: #e4edf6; }
-    .dd-cat-row.open .dd-cat-chevron svg { stroke: var(--blue); }
-
-    /* Sub-list flies out to the RIGHT of the main dropdown panel.
-       position:absolute relative to the .dropdown-menu container.
-       top is set per-row by JS so it aligns with the clicked row. */
-    .dd-sub-list {
+    /* ── Mega menu (Products / Resources) ──
+       .mega-menu is an invisible hit-area wrapper: it sits flush against the
+       nav link (top:100%, no gap) and its padding-top forms the visual gap.
+       Because that padding is still part of the element's box, hovering
+       through it keeps the whole thing "inside" .nav-dropdown, so the menu
+       doesn't close while the mouse travels from the link down into it.
+       The actual visible card is .mega-menu__panel, nested inside. */
+    .mega-menu {
       display: none;
       position: absolute;
-      left: calc(100% + 2px);
-      top: 0; /* overridden by JS */
-      min-width: 200px;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding-top: 18px;
+      z-index: 9999;
+      max-width: min(720px, 95vw);
+    }
+    .nav-dropdown.open .mega-menu { display: block; }
+
+    .mega-menu__panel {
+      /* .mega-menu (the parent) is itself a flex container so JS can
+         toggle display:flex/none for open/close. That makes this panel a
+         flex ITEM, and flex items size to their own content by default
+         (no flex-grow) instead of stretching to fill the parent — so a
+         column with little/no content (e.g. a category with no
+         sub-categories) would shrink the whole menu. flex:1 1 auto plus
+         width:100% forces it to always fill the menu's fixed width. */
+      flex: 1 1 auto;
+      width: 100%;
+      display: flex;
       background: var(--white);
       border: 1.5px solid var(--border);
-      border-radius: 10px;
+      border-radius: 0;
       box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-      padding: 6px;
-      z-index: 10000;
+      overflow: hidden;
+    }
+
+    .mega-menu--products { width: 720px; }
+    .mega-menu--products .mega-menu__panel { align-items: stretch; padding: 20px 0; }
+    .mega-col {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
       flex-direction: column;
       gap: 2px;
+      padding: 0 18px;
     }
-    .dd-sub-list.open { display: flex; }
-
-    .dd-sub-link {
-      display: flex; align-items: center; flex: 1;
-      padding: 10px 14px;
-      font-size: 13px; font-weight: 500;
-      color: var(--muted); border-radius: 6px 0 0 6px;
-      white-space: normal; word-break: break-word;
+    .mega-col + .mega-col { border-left: 1px solid var(--border); }
+    .mega-col__header {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 4px 10px 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .mega-col__link {
+      display: block;
+      padding: 9px 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      border-radius: 6px;
+      white-space: normal;
+      word-break: break-word;
+      line-height: 1.3;
+      cursor: pointer;
       transition: background 0.15s, color 0.15s;
     }
-    .dd-cat-row:hover .dd-sub-link { background: #f0f0f0; color: var(--blue); }
-    .dd-type-list .dd-sub-link:hover { background: #f0f0f0; color: var(--blue); }
-    .dd-cat-row:hover .dd-sub-link ~ .dd-cat-chevron { background: #f0f0f0; }
-    .dd-cat-row:hover .dd-sub-link ~ .dd-cat-chevron svg { stroke: var(--blue); }
-    .dd-sub-link.active { background: #e4edf6; color: var(--blue); }
-    .dd-sub-link.active + .dd-cat-chevron { background: #e4edf6; }
-    .dd-sub-link.active + .dd-cat-chevron svg { stroke: var(--blue); }
-        .dd-cat-link.active { background: #e4edf6; color: var(--blue); }
-    .dd-cat-link.active + .dd-cat-chevron { background: #e4edf6; }
-    .dd-cat-link.active + .dd-cat-chevron svg { stroke: var(--blue); }
+    .mega-col__link:hover,
+    .mega-col__link.active {
+      background: #fbe4e4;
+      color: var(--navy);
+    }
 
+    .mega-menu--resources { width: 720px; }
+    .mega-menu--resources .mega-menu__panel { display: flex; min-height: 360px; gap: 40px; }
+    .mega-resources__list {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 20px 12px 20px 20px;
+    }
+    .mega-resources__header {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 4px 12px 12px;
+    }
+    .mega-resources__list a {
+      display: block;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+    .mega-resources__list a:hover { background: #fbe4e4; color: var(--navy); }
+    .mega-resources__promo {
+      position: relative;
+      flex: 0 0 180px;
+      max-width: 180px;
+      background: var(--cream);
+      padding: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    @media (min-width: 1024px) {
+      .mega-menu--resources .mega-menu__panel { min-height: 512px; gap: 80px; }
+      .mega-resources__promo { flex: 0 0 220px; max-width: 220px; }
+    }
+    .mega-resources__eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--navy);
+      opacity: 0.75;
+      margin-bottom: 8px;
+    }
+    .mega-resources__title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .mega-resources__desc {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--navy);
+      max-width: 190px;
+      line-height: 1.4;
+      position: relative;
+      z-index: 1;
+    }
+    .mega-resources__mountain {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 110px;
+      pointer-events: none;
+      background-color: var(--navy);
+      opacity: 0.7;
+      -webkit-mask-image: url('mountain-graphic.png');
+      mask-image: url('mountain-graphic.png');
+      -webkit-mask-size: contain;
+      mask-size: contain;
+      -webkit-mask-position: bottom center;
+      mask-position: bottom center;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
 
-    
-    
-    
-    
-    
-    
+    .nav-group > a {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
+      color: var(--navy);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+    .nav-group > a:hover  { color: var(--blue); }
+    .nav-group > a.active { color: var(--blue); }
+
+    .nav-search-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
+      color: var(--navy);
+      padding: 0;
+      cursor: pointer;
+      transition: color 0.15s;
+      background: none;
+      border: none;
+    }
+    .nav-search-link:hover { color: var(--blue); }
+    .nav-search-icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    /* Quote Cart button — gold default, navy on hover */
+    .btn-quote {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      border-radius: 0;
+      padding: 11px 22px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      background: var(--gold);
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+      position: relative;
+    }
+    .btn-quote:hover { background: var(--navy); color: var(--white); }
+    .btn-quote:hover img { filter: brightness(0) invert(1); }
+    .btn-quote:active { background: var(--gold-active); color: var(--navy); }
+    .btn-quote:active img { filter: none; }
+
+    .navbar__tablet { display: none; }
+
+    .navbar__mobile {
+      display: none;
+      align-items: center;
+      gap: 12px;
+    }
+    .navbar__mobile .cart-btn {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      border: 2px solid var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      background: transparent;
+      color: var(--navy);
+    }
+    .navbar__mobile .hamburger {
+      background: none;
+      border: none;
+      color: var(--navy);
+      display: flex; align-items: center;
+      padding: 4px;
+    }
+
+    @media (min-width: 1024px) {
+      .navbar__desktop { display: flex; align-items: center; gap: 40px; }
+      .navbar__tablet  { display: none !important; }
+      .navbar__mobile  { display: none !important; }
+      .btn-quote       { display: flex !important; }
+    }
+    @media (min-width: 769px) and (max-width: 1023px) {
+      .navbar__desktop { display: none !important; }
+      .navbar__tablet  { display: flex; align-items: center; gap: 8px; }
+      .navbar__mobile  { display: none !important; }
+      .btn-quote       { display: flex !important; }
+      .navbar__right .cart-btn { display: none !important; }
+    }
+    @media (max-width: 768px) {
+      .navbar__desktop { display: none !important; }
+      .navbar__tablet  { display: none !important; }
+      .navbar__mobile  { display: flex; }
+      .btn-quote       { display: none !important; }
+      .navbar__right > .cart-btn { display: none !important; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      width: 100%;
+      overflow: visible;
+      background: linear-gradient(120deg, var(--navy-dark) 0%, #16324f 45%, #1f4a68 100%);
+      padding: 0;
+    }
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(100deg, rgba(15,26,41,0.88) 0%, rgba(15,26,41,0.60) 42%, rgba(15,26,41,0.30) 68%, rgba(15,26,41,0.10) 100%),
+        url('hero-background.png') right center/cover no-repeat;
+    }
+    .hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 64px 28px 56px;
+    }
+    .hero__title {
+      font-size: 60px;
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 28px;
+      max-width: 640px;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.3);
+    }
+
+    .hero__panel {
+      background: #fff;
+      border-radius: 0;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+      box-sizing: border-box;
+      width: 925px;
+      min-height: 235px;
+      max-width: 100%;
+      padding: 26px 28px 22px;
+      display: flex;
+      flex-direction: column;
+    }
+    .hero__panel-label {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 14px;
+    }
+    .search-bar {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      width: 100%;
+    }
+    .search-field {
+      flex: 0 1 750px;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      height: 55px;
+      background: #fff;
+      border: 1.5px solid #8E8E93;
+      border-right: none;
+      border-radius: 0;
+      padding: 0 18px;
+      box-sizing: border-box;
+    }
+    .search-field input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--navy);
+      background: transparent;
+      min-width: 0;
+    }
+    .search-field input::placeholder { color: var(--navy); opacity: 0.55; }
+    .search-bar__btn {
+      flex-shrink: 0;
+      width: 55px; height: 55px;
+      border-radius: 0;
+      background: var(--gold);
+      border: 1.5px solid #8E8E93;
+      border-left: none;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .search-bar__btn:hover { background: var(--gold-dark); }
+    .search-bar__btn:active { background: var(--gold-active); }
+    .hero-search-icon {
+      width: 27px;
+      height: 27px;
+      display: block;
+    }
+
+    .hero__quicklinks {
+      display: flex;
+      align-items: stretch;
+      margin-top: 20px;
+      gap: 12px;
+    }
+    .hero__quicklink {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      flex: 1 1 0;
+      min-width: 0;
+      height: auto;
+      min-height: 64px;
+      padding: 12px;
+      border: 1px solid #d9d9d9;
+      border-radius: 6px;
+      background: #fff;
+      transition: background 0.15s, border-color 0.15s;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .hero__quicklink:hover { background: #fdf6e3; border-color: #ecdca8; }
+    }
+    .hero__quicklink-icon {
+      flex-shrink: 0;
+      height: 40px;
+      width: auto;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--navy);
+      margin-top: 2px;
+    }
+    .hero__quicklink-icon img { height: 40px; width: auto; display: block; }
+    .hero__quicklink-text { min-width: 0; flex: 1; }
+    .hero__quicklink-title {
+      display: block;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.3;
+    }
+    .hero__quicklink-sub {
+      display: block;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.3;
+      margin-top: 2px;
+    }
+    @media (max-width: 1023px) {
+      .hero__title { font-size: 42px; max-width: 480px; }
+      .hero__panel { width: 100%; }
+      .hero__quicklinks { flex-wrap: wrap; gap: 12px; }
+      .hero__quicklink { flex: 1 1 calc(50% - 6px); }
+    }
+    @media (max-width: 900px) {
+      .hero__quicklinks { flex-direction: column; gap: 10px; }
+      .hero__quicklink { flex: 1 1 auto; width: 100%; padding: 12px 14px; }
+    }
+    @media (max-width: 640px) {
+      .hero__title { font-size: 30px; }
+      .hero__panel { padding: 20px 20px 18px; }
+      .hero__panel-label { font-size: 15px; }
+      .search-field { height: 48px; }
+      .search-field input { font-size: 15px; }
+      .search-bar__btn { width: 48px; height: 48px; }
+      .hero-search-icon { width: 20px; height: 20px; }
+      .hero__quicklink-icon, .hero__quicklink-icon img { height: 30px; }
+      .hero__quicklink-title { font-size: 15px; }
+      .hero__quicklink-sub { font-size: 13px; }
+    }
+
+    .search-bar-wrap { position: relative; width: 100%; }
+    .search-suggestions {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0; right: 0;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      overflow: hidden;
+      z-index: 150;
+      border: 1.5px solid var(--border);
+    }
+    .search-suggestions.visible { display: block; }
+    .suggestion-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px; cursor: pointer;
+      transition: background 0.12s; border-bottom: 1px solid #f0f0f0;
+      text-align: left;
+    }
+    .suggestion-item:last-child { border-bottom: none; }
+    .suggestion-item:hover { background: #f4f7fb; }
+    .suggestion-item svg { flex-shrink: 0; color: #aaa; }
+    .suggestion-item__text { display: flex; flex-direction: column; gap: 2px; }
+    .suggestion-item__name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+    .suggestion-item__name em { color: var(--blue); font-style: normal; }
+    .suggestion-item__meta { font-size: 12px; color: #999; font-weight: 400; }
+    .suggestion-all {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 20px; cursor: pointer; background: #f8f9fc;
+      font-size: 13px; font-weight: 700; color: var(--blue);
+      transition: background 0.12s;
+    }
+    .suggestion-all:hover { background: #edf2fa; }
+
+    /* ══════════════════════════════════════════════════════════
+       SECTION WRAPPER
+    ══════════════════════════════════════════════════════════ */
+    .section {
+      padding: 56px 24px;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       FEATURED PRODUCTS (interactive showcase)
+    ══════════════════════════════════════════════════════════ */
+    .featured-header {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .featured-header__title {
+      font-size: 34px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--navy);
+      text-transform: uppercase;
+    }
+    .featured-header__link {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--navy);
+      text-decoration: underline;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+    .featured-header__link:hover { color: var(--blue); }
+
+    .featured-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      margin-bottom: 36px;
+    }
+    .featured-showcase__image {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 600px;
+      height: 850px;
+      max-width: 100%;
+      box-sizing: border-box;
+      cursor: pointer;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .featured-showcase__image img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: transform 0.2s;
+      transform: rotate(-6deg);
+    }
+    .featured-showcase__image:hover img { transform: rotate(-6deg) scale(1.03); }
+
+    .featured-showcase__details {
+      width: 600px;
+      min-height: 382px;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .featured-showcase__name {
+      font-size: 32px;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 18px;
+    }
+    .fs-row {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 22px;
+    }
+    .fs-row:first-of-type { border-top: 1px solid var(--border); }
+    .fs-row:last-of-type { border-bottom: none; }
+    .fs-label { width: 200px; flex-shrink: 0; color: var(--text); font-weight: 400; }
+    .fs-value { flex: 1; color: var(--text); font-weight: 600; text-align: left; line-height: 1.4; }
+
+    .btn-add-quote {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 160px;
+      min-width: 160px;
+      height: 48px;
+      min-height: 48px;
+      flex-shrink: 0;
+      margin-top: 48px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background 0.15s;
+    }
+    .btn-add-quote:hover { background: var(--gold-dark); }
+    .btn-add-quote:active { background: var(--gold-active); }
+
+    .featured-thumbs {
+      display: flex;
+      gap: 32px;
+    }
+    .featured-thumb {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      max-width: 340px;
+      border-radius: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 14px 14px 16px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border: 1.5px solid transparent;
+    }
+    .featured-thumb:not(:first-child)::before {
+      content: '';
+      position: absolute;
+      left: -16px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .featured-thumb:hover { background: var(--card-hover); }
+    .featured-thumb.active { background: var(--card-hover); border-color: var(--border); }
+    .featured-thumb__img {
+      width: 340px;
+      height: 196px;
+      max-width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .featured-thumb__img img {
+      width: 135px;
+      height: 277px;
+      max-width: none;
+      max-height: none;
+      object-fit: contain;
+      transform: rotate(-90deg);
+    }
+    .featured-thumb__text { min-width: 0; }
+    .featured-thumb__name {
+      font-size: 13px; font-weight: 600; color: var(--navy);
+      line-height: 1.35; margin-bottom: 3px;
+    }
+    .featured-thumb__sku { font-size: 13px; font-weight: 400; color: var(--navy); }
+
+    .featured-carousel-nav {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .carousel-arrow {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid var(--navy);
+      background: var(--white);
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .carousel-arrow:hover { background: var(--navy); color: var(--white); }
+    .carousel-dots {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: 0;
+      border: none;
+    }
+    .carousel-dot.active {
+      width: 22px;
+      border-radius: 4px;
+      background: var(--navy);
+    }
+
+    @media (max-width: 1250px) {
+      .featured-showcase__details { width: 100%; height: auto; }
+      .fs-label { width: 160px; }
+    }
+    @media (max-width: 1023px) {
+      .featured-header { flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+      .featured-header__title { font-size: 26px; }
+      .featured-showcase { grid-template-columns: 1fr; gap: 28px; }
+      .featured-showcase__image { width: 100%; height: auto; aspect-ratio: 600 / 850; max-width: 420px; margin: 0 auto; }
+      .featured-thumbs { flex-wrap: wrap; gap: 20px; }
+      .featured-thumb { flex: 1 1 calc(50% - 20px); max-width: none; }
+      .featured-thumb:not(:first-child)::before { display: none; }
+    }
+    @media (max-width: 640px) {
+      .featured-showcase__image { max-width: 280px; }
+      .featured-showcase__name { font-size: 24px; }
+      .fs-row { font-size: 16px; }
+      .fs-label { width: 130px; }
+      .btn-add-quote { margin-top: 28px; align-self: center; }
+      .featured-thumbs { display: none; }
+      .featured-carousel-nav { display: flex; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       TRUST SECTION (navy, mountain watermark)
+    ══════════════════════════════════════════════════════════ */
+    .trust-section {
+      position: relative;
+      background: var(--navy);
+      overflow: hidden;
+      padding: 60px 24px;
+      min-height: 430px;
+      display: flex;
+      align-items: center;
+    }
+    .trust-section__mountains {
+      position: absolute;
+      left: 240px; bottom: 0;
+      width: 1030px;
+      height: 330px;
+      pointer-events: none;
+    }
+    .trust-section__inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 600px;
+      gap: 48px;
+      align-items: start;
+    }
+    .trust-section__heading {
+      font-size: 33px;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.35;
+      min-width: 420px;
+      max-width: 420px;
+    }
+    .trust-item {
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.33);
+    }
+    .trust-item:first-child { padding-top: 0; }
+    .trust-item__title {
+      font-size: 22px;
+      font-weight: 400;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .trust-item__desc {
+      font-size: 18px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
+    }
+    @media (max-width: 1023px) {
+      .trust-section__mountains { left: 80px; width: 720px; height: 231px; }
+      .trust-section__heading { font-size: 26px; min-width: 0; max-width: none; }
+      .trust-item__title { font-size: 19px; }
+      .trust-item__desc { font-size: 15px; }
+    }
+    @media (max-width: 900px) {
+      .trust-section__inner { grid-template-columns: 1fr; gap: 24px; }
+    }
+    @media (max-width: 640px) {
+      .trust-section { padding: 44px 20px; }
+      .trust-section__mountains { left: 20px; width: 420px; height: 135px; }
+      .trust-section__heading { font-size: 22px; }
+      .trust-item__title { font-size: 16px; }
+      .trust-item__desc { font-size: 14px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       TESTIMONIAL
+    ══════════════════════════════════════════════════════════ */
+    .testimonial-section {
+      background: var(--cyan);
+      padding: 0 24px 56px;
+    }
+    .testimonial-section__inner {
+      max-width: 1050px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      gap: 28px;
+    }
+    .testimonial-section__quote-mark {
+      flex-shrink: 0;
+      width: 304px;
+      height: 250px;
+      display: flex;
+      gap: 4px;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    .testimonial-section__quote-mark span {
+      display: block;
+      width: 150px;
+      height: 250px;
+      flex-shrink: 0;
+      background-color: rgba(31, 46, 92, 0.25);
+      -webkit-mask-image: url('quote-mark.png');
+      mask-image: url('quote-mark.png');
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
+    .testimonial-section__text {
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.5;
+      max-width: 720px;
+      margin-top: 90px;
+    }
+    .testimonial-section__by {
+      margin-top: 16px;
+      font-size: 20px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--navy);
+    }
+    @media (max-width: 1023px) {
+      .testimonial-section__quote-mark { width: 204px; height: 166px; }
+      .testimonial-section__quote-mark span { width: 100px; height: 166px; }
+      .testimonial-section__text { font-size: 22px; margin-top: 56px; }
+      .testimonial-section__by { font-size: 16px; }
+    }
+    @media (max-width: 640px) {
+      .testimonial-section { padding: 0 20px 40px; }
+      .testimonial-section__inner { gap: 18px; }
+      .testimonial-section__quote-mark { width: 120px; height: 96px; }
+      .testimonial-section__quote-mark span { width: 58px; height: 96px; }
+      .testimonial-section__text { font-size: 17px; margin-top: 20px; }
+      .testimonial-section__by { font-size: 14px; margin-top: 12px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RESOURCES ("Get more from every product")
+    ══════════════════════════════════════════════════════════ */
+    .resources-promo {
+      background: var(--cream);
+      padding: 99px 24px;
+    }
+    .resources-promo__inner { max-width: 1220px; margin: 0 auto; }
+    .resources-promo__eyebrow {
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--navy);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .resources-promo__title {
+      font-size: 46px;
+      font-weight: 400;
+      color: var(--navy);
+      margin-bottom: 32px;
+    }
+    .resources-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .resource-tile {
+      position: relative;
+      width: 268px;
+      height: 306px;
+      background: var(--white);
+      border-radius: 0;
+      padding: 26px 24px 28px;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+      box-shadow: var(--card-shadow);
+      cursor: pointer;
+    }
+    .resource-tile:hover {
+      background: var(--card-hover);
+      box-shadow: var(--card-shadow-hover);
+      transform: translateY(-2px);
+    }
+    .resource-tile__icon {
+      color: var(--navy);
+      margin-top: 9px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      height: 75px;
+    }
+    .resource-tile__icon img { height: 52px; width: auto; max-width: 83px; display: block; }
+    .resource-tile__title {
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .resource-tile__desc {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--navy);
+      line-height: 1.4;
+    }
+    @media (max-width: 1023px) and (min-width: 641px) {
+      .resources-promo { padding: 80px 24px; }
+      .resources-promo__title { font-size: 34px; }
+      .resource-tile { width: calc(50% - 10px); height: auto; min-height: 260px; }
+      .resource-tile__icon { height: 52px; margin-top: 24px; margin-bottom: 6px; align-items: flex-start; }
+      .resource-tile__icon img[src="video-icon.png"] { width: 58px; height: 35px; }
+      .resource-tile__icon img[src="digital-catalog-icon.png"] { width: 50px; height: 46px; }
+      .resource-tile__icon img[src="educational-materials-icon.png"] { width: 33px; height: 52px; }
+      .resource-tile .resource-tile__icon img[src="document-icon.png"] { width: 33px; height: 44px; }
+    }
+    @media (max-width: 640px) {
+      .resources-promo { padding: 54px 20px; }
+      .resources-promo__eyebrow { font-size: 14px; }
+      .resources-promo__title { font-size: 26px; margin-bottom: 24px; }
+      .resources-grid { gap: 12px; }
+      .resource-tile { width: 100%; height: auto; min-height: 0; padding: 20px 18px 22px; }
+      .resource-tile__icon { height: 36px; margin-top: 17px; margin-bottom: 4px; align-items: flex-start; }
+      .resource-tile__icon img[src="video-icon.png"] { width: 40px; height: 24px; }
+      .resource-tile__icon img[src="digital-catalog-icon.png"] { width: 35px; height: 32px; }
+      .resource-tile__icon img[src="educational-materials-icon.png"] { width: 23px; height: 36px; }
+      .resource-tile .resource-tile__icon img[src="document-icon.png"] { width: 23px; height: 31px; }
+      .resource-tile__title { font-size: 18px; margin-bottom: 6px; }
+      .resource-tile__desc { font-size: 14px; }
+    }
+    @media (min-width: 1024px) {
+      .resource-tile__desc { max-width: 202px; }
+      .resource-tile__icon img[src="video-icon.png"] { width: 83px; height: 51px; }
+      .resource-tile__icon img[src="digital-catalog-icon.png"] { width: 72px; height: 67px; }
+      .resource-tile__icon img[src="educational-materials-icon.png"] { width: 48px; height: 75px; }
+      .resource-tile .resource-tile__icon img[src="document-icon.png"] { width: 47px; height: 64px; }
+
+      /* Hard-pin vertical positions so icon/title alignment can never drift
+         based on any individual icon's height — each element is placed at
+         an exact coordinate from the card's corner instead of being
+         derived from stacked margins/heights. */
+      .resource-tile__icon {
+        position: absolute;
+        top: 35px;
+        left: 24px;
+        margin: 0;
+      }
+      .resource-tile__title {
+        position: absolute;
+        top: 118px;
+        left: 24px;
+        right: 24px;
+        margin: 0;
+      }
+      .resource-tile__desc {
+        position: absolute;
+        top: 195px;
+        left: 24px;
+        right: 24px;
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       CAN'T FIND WHAT YOU NEED
+    ══════════════════════════════════════════════════════════ */
+    .contact-cta {
+      background: var(--off-white);
+      padding: 75px 24px;
+    }
+    .contact-cta__inner {
+      max-width: 1110px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .contact-cta__icon {
+      flex-shrink: 0;
+      width: 150px;
+      height: 150px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--navy);
+    }
+    .contact-cta__icon img { width: 150px; height: 150px; object-fit: contain; }
+    .contact-cta__left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex: 1;
+      min-width: 280px;
+    }
+    .contact-cta__text { flex: 1; min-width: 240px; }
+    .contact-cta__title {
+      font-size: 36px;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 14px;
+    }
+    .contact-cta__desc { font-size: 24px; color: #000000; }
+    .btn-gold {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 48px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 0;
+      padding: 0 24px;
+      font-size: 16px;
+      font-weight: 700;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .btn-gold:hover { background: var(--gold-dark); }
+    .btn-gold:active { background: var(--gold-active); }
+
+    @media (max-width: 1023px) {
+      .contact-cta { padding: 56px 24px; }
+      .contact-cta__icon { width: 110px; height: 110px; }
+      .contact-cta__icon img { width: 110px; height: 110px; }
+      .contact-cta__title { font-size: 28px; }
+      .contact-cta__desc { font-size: 18px; }
+    }
+    @media (max-width: 640px) {
+      .contact-cta { padding: 40px 20px; }
+      .contact-cta__icon { width: 72px; height: 72px; }
+      .contact-cta__icon img { width: 72px; height: 72px; }
+      .contact-cta__left { gap: 14px; min-width: 0; }
+      .contact-cta__title { font-size: 22px; }
+      .contact-cta__desc { font-size: 15px; }
+      .btn-gold { height: 44px; font-size: 14px; padding: 0 20px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════════════ */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.65);
+      padding-top: 48px;
+      margin-top: auto;
+      overflow: hidden;
+    }
+    .footer__top {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 32px 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 44px;
+    }
+    .footer__logo img { height: 130px; }
+
+    .footer__columns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .footer__col { display: flex; flex-direction: column; gap: 14px; max-width: 90%; }
+    .footer__col .footer__col-title {
+      font-weight: 600;
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .footer__col a, .footer__col span {
+      font-size: 20px;
+      font-weight: 400;
+      color: #ffffff;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      display: block;
+    }
+    .footer__col a:hover { opacity: 0.75; text-decoration: underline; }
+    .footer__col button {
+      background: none; border: none; padding: 0; text-align: left;
+      font-size: 20px; font-weight: 400; color: #ffffff;
+      transition: opacity 0.15s; font-family: inherit;
+    }
+    .footer__col button:hover { opacity: 0.75; text-decoration: underline; }
+    .footer__contact-row {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .footer__contact-row svg { flex-shrink: 0; color: #ffffff; }
+
+    .footer__watermark {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 4px 32px 8px;
+      box-sizing: border-box;
+    }
+    .footer__watermark-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+    }
+    .footer__bottom {
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding: 18px 32px 22px;
+      max-width: 1440px;
+      margin: 0 auto;
+      font-size: 14px;
+      color: #ffffff;
+    }
+
+    @media (max-width: 1023px) {
+      .footer__columns { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .footer__logo img { height: 92px; }
+    }
+    @media (max-width: 768px) {
+      .navbar__inner { padding: 0 16px; }
+      .navbar__logo img { height: 44px; }
+      .hero__content { padding: 40px 18px 44px; }
+      .hero__panel { padding: 20px 18px 18px; }
+      .section { padding: 40px 18px; }
+      .footer__top { padding: 0 20px 32px; gap: 32px; }
+      .footer__logo img { height: 56px; }
+      .footer__columns { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .footer__col .footer__col-title { font-size: 16px; }
+      .footer__col a, .footer__col span, .footer__col button { font-size: 14px; }
+      .footer__watermark { padding-left: 20px; padding-right: 20px; }
+      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 12px; }
+      footer { padding-top: 36px; }
+      .contact-cta__inner { flex-direction: column; align-items: flex-start; }
+    }
 
     /* ── Mobile menu ── */
     .mobile-menu {
@@ -460,105 +1276,557 @@
       align-items: stretch;
     }
     .mobile-menu.open { display: flex; }
-    .mobile-menu__backdrop {
-      flex: 0 0 18%;
-      min-width: 48px;
-      cursor: pointer;
-    }
+    .mobile-menu__backdrop { flex: 0 0 18%; min-width: 48px; cursor: pointer; }
     .mobile-menu__panel {
-      flex: 1;
-      background: var(--white);
-      display: flex;
-      flex-direction: column;
-      padding: 24px;
-      overflow-y: auto;
-      max-width: 82vw;
+      flex: 1; background: var(--white); display: flex; flex-direction: column;
+      padding: 24px; overflow-y: auto; max-width: 82vw;
     }
-    .mobile-menu__header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
+    .mobile-menu__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
     .mobile-menu__header img { height: 48px; }
-    .mobile-menu__close {
-      background: none; border: none;
-      color: var(--navy); display: flex; align-items: center;
-    }
-    .mobile-menu__panel nav {
-      display: flex; flex-direction: column; width: 100%;
-    }
-    .mobile-menu__panel nav a,
-    .mobile-menu__panel nav .mobile-nav-toggle {
+    .mobile-menu__close { background: none; border: none; color: var(--navy); display: flex; align-items: center; }
+    .mobile-menu__panel nav { display: flex; flex-direction: column; width: 100%; }
+    .mobile-menu__panel nav a {
       display: flex; justify-content: space-between; align-items: center;
       font-weight: 600; font-size: 18px; padding: 16px 0;
       border-bottom: 1px solid var(--border); color: var(--text);
-      background: none; border-left: none; border-right: none; border-top: none;
-      width: 100%; text-align: left; cursor: pointer; text-decoration: none;
+      text-decoration: none;
     }
-    .mobile-nav-row {
-      display: flex; align-items: center;
-      border-bottom: 1px solid var(--border);
-    }
-    .mobile-nav-link {
-      flex: 1; font-weight: 600; font-size: 18px;
-      padding: 16px 0; color: var(--text);
-      display: block; text-decoration: none;
-    }
-    .mobile-nav-chevron {
-      background: none; border: none; padding: 16px 8px;
-      cursor: pointer; display: flex; align-items: center; color: var(--navy);
-    }
-    .mobile-nav-chevron .chevron, .mobile-nav-toggle .chevron {
-      width: 16px; height: 16px; stroke: var(--navy); fill: none;
-      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
-      transition: transform 0.2s;
-    }
-    .mobile-nav-chevron.open .chevron,
-    .mobile-nav-toggle.open .chevron { transform: rotate(180deg); }
-    .mobile-submenu {
-      display: none; flex-direction: column;
-      padding: 4px 0 4px 16px;
-      border-bottom: 1px solid var(--border);
-    }
+    .mobile-nav-row { display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+    .mobile-nav-link { flex: 1; font-weight: 600; font-size: 18px; padding: 16px 0; color: var(--text); display: block; text-decoration: none; }
+    .mobile-nav-chevron { background: none; border: none; padding: 16px 8px; cursor: pointer; display: flex; align-items: center; color: var(--navy); }
+    .mobile-nav-chevron .chevron { width: 16px; height: 16px; stroke: var(--navy); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s; }
+    .mobile-nav-chevron.open .chevron { transform: rotate(180deg); }
+    .mobile-submenu { display: none; flex-direction: column; padding: 4px 0 4px 16px; border-bottom: 1px solid var(--border); }
     .mobile-submenu.open { display: flex; }
-    .mobile-submenu a {
-      font-size: 13px; font-weight: 500; color: var(--muted);
-      padding: 10px 0; border-bottom: 1px solid #f0f0f0;
-      text-decoration: none; display: block;
-    }
+    .mobile-submenu a { font-size: 13px; font-weight: 500; color: var(--muted); padding: 10px 0; border-bottom: 1px solid #f0f0f0; text-decoration: none; display: block; }
     .mobile-submenu a:last-child { border-bottom: none; }
-/* ── Type panel (3rd level flyout) ── */
-    .dd-type-list {
-      display: none;
-      position: fixed;
-      min-width: 200px;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-      padding: 6px;
-      z-index: 10002;
+
+  
+
+    /* ══════════════════════════════════════════════════════════
+       PRODUCTS PAGE — active nav state
+    ══════════════════════════════════════════════════════════ */
+    :root {
+      --coral: #F2705C;
+      --page-cream: #F7B6000D;
+      --peak-navy: #1F2E5C;
+    }
+    .nav-group > a.active,
+    .nav-dropdown > a.active { color: var(--coral); }
+
+    body.products-page { background: var(--page-cream); transition: background 0.15s ease; }
+    body.products-page.is-filtered { background: #F2F3F5; }
+    body.products-page.is-empty { background: var(--white); }
+    body.products-page.is-expert-help { background: var(--white); }
+
+    /* ── Page header ── */
+    .page-header {
+      position: relative;
+      overflow: visible;
+      width: 100%;
+      padding: 28px 40px 8px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .page-header__float {
+      position: absolute;
+      top: -8px;
+      right: 20px;
+      width: 48%;
+      max-width: 560px;
+      min-width: 260px;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .page-header__float img {
+      width: 100%;
+      height: auto;
+      max-width: 1174px;
+      max-height: 193px;
+      display: block;
+      margin-left: auto;
+      /* The source photo itself is hard-clipped at its own canvas edge
+         (grip end + CE mark get sliced off in the file, not by us), so
+         a straight crop just moves the "cut off" look elsewhere. Fading
+         the right edge out instead means it reads as the image trailing
+         off, not as something being chopped. */
+      -webkit-mask-image: linear-gradient(to right, #000 0%, #000 62%, transparent 82%);
+      mask-image: linear-gradient(to right, #000 0%, #000 62%, transparent 82%);
+    }
+    .breadcrumb {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .breadcrumb a { color: var(--muted); }
+    .breadcrumb a:hover { color: var(--blue); }
+    .breadcrumb span.sep { color: #c9c9c9; }
+    .breadcrumb span.current { color: var(--navy); font-weight: 600; }
+    .page-header h1 {
+      position: relative;
+      z-index: 2;
+      font-size: 48px;
+      font-weight: 600;
+      color: var(--peak-navy);
+    }
+
+    /* ── Layout ── */
+    .products-layout {
+      display: grid;
+      width: 100%;
+      grid-template-columns: 240px 1fr;
+      gap: 32px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 8px 40px 60px;
+      align-items: start;
+    }
+
+    /* ── Flat sidebar ── */
+    .sidebar-flat {
+      position: sticky;
+      top: 88px;
+      display: flex;
       flex-direction: column;
       gap: 2px;
     }
-    .dd-type-list.open { display: flex; }
-    .dd-type-list::before {
-      content: '';
+    .sidebar-flat__title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--peak-navy);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    #sidebar-cats { display: contents; }
+    .sidebar-flat__link {
+      display: block;
+      padding: 8px 12px;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--peak-navy);
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .sidebar-flat__link:hover { color: var(--blue); }
+    .sidebar-flat__subs {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 2px 0 6px 22px;
+    }
+    .sidebar-flat__sub {
+      display: block;
+      padding: 6px 12px;
+      margin: 1px 0;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--peak-navy);
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .sidebar-flat__sub:hover { color: var(--blue); }
+    .sidebar-flat__types {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 2px 0 6px 22px;
+    }
+    .sidebar-flat__type {
+      display: block;
+      padding: 5px 12px;
+      margin: 1px 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--peak-navy);
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .sidebar-flat__type:hover { color: var(--blue); }
+
+    /* The pill always marks the single deepest level currently selected —
+       category, sub-category, or type — never more than one at once. */
+    .sidebar-flat__link.current,
+    .sidebar-flat__sub.current,
+    .sidebar-flat__type.current {
+      background: var(--coral);
+      color: var(--white);
+      font-weight: 700;
+    }
+    .sidebar-flat__link.current:hover,
+    .sidebar-flat__sub.current:hover,
+    .sidebar-flat__type.current:hover { color: var(--white); }
+
+    /* ── Main header ── */
+    .products-main { min-width: 0; padding-top: 4px; }
+    .products-main__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-start;
+      gap: 18px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .products-main__title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #000;
+    }
+    .products-main__link {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--peak-navy);
+      text-decoration: underline;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .products-main__link:hover { color: var(--blue); }
+
+    /* ── Search row (search bar + count) ── */
+    .products-search-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .products-count {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--peak-navy);
+      white-space: nowrap;
+      display: none;
+    }
+    .products-count.is-visible { display: block; }
+
+    /* ── Search bar ── */
+    .products-search {
+      position: relative;
+      max-width: 570px;
+      margin-bottom: 0;
+      flex: 1 1 320px;
+    }
+    .products-search input {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px 0 42px;
+      border: 1.5px solid #000;
+      border-radius: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text);
+      background: var(--white);
+    }
+    .products-search input::placeholder { color: rgba(0,0,0,0.50); font-weight: 400; }
+    .products-search input:focus { outline: none; border-color: var(--blue); }
+    .products-search__icon {
       position: absolute;
-      top: 0; bottom: 0;
-      left: -8px; width: 8px;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      opacity: 0.5;
+      pointer-events: none;
     }
 
-    .dd-cat-row.sub-active .dd-sub-link { background: #e4edf6; color: var(--blue); }
-    .dd-cat-row.sub-active .dd-cat-chevron { background: #e4edf6; }
-    .dd-cat-row.sub-active .dd-cat-chevron svg { stroke: var(--blue); }
-  </style>
-</head>
-<body>
+    /* ── Category grid (landing view) ── */
+    .category-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .category-card {
+      width: 330px;
+      height: 330px;
+      display: flex;
+      flex-direction: column;
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.40);
+      border-radius: 0;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      overflow: hidden;
+    }
+    .category-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+      border-color: rgba(0,0,0,0.55);
+    }
+    .category-card__img {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: var(--white);
+    }
+    .category-card__img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .category-card__img .no-img {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-align: center;
+    }
+    .category-card__name {
+      flex: 0 0 auto;
+      padding: 14px 16px 18px;
+      font-weight: 600;
+      font-size: 18px;
+      color: #000;
+      line-height: 1.3;
+    }
 
-  <!-- ── NAVBAR ── -->
-  <header class="navbar">
+    /* ── Product grid (filtered / search / browse-all view) ── */
+    .product-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .product-card {
+      width: 330px;
+      height: 330px;
+      display: flex;
+      flex-direction: column;
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.40);
+      border-radius: 0;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      overflow: hidden;
+    }
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+      border-color: rgba(0,0,0,0.55);
+    }
+    .product-card__img {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: var(--white);
+    }
+    .product-card__img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .product-card__img .no-img {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-align: center;
+    }
+    .product-card__body { flex: 0 0 auto; padding: 14px 16px 18px; }
+    .product-card__name { font-weight: 600; font-size: 18px; color: #000; margin-bottom: 5px; line-height: 1.3; }
+    .product-card__sku { font-size: 12px; color: var(--muted); }
+
+    .empty-state {
+      width: 100%;
+      max-width: 620px;
+      padding: 24px 0 60px;
+    }
+    .empty-state__title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--peak-navy);
+      margin-bottom: 12px;
+    }
+    .empty-state__desc {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .empty-state__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .empty-state__card {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1 1 220px;
+      min-width: 200px;
+      background: #FEF9E6;
+      padding: 16px 20px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .empty-state__card:hover { background: #FBEFC4; }
+    .empty-state__card-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--peak-navy);
+    }
+    .empty-state__card-title svg {
+      width: 14px; height: 14px;
+      stroke: var(--peak-navy);
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .empty-state__card-sub {
+      font-size: 12px;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    /* ── Get Expert Help form ── */
+    .expert-help {
+      width: 100%;
+      max-width: 620px;
+      padding: 24px 0 60px;
+    }
+    .expert-help__title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--peak-navy);
+      margin-bottom: 10px;
+    }
+    .expert-help__desc {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 28px;
+      max-width: 520px;
+    }
+    .eh-group { margin-bottom: 20px; }
+    .eh-row { display: flex; gap: 16px; }
+    .eh-row--labeled { margin-bottom: 20px; }
+    .eh-field { flex: 1 1 0; min-width: 0; }
+    .eh-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--peak-navy);
+      margin-bottom: 6px;
+    }
+    .eh-input {
+      width: 100%;
+      height: 46px;
+      padding: 0 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text);
+      background: var(--white);
+      box-sizing: border-box;
+    }
+    .eh-row .eh-input { flex: 1 1 0; min-width: 0; }
+    .eh-input::placeholder { color: rgba(0,0,0,0.4); font-weight: 400; }
+    .eh-input:focus { outline: none; border-color: var(--blue); }
+    .eh-input.eh-input--error { border-color: #D6392B; }
+    .eh-input.eh-input--error:focus { border-color: #D6392B; }
+    .eh-error {
+      display: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: #D6392B;
+      margin-top: 6px;
+    }
+    .eh-error.visible { display: block; }
+    .eh-textarea {
+      height: auto;
+      min-height: 110px;
+      padding: 12px 14px;
+      resize: vertical;
+      line-height: 1.5;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .eh-searched-for {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--peak-navy);
+      background: #F2F3F5;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+    }
+    .eh-searched-for strong { font-weight: 700; }
+    .eh-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      padding: 0 28px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 0;
+      font-size: 15px;
+      font-weight: 700;
+      transition: background 0.15s;
+    }
+    .eh-submit:hover { background: var(--gold-dark); }
+    .eh-submit:active { background: var(--gold-active); }
+
+    .expert-help__confirmation { padding-top: 12px; }
+
+    @media (max-width: 640px) {
+      .eh-row { flex-direction: column; gap: 16px; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1100px) {
+      .page-header { padding: 24px 28px 8px; }
+      .products-layout { padding: 8px 28px 48px; grid-template-columns: 200px 1fr; gap: 24px; }
+      .page-header__float { width: 50%; top: -8px; }
+      .page-header h1 { font-size: 40px; }
+      .category-card, .product-card { width: 260px; height: 260px; }
+    }
+
+    @media (max-width: 860px) {
+      .products-layout { grid-template-columns: 1fr; }
+      .sidebar-flat {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px 20px;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .sidebar-flat__title { width: 100%; margin-bottom: 4px; }
+      .sidebar-flat__subs { width: 100%; padding-left: 12px; }
+      .sidebar-flat__types { width: 100%; padding-left: 12px; }
+      .page-header__float { position: static; width: 60%; max-width: 320px; margin: 12px auto 0; }
+      .page-header { padding: 20px 20px 4px; overflow: visible; }
+      .page-header h1 { font-size: 32px; }
+    }
+
+    @media (max-width: 640px) {
+      .products-layout { padding: 8px 16px 40px; }
+      .category-grid, .product-grid { gap: 12px; }
+      .products-main__header { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .category-card, .product-card { width: calc(50% - 6px); height: auto; aspect-ratio: 1 / 1; }
+    }
+
+    @media (max-width: 420px) {
+      .category-card, .product-card { width: 100%; }
+    }
+
+  </style>
+<body class="products-page">
+<header class="navbar">
+  <div class="navbar__inner">
     <a href="index.html" class="navbar__logo">
       <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" />
     </a>
@@ -567,69 +1835,99 @@
       <!-- Desktop -->
       <nav class="navbar__desktop">
         <div class="nav-group">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
           <div class="nav-dropdown" id="dd-products-desktop">
-            <a href="products.html" class="active">Products
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </a>
-            <div class="dropdown-menu" id="nav-dd-desktop-products"></div>
-          </div>
-          <div class="nav-dropdown" id="dd-resources-desktop">
-            <a href="resources.html">Resources
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </a>
-            <div class="dropdown-menu">
-              <a href="video-archive.html">Video Archive</a>
-              <a href="pdf-catalogs.html">PDF Catalogs</a>
-              <a href="education-materials.html">Education Materials</a>
-              <a href="product-ifus.html">Product IFUs</a>
+            <a href="products.html" class="active">Products</a>
+            <div class="mega-menu mega-menu--products">
+              <div class="mega-menu__panel">
+                <div class="mega-col mega-col--1" id="mega-products-desktop-col1"></div>
+                <div class="mega-col mega-col--2" id="mega-products-desktop-col2"></div>
+                <div class="mega-col mega-col--3" id="mega-products-desktop-col3"></div>
+              </div>
             </div>
           </div>
-          <a href="contact.html">Contact Us</a>
+          <div class="nav-dropdown" id="dd-resources-desktop">
+            <a href="resources.html">Resources</a>
+            <div class="mega-menu mega-menu--resources">
+              <div class="mega-menu__panel">
+                <div class="mega-resources__list">
+                  <div class="mega-resources__header">Resources</div>
+                  <a href="video-archive.html">Video Archive</a>
+                  <a href="pdf-catalogs.html">Digital Catalogs</a>
+                  <a href="education-materials.html">Educational Materials</a>
+                  <a href="product-ifus.html">Product IFUs</a>
+                </div>
+                <div class="mega-resources__promo">
+                  <div class="mega-resources__eyebrow">PEAK Products</div>
+                  <div class="mega-resources__title">Built for the Surgeon</div>
+                  <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                  <div class="mega-resources__mountain"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
         </div>
+        <button class="nav-search-link" onclick="window.location.href='products.html'" aria-label="Search">
+          <img class="nav-search-icon" src="Magnify.png" alt="" />
+          Search
+        </button>
       </nav>
 
       <!-- Tablet -->
       <nav class="navbar__tablet">
         <div class="nav-group">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
           <div class="nav-dropdown" id="dd-products-tablet">
-            <a href="products.html" class="active">Products
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </a>
-            <div class="dropdown-menu" id="nav-dd-tablet-products"></div>
-          </div>
-          <div class="nav-dropdown" id="dd-resources-tablet">
-            <a href="resources.html">Resources
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </a>
-            <div class="dropdown-menu">
-              <a href="video-archive.html">Video Archive</a>
-              <a href="pdf-catalogs.html">PDF Catalogs</a>
-              <a href="education-materials.html">Education Materials</a>
-              <a href="product-ifus.html">Product IFUs</a>
+            <a href="products.html" class="active">Products</a>
+            <div class="mega-menu mega-menu--products">
+              <div class="mega-menu__panel">
+                <div class="mega-col mega-col--1" id="mega-products-tablet-col1"></div>
+                <div class="mega-col mega-col--2" id="mega-products-tablet-col2"></div>
+                <div class="mega-col mega-col--3" id="mega-products-tablet-col3"></div>
+              </div>
             </div>
           </div>
-          <a href="contact.html">Contact Us</a>
+          <div class="nav-dropdown" id="dd-resources-tablet">
+            <a href="resources.html">Resources</a>
+            <div class="mega-menu mega-menu--resources">
+              <div class="mega-menu__panel">
+                <div class="mega-resources__list">
+                  <div class="mega-resources__header">Resources</div>
+                  <a href="video-archive.html">Video Archive</a>
+                  <a href="pdf-catalogs.html">Digital Catalogs</a>
+                  <a href="education-materials.html">Educational Materials</a>
+                  <a href="product-ifus.html">Product IFUs</a>
+                </div>
+                <div class="mega-resources__promo">
+                  <div class="mega-resources__eyebrow">PEAK Products</div>
+                  <div class="mega-resources__title">Built for the Surgeon</div>
+                  <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                  <div class="mega-resources__mountain"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
         </div>
       </nav>
     </div>
 
     <div class="navbar__right">
-      <button class="btn-quote">Get A Quote
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <button class="btn-quote">
+        <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
+        Quote Cart
       </button>
       <div class="navbar__mobile">
         <button class="cart-btn" aria-label="Cart">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
         </button>
         <button class="hamburger" aria-label="Open menu" onclick="openMenu()">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
       </div>
     </div>
+  </div>
   </header>
 
   <!-- Mobile menu -->
@@ -644,9 +1942,8 @@
       </div>
       <nav>
         <a href="index.html">Home</a>
-        <a href="about.html">About</a>
         <div class="mobile-nav-row">
-          <a href="products.html" class="mobile-nav-link">Products</a>
+          <a href="products.html" class="mobile-nav-link active">Products</a>
           <button class="mobile-nav-chevron" id="mob-toggle-products" onclick="toggleMobileSubmenu('mob-products','mob-toggle-products')">
             <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
@@ -664,677 +1961,540 @@
           <a href="education-materials.html">Education Materials</a>
           <a href="product-ifus.html">Product IFUs</a>
         </div>
+        <a href="about.html">About</a>
         <a href="contact.html">Contact Us</a>
       </nav>
     </div>
   </div>
 
-  <!-- ── HERO ── -->
-  <div class="page-hero">
-    <div class="page-hero__bg"></div>
+  <!-- ══════════════════════════════════════════════════════════
+       PAGE HEADER
+  ══════════════════════════════════════════════════════════ -->
+  <div class="page-header">
+    <div class="page-header__float"><img src="floating-item.svg" alt="" /></div>
+    <div class="breadcrumb" id="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="sep">&gt;</span>
+      <a href="products.html" id="bc-products-link" onclick="resetToLanding(); return false;" style="display:none;">Products</a>
+      <span class="sep" id="bc-products-sep" style="display:none;">&gt;</span>
+      <span id="bc-mid" style="display:none;"></span>
+      <span class="sep" id="bc-mid-sep" style="display:none;">&gt;</span>
+      <span class="current" id="bc-current">Products</span>
+    </div>
     <h1>Products</h1>
   </div>
 
-  <!-- ── BREADCRUMB ── -->
-  <div class="breadcrumb" id="breadcrumb">
-    <a href="index.html">Home</a><span>›</span>
-    <a href="products.html">Products</a>
-    <span id="bc-cat-sep" style="display:none">›</span>
-    <a href="#" id="bc-cat" style="color:var(--muted);display:none;"></a>
-    <span id="bc-sub-sep" style="display:none">›</span>
-    <a href="#" id="bc-sub" style="color:var(--muted);display:none;"></a>
-    <span id="bc-type-sep" style="display:none">›</span>
-    <span id="bc-type" style="display:none;"></span>
-    <span id="bc-all" style="">All Products</span>
-  </div>
-
-  <!-- ── MAIN LAYOUT ── -->
+  <!-- ══════════════════════════════════════════════════════════
+       LAYOUT
+  ══════════════════════════════════════════════════════════ -->
   <div class="products-layout">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="sidebar__title">Product Categories</div>
-      <button class="all-products-btn active" id="btn-all" onclick="filterAll()">All Products</button>
-      <div id="category-tree"></div>
+    <aside class="sidebar-flat">
+      <div class="sidebar-flat__title">Product Categories</div>
+      <div id="sidebar-cats"></div>
     </aside>
 
-    <!-- PRODUCTS AREA -->
     <main class="products-main">
       <div class="products-main__header">
-        <h2 class="products-main__title" id="section-title">All Products</h2>
-        <span class="products-count" id="product-count"></span>
+        <h2 class="products-main__title" id="section-title">Products</h2>
+        <a class="products-main__link" id="browse-all-link" onclick="browseAllProducts()">Browse All Products</a>
       </div>
 
-      <div class="products-search">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="search-input" placeholder="Search Products by Name, Description, or SKU" oninput="applyFilters()" />
+      <div class="products-search-row">
+        <div class="products-search">
+          <svg class="products-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="search-input" placeholder="Search products by name or SKU" oninput="onSearchInput()" />
+        </div>
+        <div class="products-count" id="products-count"></div>
       </div>
 
-      <div class="product-grid" id="product-grid"></div>
+      <!-- Category cards (landing view) -->
+      <div class="category-grid" id="category-grid"></div>
+
+      <!-- Individual products (filtered / search / browse-all view) -->
+      <div class="product-grid" id="product-grid" style="display:none;"></div>
+
+      <!-- "Get Expert Help" — Product Specialist request form -->
+      <div class="expert-help" id="expert-help" style="display:none;">
+
+        <div class="expert-help__form-wrap" id="expert-help-form-wrap">
+          <h2 class="expert-help__title">Let us help you find it.</h2>
+          <p class="expert-help__desc">Tell us what you're looking for and a PEAK representative will help you identify the right instrument.</p>
+
+          <form id="expert-help-form" onsubmit="submitExpertHelp(event)" novalidate>
+            <div class="eh-group">
+              <label class="eh-label">Name *</label>
+              <div class="eh-row">
+                <input class="eh-input" type="text" id="eh-first-name" placeholder="First Name" required />
+                <input class="eh-input" type="text" id="eh-last-name" placeholder="Last Name" required />
+              </div>
+            </div>
+
+            <div class="eh-row eh-row--labeled">
+              <div class="eh-field">
+                <label class="eh-label">Email *</label>
+                <input class="eh-input" type="text" inputmode="email" id="eh-email" placeholder="Email" required oninput="onEmailInput()" onblur="validateEmailField()" />
+                <span class="eh-error" id="eh-email-error">Must be a valid email</span>
+              </div>
+              <div class="eh-field">
+                <label class="eh-label">Phone Number *</label>
+                <input class="eh-input" type="tel" id="eh-phone" placeholder="XXX-XXX-XXXX" maxlength="12" required oninput="onPhoneInput(this)" onblur="validatePhoneField()" />
+                <span class="eh-error" id="eh-phone-error">Must be a valid phone number of the format "XXX-XXX-XXXX"</span>
+              </div>
+            </div>
+
+            <div class="eh-row eh-row--labeled">
+              <div class="eh-field">
+                <label class="eh-label">Hospital / Facility *</label>
+                <input class="eh-input" type="text" id="eh-facility" placeholder="Hospital / Facility" required />
+              </div>
+              <div class="eh-field">
+                <label class="eh-label">Title / Position *</label>
+                <input class="eh-input" type="text" id="eh-position" placeholder="Title / Position" required />
+              </div>
+            </div>
+
+            <div class="eh-group">
+              <label class="eh-label">Product name or SKU, if known</label>
+              <input class="eh-input" type="text" id="eh-sku" placeholder="Product name or SKU, if known" />
+            </div>
+
+            <div class="eh-searched-for" id="eh-searched-for" style="display:none;">
+              You searched for: <strong id="eh-searched-for-value"></strong>
+            </div>
+
+            <div class="eh-group">
+              <label class="eh-label">What are you looking for? *</label>
+              <textarea class="eh-input eh-textarea" id="eh-message" placeholder="Tell us what you're looking for, including instrument type, size, style or any details you know." required></textarea>
+            </div>
+
+            <button type="submit" class="eh-submit">Send to a Product Specialist</button>
+          </form>
+        </div>
+
+        <div class="expert-help__confirmation" id="expert-help-confirmation" style="display:none;">
+          <h2 class="expert-help__title">Thanks – your request has been sent.</h2>
+          <p class="expert-help__desc">A PEAK representative will be in touch.</p>
+        </div>
+
+      </div>
     </main>
+
   </div>
 
-  <!-- ── FOOTER ── -->
   <footer>
-    <div class="footer__inner">
+    <div class="footer__top">
 
-      <!-- Col 1: Primary nav links -->
-      <div class="footer__col">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact Us</a>
+      <div class="footer__logo">
+        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" style="filter:brightness(0) invert(1);" />
       </div>
 
-      <!-- Col 2: Products categories — populated dynamically from products.json -->
-      <div class="footer__col">
-        <a href="products.html" style="color:rgba(255,255,255,0.9);font-weight:700;font-size:13px;display:block;margin-bottom:2px;text-decoration:none;">Products</a>
-        <div id="footer-products-col" style="display:contents;"></div>
-      </div>
+      <div class="footer__columns">
 
-      <!-- Col 3: Resources -->
-      <div class="footer__col">
-        <a href="resources.html" style="color:rgba(255,255,255,0.9);font-weight:700;font-size:13px;display:block;margin-bottom:2px;text-decoration:none;">Resources</a>
-        <a href="video-archive.html">Video Archive</a>
-        <a href="pdf-catalogs.html">PDF Catalogs</a>
-        <a href="education-materials.html">Education Materials</a>
-        <a href="product-ifus.html">Product IFUs</a>
-      </div>
+        <div class="footer__col">
+          <span class="footer__col-title">Products</span>
+          <div id="footer-products-col" style="display:contents;"></div>
+        </div>
 
-      <!-- Copyright -->
-      <div class="footer__copyright">
-        <span>© Copyright 2026 PEAK Medical Distribution INC.<br>Glen Ellyn, IL</span>
-        <span>Phone: 630 - 520 - 5023 &nbsp; Fax: 866 - 557 - 8437</span>
+        <div class="footer__col">
+          <span class="footer__col-title">Resources</span>
+          <a href="pdf-catalogs.html">Digital Catalogs</a>
+          <a href="education-materials.html">Educational Materials</a>
+          <a href="product-ifus.html">Product IFUs</a>
+          <a href="video-archive.html">Video Archive</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">About</span>
+          <a href="about.html">Our Story</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">Support</span>
+          <button onclick="cartOpenModal()">Get a Quote</button>
+          <a href="contact.html">Contact Us</a>
+          <div style="height:4px; width:75%; border-top:1px solid rgba(255,255,255,0.2); margin-top:8px;"></div>
+          <div style="height:6px;"></div>
+          <span>info@peakmdi.com</span>
+          <span>630-520-5023</span>
+          <span>866-557-8437 (Fax)</span>
+        </div>
+
       </div>
 
     </div>
-  </footer>
 
+    <div class="footer__watermark">
+      <svg class="footer__watermark-svg" viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.4)">BUILT FOR THE SURGEON</text>
+      </svg>
+    </div>
+
+    <div class="footer__bottom">
+      ©2026 PEAK Medical Distribution, Inc. &bull; Glen Ellyn, IL
+    </div>
+  </footer>
   <script>
-    // ── State ──────────────────────────────────────────────────
+
+    /* ══════════════════════════════════════════════════════════
+       STATE
+    ══════════════════════════════════════════════════════════ */
     let allProducts = [];
+    let categories = [];               // distinct categories, first-seen order
+    let categorySubMap = {};           // category -> [subcategory, ...] first-seen order
+    let subTypeMap = {};               // "category||subcategory" -> [type, ...] first-seen order
     let activeCategory = null;
     let activeSubcategory = null;
     let activeType = null;
+    let showAllFlag = false;
+    let _ehSearchQuery = '';   // search text carried into the Get Expert Help form
 
-    // ── Load products.json ─────────────────────────────────────
+    const CATEGORY_THUMBS = [
+      { match: /scissor/i,   file: 'scissors-category.svg' },
+      { match: /rongeur/i,   file: 'rongeurs-category.svg' },
+      { match: /retractor/i, file: 'retractors-category.svg' },
+      { match: /trocar/i,    file: 'trocar-category.svg' },
+      { match: /robot/i,     file: 'robotics-category.svg' }
+    ];
+
+    function getCategoryThumb(cat) {
+      const hit = CATEGORY_THUMBS.find(t => t.match.test(cat));
+      return hit ? hit.file : null;
+    }
+
+    // Resolve a category's thumbnail: a curated brand SVG if we have one,
+    // otherwise the image from the first product added to that category
+    // (matches products.json order), otherwise none.
+    function getCategoryImage(cat) {
+      const thumb = getCategoryThumb(cat);
+      if (thumb) return thumb;
+      const firstWithImage = allProducts.find(p => p.category === cat && p.image);
+      return firstWithImage ? imgSrc(firstWithImage.image) : null;
+    }
+
+    // Subcategory labels in the data repeat the category name
+    // ("PremiumCut Scissors" under "Scissors") — trim that for display.
+    function stripCategorySuffix(sub, cat) {
+      if (!sub) return sub;
+      if (!cat) return sub;
+      const re = new RegExp('\\s*' + cat.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*$', 'i');
+      const stripped = sub.replace(re, '').trim();
+      return stripped || sub;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       LOAD
+    ══════════════════════════════════════════════════════════ */
     async function loadProducts() {
       try {
         const res = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const text = await res.text();
-        try {
-          allProducts = JSON.parse(text);
-        } catch(parseErr) {
-          throw new Error('JSON parse error: ' + parseErr.message);
-        }
-        buildCategoryTree();
-        populateNavDropdowns();
-        applyURLParams();
-        applyActiveStatesToTree();
-        applyFilters();
+        allProducts = await res.json();
       } catch (e) {
         console.error('loadProducts error:', e);
-        document.getElementById('product-grid').innerHTML =
-          `<div class="empty-state"><p>Could not load products.json: ${e.message}</p><p style="font-size:12px;color:#aaa;margin-top:8px;">Check the browser console (F12) for details.</p></div>`;
-      }
-    }
-
-    // ── Populate nav dropdowns from live product data ───────────
-    function populateNavDropdowns() {
-      const tree = {};
-      allProducts.forEach(p => {
-        if (!tree[p.category]) tree[p.category] = {};
-        if (p.subcategory) {
-          if (!tree[p.category][p.subcategory]) tree[p.category][p.subcategory] = new Set();
-          if (p.type) tree[p.category][p.subcategory].add(p.type);
-        }
-      });
-
-      function buildDropdownHTML(tree) {
-        // Remove any stale type panels from previous builds
-        document.querySelectorAll('.dd-type-list').forEach(el => el.remove());
-
-        // Build HTML string only — no DOM manipulation here
-        return Object.entries(tree).map(([cat, subs]) => {
-          const catURL  = `products.html?cat=${encodeURIComponent(cat)}`;
-          const catId   = 'navdd-' + cat.replace(/\s+/g, '_');
-          const hasSubs = Object.keys(subs).length > 0;
-
-          let h = `<div class="dd-cat-row">
-            <a class="dd-cat-link" href="${catURL}">${cat}</a>
-            ${hasSubs ? `<button class="dd-cat-chevron" onclick="toggleNavSub(event,'${catId}')">
-              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>` : ''}
-          </div>`;
-
-          if (hasSubs) {
-            h += `<div class="dd-sub-list" id="${catId}">`;
-            Object.keys(subs).forEach(sub => {
-              const types    = subs[sub];
-              const subURL   = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
-              const subId    = 'navtype-' + cat.replace(/\s+/g,'_') + '__' + sub.replace(/\s+/g,'_');
-              const hasTypes = types.size > 0;
-              h += `<div class="dd-cat-row">
-                <a class="dd-sub-link" href="${subURL}">${sub}</a>
-                ${hasTypes ? `<button class="dd-cat-chevron dd-type-chevron" data-typeid="${subId}" onclick="toggleNavType(event,'${subId}')">
-                  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>` : ''}
-              </div>`;
-            });
-            h += `</div>`;
-          }
-          return h;
-        }).join('');
-      }
-
-      function buildTypePanels(tree) {
-        // Called AFTER innerHTML is set — creates body-level type panels
-        document.querySelectorAll('.dd-type-list').forEach(el => el.remove());
-        Object.entries(tree).forEach(([cat, subs]) => {
-          Object.keys(subs).forEach(sub => {
-            const types = subs[sub];
-            if (!types.size) return;
-            const subId = 'navtype-' + cat.replace(/\s+/g,'_') + '__' + sub.replace(/\s+/g,'_');
-            const panel = document.createElement('div');
-            panel.className = 'dd-type-list';
-            panel.id = subId;
-            [...types].forEach(type => {
-              const a = document.createElement('a');
-              a.className = 'dd-sub-link';
-              a.href = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}`;
-              a.textContent = type;
-              panel.appendChild(a);
-            });
-            document.body.appendChild(panel);
-          });
-        });
-      }
-
-      function buildMobileHTML(tree) {
-        return Object.entries(tree).map(([cat, subs]) => {
-          const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
-          let h = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
-          Object.keys(subs).forEach(sub => {
-            const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
-            h += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
-          });
-          return h;
-        }).join('');
-      }
-
-      const ddHTML  = buildDropdownHTML(tree);
-      const mobHTML = buildMobileHTML(tree);
-      const desktopDD = document.getElementById('nav-dd-desktop-products');
-      const tabletDD  = document.getElementById('nav-dd-tablet-products');
-      const mobileDD  = document.getElementById('mob-products');
-      if (desktopDD) desktopDD.innerHTML = ddHTML;
-      if (tabletDD)  tabletDD.innerHTML  = ddHTML;
-      if (mobileDD)  mobileDD.innerHTML  = mobHTML;
-      buildTypePanels(tree);
-
-      // Now that dropdown DOM exists, apply active states from URL
-      highlightNavDropdown();
-    }
-
-    // ── Highlight active category/subcategory in nav dropdown ──
-    function highlightNavDropdown() {
-      const params = new URLSearchParams(window.location.search);
-      const cat  = params.get('cat');
-      const sub  = params.get('sub');
-      const type = params.get('type');
-      if (!cat) return;
-
-      // Only mark active states on links — never force-open sub-lists or type panels.
-      // The dropdown should always open fresh on hover; active state = blue text only.
-      document.querySelectorAll('.dd-cat-link').forEach(link => {
-        if (link.textContent.trim() !== cat) return;
-        link.classList.add('active');
-        const row = link.closest('.dd-cat-row');
-
-        if (!sub || !row) return;
-
-        // Open the category row (chevron rotates) but NOT the sub-list
-        row.classList.add('open');
-        const chevron = row.querySelector('.dd-cat-chevron');
-        if (chevron) chevron.classList.add('open');
-
-        // Find the sub-list and mark the matching sub-link blue — but keep sub-list closed
-        const subList = row.nextElementSibling;
-        if (!subList || !subList.classList.contains('dd-sub-list')) return;
-
-        subList.querySelectorAll('.dd-cat-row').forEach(subRow => {
-          const subLink = subRow.querySelector('.dd-sub-link');
-          if (!subLink || subLink.textContent.trim() !== sub) return;
-          subLink.classList.add('active');
-
-          if (!type) return;
-          // Mark the type link active inside its panel (panel stays closed until hovered)
-          const typeChev = subRow.querySelector('.dd-type-chevron');
-          if (!typeChev) return;
-          const onclickVal = typeChev.getAttribute('onclick') || '';
-          const match      = onclickVal.match(/'(navtype-[^']+)'/);
-          const typeId     = match ? match[1] : null;
-          const typePanel  = typeId ? document.getElementById(typeId) : null;
-          if (!typePanel) return;
-          typePanel.querySelectorAll('.dd-sub-link').forEach(typeLink => {
-            if (typeLink.textContent.trim() === type) typeLink.classList.add('active');
-          });
-        });
-      });
-    }
-
-    // ── Apply ?cat=, ?sub=, and ?search= URL params ──────────
-    function applyURLParams() {
-      const params = new URLSearchParams(window.location.search);
-      const cat    = params.get('cat');
-      const sub    = params.get('sub');
-      const type   = params.get('type');
-      const search = params.get('search');
-
-      // Pre-fill search box if ?search= present
-      if (search) {
-        const input = document.getElementById('search-input');
-        if (input) input.value = search;
-      }
-
-      if (!cat) return;
-
-      activeCategory    = cat;
-      activeSubcategory = sub  || null;
-      activeType        = type || null;
-
-      document.getElementById('btn-all').classList.remove('active');
-
-      // Highlight category in sidebar
-      document.querySelectorAll('.cat-label').forEach(btn => {
-        if (btn.textContent.trim() === cat) btn.classList.add('active');
-      });
-
-      // The sidebar is built by buildCategoryTree() using dynamic DOM elements.
-      // Active states on sub-list/type-list items are applied after the tree is built
-      // via applyActiveStatesToTree() which is called from buildCategoryTree().
-    }
-
-    function applyActiveStatesToTree() {
-      if (!activeCategory) return;
-
-      // Find and open/activate the matching category row
-      document.querySelectorAll('.cat-item').forEach(item => {
-        const label = item.querySelector('.cat-label');
-        if (!label || label.textContent.trim() !== activeCategory) return;
-
-        label.classList.add('active');
-        const chevron = item.querySelector('.cat-chevron');
-        const subList = item.querySelector('.sub-list');
-        if (subList) { subList.classList.add('open'); }
-        if (chevron) { chevron.classList.add('open'); }
-
-        if (!activeSubcategory) return;
-
-        // Find matching sub-label
-        subList && subList.querySelectorAll('.sub-label').forEach(subBtn => {
-          if (subBtn.textContent.trim() !== activeSubcategory) return;
-
-          subBtn.classList.add('active');
-          const subItem  = subBtn.closest('.sub-item');
-          const typeList = subItem ? subItem.querySelector('.type-list') : null;
-          const typeChev = subItem ? subItem.querySelector('.cat-chevron') : null;
-
-          if (!activeType) return;
-
-          if (typeList) { typeList.classList.add('open'); }
-          if (typeChev) { typeChev.classList.add('open'); }
-
-          typeList && typeList.querySelectorAll('.type-label').forEach(typeBtn => {
-            if (typeBtn.textContent.trim() === activeType) {
-              typeBtn.classList.add('active');
-            }
-          });
-        });
-      });
-    }
-
-    // ── Build sidebar category tree from data ──────────────────
-    function buildCategoryTree() {
-      // Build tree: cat → sub → Set(types)
-      const tree = {};
-      allProducts.forEach(p => {
-        if (!p.category) return;
-        if (!tree[p.category]) tree[p.category] = {};
-        if (p.subcategory) {
-          if (!tree[p.category][p.subcategory]) tree[p.category][p.subcategory] = new Set();
-          if (p.type) tree[p.category][p.subcategory].add(p.type);
-        }
-      });
-
-      const container = document.getElementById('category-tree');
-      container.innerHTML = '';
-
-      Object.entries(tree).forEach(([cat, subs]) => {
-        const item = document.createElement('div');
-        item.className = 'cat-item';
-
-        // Category row
-        const row = document.createElement('div');
-        row.className = 'cat-row';
-        const catBtn = document.createElement('button');
-        catBtn.className = 'cat-label';
-        catBtn.textContent = cat;
-        catBtn.onclick = () => { activeCategory = cat; activeSubcategory = null; activeType = null; applyFilters(); updateSidebarActive(); };
-        row.appendChild(catBtn);
-
-        const hasSubs = Object.keys(subs).length > 0;
-        if (hasSubs) {
-          const chevBtn = document.createElement('button');
-          chevBtn.className = 'cat-chevron';
-          chevBtn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
-          chevBtn.onclick = () => {
-            const sl = item.querySelector('.sub-list');
-            const open = sl.classList.toggle('open');
-            chevBtn.classList.toggle('open', open);
-          };
-          row.appendChild(chevBtn);
-        }
-        item.appendChild(row);
-
-        if (hasSubs) {
-          const subList = document.createElement('div');
-          subList.className = 'sub-list';
-          Object.entries(subs).forEach(([sub, types]) => {
-            const subItem = document.createElement('div');
-            subItem.className = 'sub-item';
-
-            const subRow = document.createElement('div');
-            subRow.className = 'sub-row';
-            const subBtn = document.createElement('button');
-            subBtn.className = 'sub-label';
-            subBtn.textContent = sub;
-            subBtn.onclick = () => { activeCategory = cat; activeSubcategory = sub; activeType = null; applyFilters(); updateSidebarActive(); };
-            subRow.appendChild(subBtn);
-
-            const hasTypes = types.size > 0;
-            if (hasTypes) {
-              const typeChev = document.createElement('button');
-              typeChev.className = 'cat-chevron';
-              typeChev.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
-              typeChev.onclick = () => {
-                const tl = subItem.querySelector('.type-list');
-                const open = tl.classList.toggle('open');
-                typeChev.classList.toggle('open', open);
-              };
-              subRow.appendChild(typeChev);
-            }
-            subItem.appendChild(subRow);
-
-            if (hasTypes) {
-              const typeList = document.createElement('div');
-              typeList.className = 'type-list';
-              types.forEach(type => {
-                const typeBtn = document.createElement('button');
-                typeBtn.className = 'type-label';
-                typeBtn.textContent = type;
-                typeBtn.onclick = () => { activeCategory = cat; activeSubcategory = sub; activeType = type; applyFilters(); updateSidebarActive(); };
-                typeList.appendChild(typeBtn);
-              });
-              subItem.appendChild(typeList);
-            }
-
-            subList.appendChild(subItem);
-          });
-          item.appendChild(subList);
-        }
-
-        container.appendChild(item);
-      });
-    }
-
-
-    function handleCategoryClick(cat, chevronEl) {
-      const subList = document.getElementById('subcat-' + cat.replace(/\s+/g,'_'));
-      clearAllActive();
-      activeCategory = cat;
-      activeSubcategory = null;
-      // Mark label active
-      document.querySelectorAll('.cat-label').forEach(b => {
-        if (b.dataset.category === cat) b.classList.add('active');
-      });
-      // Expand subs
-      if (subList) { subList.classList.add('open'); chevronEl.classList.add('open'); }
-      applyFilters();
-    }
-
-    // Click chevron → toggle expand only, never changes the active filter
-    function toggleCatExpand(cat, chevronEl) {
-      const subList = document.getElementById('subcat-' + cat.replace(/\s+/g,'_'));
-      if (!subList) return;
-      const isOpen = subList.classList.contains('open');
-      // Toggle the list and chevron regardless of active state
-      subList.classList.toggle('open', !isOpen);
-      chevronEl.classList.toggle('open', !isOpen);
-      // Also sync the has-active-sub class so CSS doesn't force it back open
-      const catItem = subList.closest('.cat-item');
-      if (catItem) catItem.classList.toggle('has-active-sub', !isOpen);
-    }
-
-    function handleSubcategoryClick(cat, sub, btnEl) {
-      clearAllActive();
-      activeCategory = cat;
-      activeSubcategory = sub;
-
-      // Keep parent subcat list open and chevron pointing up
-      const subList = document.getElementById('subcat-' + cat.replace(/\s+/g,'_'));
-      const catItem = subList ? subList.closest('.cat-item') : null;
-      const chevron = catItem ? catItem.querySelector('.cat-chevron') : null;
-
-      if (subList) subList.classList.add('open');
-      if (chevron) chevron.classList.add('open');
-      if (catItem) catItem.classList.add('has-active-sub');
-
-      // Mark parent label active too
-      document.querySelectorAll('.cat-label').forEach(b => {
-        if (b.dataset.category === cat) b.classList.add('active');
-      });
-
-      btnEl.classList.add('active');
-      applyFilters();
-    }
-
-    function filterAll() {
-      clearAllActive();
-      activeCategory = null;
-      activeSubcategory = null;
-      activeType = null;
-      document.getElementById('btn-all').classList.add('active');
-      applyFilters();
-      updateSidebarActive();
-    }
-
-    function clearAllActive() {
-      document.querySelectorAll('.cat-label').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.cat-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.subcat-list').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.subcat-btn').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.cat-item').forEach(el => el.classList.remove('has-active-sub'));
-      document.getElementById('btn-all').classList.remove('active');
-    }
-
-    function updateSidebarActive() {
-      // Clear all sidebar active states
-      document.querySelectorAll('.cat-label').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.sub-label').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.type-label').forEach(el => el.classList.remove('active'));
-      document.getElementById('btn-all').classList.remove('active');
-
-      // Clear and refresh nav dropdown active states
-      document.querySelectorAll('.dd-cat-link').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.dd-sub-link').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open', 'sub-active'));
-      document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-      document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-
-      // Update URL to reflect current filter state
-      const params = new URLSearchParams();
-      if (activeCategory)    params.set('cat',  activeCategory);
-      if (activeSubcategory) params.set('sub',  activeSubcategory);
-      if (activeType)        params.set('type', activeType);
-      const newURL = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-      window.history.pushState({}, '', newURL);
-
-      // Re-highlight nav based on new URL
-      highlightNavDropdown();
-
-      if (!activeCategory) {
-        document.getElementById('btn-all').classList.add('active');
+        document.getElementById('category-grid').innerHTML =
+          '<div class="empty-state">Unable to load products right now.</div>';
         return;
       }
 
-      // Walk the live DOM to find and activate the right sidebar elements
-      document.querySelectorAll('.cat-item').forEach(item => {
-        const catLabel = item.querySelector('.cat-label');
-        if (!catLabel || catLabel.textContent.trim() !== activeCategory) return;
-        catLabel.classList.add('active');
-
-        if (!activeSubcategory) return;
-        const subList = item.querySelector('.sub-list');
-        if (!subList) return;
-        subList.classList.add('open');
-        const catChev = item.querySelector('.cat-row .cat-chevron');
-        if (catChev) catChev.classList.add('open');
-
-        subList.querySelectorAll('.sub-label').forEach(subLabel => {
-          if (subLabel.textContent.trim() !== activeSubcategory) return;
-          subLabel.classList.add('active');
-
-          if (!activeType) return;
-          const subItem  = subLabel.closest('.sub-item');
-          const typeList = subItem ? subItem.querySelector('.type-list') : null;
-          const typeChev = subItem ? subItem.querySelector('.cat-chevron') : null;
-          if (typeList) typeList.classList.add('open');
-          if (typeChev) typeChev.classList.add('open');
-          typeList && typeList.querySelectorAll('.type-label').forEach(typeLabel => {
-            if (typeLabel.textContent.trim() === activeType) typeLabel.classList.add('active');
-          });
-        });
+      categories = [];
+      categorySubMap = {};
+      subTypeMap = {};
+      allProducts.forEach(p => {
+        if (p.category && !categories.includes(p.category)) categories.push(p.category);
+        if (p.category && p.subcategory) {
+          if (!categorySubMap[p.category]) categorySubMap[p.category] = [];
+          if (!categorySubMap[p.category].includes(p.subcategory)) categorySubMap[p.category].push(p.subcategory);
+        }
+        if (p.category && p.subcategory && p.type) {
+          const key = p.category + '||' + p.subcategory;
+          if (!subTypeMap[key]) subTypeMap[key] = [];
+          if (!subTypeMap[key].includes(p.type)) subTypeMap[key].push(p.type);
+        }
       });
+
+      buildSidebar();
+      buildCategoryGrid();
+      applyURLParams();
+      applyFilters();
+
+      // Deep link from other pages (e.g. contact.html's "Get Expert Help"
+      // button) straight into the request form: products.html?help=1
+      if (new URLSearchParams(window.location.search).get('help')) {
+        showExpertHelp();
+      }
     }
 
-    // ── Filter + render ────────────────────────────────────────
+    /* ══════════════════════════════════════════════════════════
+       SIDEBAR (flat list)
+    ══════════════════════════════════════════════════════════ */
+    // The pill (solid coral background) always marks the single DEEPEST
+    // level the user has drilled into — category alone, or a sub-category,
+    // or a type — never more than one at a time. Everything above that
+    // level renders as a plain, un-styled link (just expanded to reveal
+    // the next level down).
+    function buildSidebar() {
+      const wrap = document.getElementById('sidebar-cats');
+      wrap.innerHTML = categories.map(cat => {
+        const esc = cat.replace(/'/g, "\\'");
+        const isExpanded = cat === activeCategory;
+        const isCurrent = isExpanded && !activeSubcategory;
+        const link = `<a class="sidebar-flat__link${isCurrent ? ' current' : ''}" data-cat="${cat}" onclick="selectCategory('${esc}')">${cat}</a>`;
+
+        if (!isExpanded) return link;
+
+        const subs = categorySubMap[cat] || [];
+        if (!subs.length) return link;
+
+        const subLinks = subs.map(sub => {
+          const label = stripCategorySuffix(sub, cat);
+          const subEsc = sub.replace(/'/g, "\\'");
+          const subExpanded = sub === activeSubcategory;
+          const subCurrent = subExpanded && !activeType;
+          const subLink = `<a class="sidebar-flat__sub${subCurrent ? ' current' : ''}" onclick="selectSubcategory('${esc}', '${subEsc}')">${label}</a>`;
+
+          if (!subExpanded) return subLink;
+
+          const types = subTypeMap[cat + '||' + sub] || [];
+          if (!types.length) return subLink;
+
+          const typeLinks = types.map(type => {
+            const typeEsc = type.replace(/'/g, "\\'");
+            const typeCurrent = type === activeType;
+            return `<a class="sidebar-flat__type${typeCurrent ? ' current' : ''}" onclick="selectType('${esc}', '${subEsc}', '${typeEsc}')">${type}</a>`;
+          }).join('');
+
+          return `${subLink}<div class="sidebar-flat__types">${typeLinks}</div>`;
+        }).join('');
+
+        return `${link}<div class="sidebar-flat__subs">${subLinks}</div>`;
+      }).join('');
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       CATEGORY GRID (landing view)
+    ══════════════════════════════════════════════════════════ */
+    function buildCategoryGrid() {
+      const grid = document.getElementById('category-grid');
+      grid.innerHTML = categories.map(cat => {
+        const thumb = getCategoryImage(cat);
+        return `
+        <div class="category-card" onclick="selectCategory('${cat.replace(/'/g, "\\'")}')">
+          <div class="category-card__img">
+            ${thumb ? `<img src="${thumb}" alt="${cat}" />` : `<div class="no-img">Image coming soon!</div>`}
+          </div>
+          <div class="category-card__name">${cat}</div>
+        </div>`;
+      }).join('');
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       URL PARAMS
+    ══════════════════════════════════════════════════════════ */
+    function applyURLParams() {
+      const params = new URLSearchParams(window.location.search);
+      activeCategory    = params.get('cat') || null;
+      activeSubcategory = params.get('sub') || null;
+      activeType        = params.get('type') || null;
+      showAllFlag       = params.get('all') === '1';
+    }
+
+    function updateURL() {
+      const params = new URLSearchParams();
+      if (activeCategory) params.set('cat', activeCategory);
+      if (activeSubcategory) params.set('sub', activeSubcategory);
+      if (activeType) params.set('type', activeType);
+      if (showAllFlag) params.set('all', '1');
+      const qs = params.toString();
+      history.replaceState(null, '', qs ? `products.html?${qs}` : 'products.html');
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       ACTIONS
+    ══════════════════════════════════════════════════════════ */
+    function selectCategory(cat) {
+      activeCategory = cat;
+      activeSubcategory = null;
+      activeType = null;
+      showAllFlag = false;
+      document.getElementById('search-input').value = '';
+      updateURL();
+      applyFilters();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectSubcategory(cat, sub) {
+      activeCategory = cat;
+      activeSubcategory = sub;
+      activeType = null;
+      showAllFlag = false;
+      document.getElementById('search-input').value = '';
+      updateURL();
+      applyFilters();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectType(cat, sub, type) {
+      activeCategory = cat;
+      activeSubcategory = sub;
+      activeType = type;
+      showAllFlag = false;
+      document.getElementById('search-input').value = '';
+      updateURL();
+      applyFilters();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function browseAllProducts() {
+      activeCategory = null;
+      activeSubcategory = null;
+      activeType = null;
+      showAllFlag = true;
+      document.getElementById('search-input').value = '';
+      updateURL();
+      applyFilters();
+    }
+
+    function resetToLanding() {
+      activeCategory = null;
+      activeSubcategory = null;
+      activeType = null;
+      showAllFlag = false;
+      document.getElementById('search-input').value = '';
+      updateURL();
+      applyFilters();
+    }
+
+    function onSearchInput() {
+      const q = document.getElementById('search-input').value.trim();
+      if (q) {
+        activeCategory = null;
+        activeSubcategory = null;
+        activeType = null;
+        showAllFlag = false;
+      }
+      applyFilters();
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       FILTER + RENDER
+    ══════════════════════════════════════════════════════════ */
     function applyFilters() {
-      const query = document.getElementById('search-input').value.toLowerCase().trim();
+      const catGrid  = document.getElementById('category-grid');
+      const prodGrid = document.getElementById('product-grid');
+      const title    = document.getElementById('section-title');
+      const bc       = document.getElementById('bc-current');
+      const count    = document.getElementById('products-count');
+      const query    = document.getElementById('search-input').value.trim().toLowerCase();
 
-      let filtered = allProducts.filter(p => {
-        const matchCat    = !activeCategory    || p.category    === activeCategory;
-        const matchSub    = !activeSubcategory || p.subcategory === activeSubcategory;
-        const matchType   = !activeType        || p.type        === activeType;
-        const matchSearch = !query ||
-          p.title.toLowerCase().includes(query) ||
-          p.sku.toLowerCase().includes(query) ||
-          (p.categoryThree || '').toLowerCase().includes(query);
-        return matchCat && matchSub && matchType && matchSearch;
-      });
+      // Normal filtering/navigation always exits the Get Expert Help flow.
+      document.getElementById('expert-help').style.display = 'none';
+      document.body.classList.remove('is-expert-help');
+      document.getElementById('bc-products-link').style.display = 'none';
+      document.getElementById('bc-products-sep').style.display = 'none';
+      document.getElementById('bc-mid').style.display = 'none';
+      document.getElementById('bc-mid-sep').style.display = 'none';
 
-      // Update heading
-      let title;
-      if (activeType && activeSubcategory) {
-        title = activeSubcategory + ' - ' + activeType;
-      } else {
-        title = activeSubcategory || activeCategory || 'All Products';
+      buildSidebar();
+
+      const isLanding = !activeCategory && !showAllFlag && !query;
+
+      // Grey background = viewing a specific, narrowed-down product set
+      // (a category or a search result). Cream = the landing grid or the
+      // full "Browse All Products" catalog.
+      document.body.classList.toggle('is-filtered', !isLanding && !(showAllFlag && !activeCategory && !query));
+
+      if (isLanding) {
+        catGrid.style.display  = 'flex';
+        prodGrid.style.display = 'none';
+        title.textContent = 'Products';
+        bc.textContent = 'Products';
+        count.classList.remove('is-visible');
+        document.body.classList.remove('is-empty');
+        return;
       }
-      document.getElementById('section-title').textContent = title;
 
-      // Update breadcrumb trail
-      const bcCat    = document.getElementById('bc-cat');
-      const bcCatSep = document.getElementById('bc-cat-sep');
-      const bcSub    = document.getElementById('bc-sub');
-      const bcSubSep = document.getElementById('bc-sub-sep');
-      const bcAll    = document.getElementById('bc-all');
+      catGrid.style.display  = 'none';
+      prodGrid.style.display = 'flex';
 
-      const bcType    = document.getElementById('bc-type');
-      const bcTypeSep = document.getElementById('bc-type-sep');
+      let filtered = allProducts;
 
-      if (activeCategory && activeSubcategory && activeType) {
-        // Home > Products > Category > Subcategory > Type
-        bcAll.style.display    = 'none';
-        bcCat.textContent      = activeCategory;
-        bcCat.href             = `products.html?cat=${encodeURIComponent(activeCategory)}`;
-        bcCat.style.display    = 'inline';
-        bcCatSep.style.display = 'inline';
-        bcSub.textContent      = activeSubcategory;
-        bcSub.href             = `products.html?cat=${encodeURIComponent(activeCategory)}&sub=${encodeURIComponent(activeSubcategory)}`;
-        bcSub.style.display    = 'inline';
-        bcSubSep.style.display = 'inline';
-        bcType.textContent     = activeType;
-        bcType.style.display   = 'inline';
-        bcTypeSep.style.display= 'inline';
-      } else if (activeCategory && activeSubcategory) {
-        // Home > Products > Category > Subcategory
-        bcAll.style.display    = 'none';
-        bcCat.textContent      = activeCategory;
-        bcCat.href             = `products.html?cat=${encodeURIComponent(activeCategory)}`;
-        bcCat.style.display    = 'inline';
-        bcCatSep.style.display = 'inline';
-        bcSub.textContent      = activeSubcategory;
-        bcSub.href             = `products.html?cat=${encodeURIComponent(activeCategory)}&sub=${encodeURIComponent(activeSubcategory)}`;
-        bcSub.style.display    = 'inline';
-        bcSubSep.style.display = 'inline';
-        bcType.style.display   = 'none';
-        bcTypeSep.style.display= 'none';
+      if (query) {
+        filtered = filtered.filter(p =>
+          (p.title && p.title.toLowerCase().includes(query)) ||
+          (p.sku && p.sku.toLowerCase().includes(query))
+        );
+        title.textContent = `Results for "${query}"`;
+        bc.textContent = 'Search Results';
+        count.classList.remove('is-visible');
       } else if (activeCategory) {
-        // Home > Products > Category
-        bcAll.style.display    = 'none';
-        bcCat.textContent      = activeCategory;
-        bcCat.href             = `products.html?cat=${encodeURIComponent(activeCategory)}`;
-        bcCat.style.display    = 'inline';
-        bcCatSep.style.display = 'inline';
-        bcSub.style.display    = 'none';
-        bcSubSep.style.display = 'none';
-        bcType.style.display   = 'none';
-        bcTypeSep.style.display= 'none';
+        const inCategory = allProducts.filter(p => p.category === activeCategory);
+        filtered = inCategory;
+        if (activeSubcategory) filtered = filtered.filter(p => p.subcategory === activeSubcategory);
+        if (activeType) filtered = filtered.filter(p => p.type === activeType);
+        title.textContent = activeType || activeSubcategory || activeCategory;
+        bc.textContent = activeCategory;
+        count.textContent = `${filtered.length} of ${inCategory.length} ${activeCategory}`;
+        count.classList.add('is-visible');
       } else {
-        // Home > Products > All Products
-        bcAll.style.display    = 'inline';
-        bcCat.style.display    = 'none';
-        bcCatSep.style.display = 'none';
-        bcSub.style.display    = 'none';
-        bcSubSep.style.display = 'none';
-        bcType.style.display   = 'none';
-        bcTypeSep.style.display= 'none';
+        // "Browse All Products" view — full catalog, alphabetical by name.
+        filtered = [...filtered].sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+        title.textContent = 'Products';
+        bc.textContent = 'Products';
+        count.classList.remove('is-visible');
       }
-      document.getElementById('product-count').textContent =
-        `Showing ${filtered.length} of ${allProducts.length} results`;
+
+      // The "Browse All Products" link is how you GET to the all-products
+      // view from anywhere else, so it's hidden once you're already on it
+      // or once a category is active (matches the category-view mockup).
+      const browseAllLink = document.getElementById('browse-all-link');
+      if (browseAllLink) {
+        browseAllLink.style.display = ((showAllFlag && !activeCategory && !query) || activeCategory) ? 'none' : '';
+      }
+
+      // The "no results" empty state reads better on white than on the
+      // grey filtered background, so it overrides back to white.
+      document.body.classList.toggle('is-empty', filtered.length === 0);
 
       renderProducts(filtered);
     }
 
-
-    // Helper: always load product images from Product_Pictures/ folder
     function imgSrc(filename) {
-      if (!filename) return '';
-      if (filename.startsWith('Product_Pictures/') || filename.startsWith('http')) return filename;
-      return 'Product_Pictures/' + filename;
+      return filename ? `Product_Pictures/${filename}` : '';
     }
+
     function renderProducts(products) {
       const grid = document.getElementById('product-grid');
-      if (products.length === 0) {
-        grid.innerHTML = `<div class="empty-state">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <p>No products found. Try a different search or category.</p>
-        </div>`;
+      if (!products.length) {
+        const chevron = `<svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>`;
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state__title">Not seeing the instrument you need?</div>
+            <div class="empty-state__desc">
+              Try refining your search or browse our product categories.<br>
+              If you're looking for something specialized or hard to source, a PEAK product specialist can help.
+            </div>
+            <div class="empty-state__actions">
+              <a class="empty-state__card" onclick="browseAllProducts()">
+                <span class="empty-state__card-title">Browse Products ${chevron}</span>
+                <span class="empty-state__card-sub">View all the products</span>
+              </a>
+              <a class="empty-state__card" onclick="showExpertHelp()">
+                <span class="empty-state__card-title">Get Expert Help ${chevron}</span>
+                <span class="empty-state__card-sub">Tell us what you're looking for</span>
+              </a>
+            </div>
+          </div>
+        `;
         return;
       }
-
       grid.innerHTML = products.map(p => `
         <div class="product-card" onclick="goToProduct('${p.id}')">
           <div class="product-card__img">
-            ${p.image
-              ? `<img src="${imgSrc(p.image)}" alt="${p.title}" />`
-              : `<span class="no-img">Image Coming Soon!</span>`}
+            ${p.image ? `<img src="${imgSrc(p.image)}" alt="${p.title}" />` : `<div class="no-img">Image coming soon!</div>`}
           </div>
           <div class="product-card__body">
             <div class="product-card__name">${p.title}</div>
-            <div class="product-card__sku">SKU: ${p.sku}</div>
+            <div class="product-card__sku">Product Number: ${p.sku}</div>
           </div>
         </div>
       `).join('');
@@ -1344,142 +2504,283 @@
       window.location.href = `product-detail.html?id=${id}`;
     }
 
-    // ── Navbar JS ──────────────────────────────────────────────
-    function openMenu()  { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow='hidden'; }
-    function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow=''; }
-    function toggleDropdown(e, id) {
-      // Allow href to navigate; dropdowns open on hover
-      const el = document.getElementById(id);
-      if (el) document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+    /* ══════════════════════════════════════════════════════════
+       GET EXPERT HELP
+    ══════════════════════════════════════════════════════════ */
+    const EH_EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const EH_PHONE_PATTERN = /^\d{3}-\d{3}-\d{4}$/;
+
+    function setEhFieldError(input, errorEl, hasError) {
+      input.classList.toggle('eh-input--error', hasError);
+      errorEl.classList.toggle('visible', hasError);
     }
-    
-      // Also close type panels when dropdown area is left
-      document.querySelectorAll('.nav-dropdown').forEach(dd => {
-        dd.addEventListener('mouseleave', () => {
-          // Small delay so user can move to type panel
-          setTimeout(() => {
-            const typeHovered = document.querySelector('.dd-type-list:hover');
-            if (!typeHovered) {
-              document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-              document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-            }
-          }, 150);
-        });
+
+    // Validates the email field and shows/hides its red outline + message.
+    // Returns true only when the field holds a correctly-formatted email.
+    function validateEmailField() {
+      const input = document.getElementById('eh-email');
+      const errorEl = document.getElementById('eh-email-error');
+      const value = input.value.trim();
+      const invalid = value.length > 0 && !EH_EMAIL_PATTERN.test(value);
+      setEhFieldError(input, errorEl, invalid);
+      return value.length > 0 && !invalid;
+    }
+
+    // While typing, only re-check (to clear the error as soon as it's
+    // fixed) if an error is already showing — errors themselves only
+    // appear once the person leaves the field (see validateEmailField
+    // on blur) or tries to submit, not on every keystroke.
+    function onEmailInput() {
+      const input = document.getElementById('eh-email');
+      if (input.classList.contains('eh-input--error')) validateEmailField();
+    }
+
+    function validatePhoneField() {
+      const input = document.getElementById('eh-phone');
+      const errorEl = document.getElementById('eh-phone-error');
+      const value = input.value.trim();
+      const invalid = value.length > 0 && !EH_PHONE_PATTERN.test(value);
+      setEhFieldError(input, errorEl, invalid);
+      return value.length > 0 && !invalid;
+    }
+
+    // Auto-inserts dashes as the person types (or pastes) digits, so the
+    // field always lands on the required XXX-XXX-XXXX shape without them
+    // typing dashes themselves — e.g. "2525252525" becomes "252-525-2525".
+    function formatPhoneInput(input) {
+      const digits = input.value.replace(/\D/g, '').slice(0, 10);
+      let formatted = digits;
+      if (digits.length > 6) {
+        formatted = `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+      } else if (digits.length > 3) {
+        formatted = `${digits.slice(0, 3)}-${digits.slice(3)}`;
+      }
+      input.value = formatted;
+    }
+
+    function onPhoneInput(input) {
+      formatPhoneInput(input);
+      if (input.classList.contains('eh-input--error')) validatePhoneField();
+    }
+
+    function showExpertHelp() {
+      _ehSearchQuery = document.getElementById('search-input').value.trim();
+
+      document.getElementById('category-grid').style.display = 'none';
+      document.getElementById('product-grid').style.display = 'none';
+      document.getElementById('expert-help').style.display = 'block';
+      document.getElementById('expert-help-form-wrap').style.display = '';
+      document.getElementById('expert-help-confirmation').style.display = 'none';
+
+      const form = document.getElementById('expert-help-form');
+      form.reset();
+      setEhFieldError(document.getElementById('eh-email'), document.getElementById('eh-email-error'), false);
+      setEhFieldError(document.getElementById('eh-phone'), document.getElementById('eh-phone-error'), false);
+
+      const searchedFor = document.getElementById('eh-searched-for');
+      const searchedForValue = document.getElementById('eh-searched-for-value');
+      if (_ehSearchQuery) {
+        searchedForValue.textContent = _ehSearchQuery;
+        searchedFor.style.display = '';
+      } else {
+        searchedFor.style.display = 'none';
+      }
+
+      document.getElementById('section-title').textContent = 'Get Expert Help';
+      document.getElementById('products-count').classList.remove('is-visible');
+      const browseAllLink = document.getElementById('browse-all-link');
+      if (browseAllLink) browseAllLink.style.display = 'none';
+
+      document.getElementById('bc-products-link').style.display = '';
+      document.getElementById('bc-products-sep').style.display = '';
+      document.getElementById('bc-mid').style.display = 'none';
+      document.getElementById('bc-mid-sep').style.display = 'none';
+      document.getElementById('bc-current').textContent = 'Get Expert Help';
+
+      document.body.classList.remove('is-empty');
+      document.body.classList.remove('is-filtered');
+      document.body.classList.add('is-expert-help');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function submitExpertHelp(event) {
+      event.preventDefault();
+      const form = document.getElementById('expert-help-form');
+
+      const emailValid = validateEmailField();
+      const phoneValid = validatePhoneField();
+
+      if (!form.reportValidity()) return;
+      if (!emailValid) { document.getElementById('eh-email').focus(); return; }
+      if (!phoneValid) { document.getElementById('eh-phone').focus(); return; }
+
+      const firstName = document.getElementById('eh-first-name').value.trim();
+      const lastName  = document.getElementById('eh-last-name').value.trim();
+      const email     = document.getElementById('eh-email').value.trim();
+      const phone     = document.getElementById('eh-phone').value.trim();
+      const facility  = document.getElementById('eh-facility').value.trim();
+      const position  = document.getElementById('eh-position').value.trim();
+      const sku       = document.getElementById('eh-sku').value.trim();
+      const message   = document.getElementById('eh-message').value.trim();
+
+      const lines = [
+        `Name: ${firstName} ${lastName}`,
+        `Email: ${email}`,
+        `Phone Number: ${phone}`,
+        `Hospital / Facility: ${facility}`,
+        `Title / Position: ${position}`
+      ];
+      if (sku) lines.push(`Product name or SKU: ${sku}`);
+      if (_ehSearchQuery) lines.push(`Searched for: ${_ehSearchQuery}`);
+      lines.push('', 'What they are looking for:', message);
+
+      const subject = encodeURIComponent('Product Specialist Request – PEAK MDI');
+      const body = encodeURIComponent(lines.join('\n'));
+      window.location.href = `mailto:info@peakmdi.com?subject=${subject}&body=${body}`;
+
+      showExpertHelpConfirmation();
+    }
+
+    function showExpertHelpConfirmation() {
+      document.getElementById('expert-help-form-wrap').style.display = 'none';
+      document.getElementById('expert-help-confirmation').style.display = 'block';
+
+      document.getElementById('bc-mid').textContent = 'Get Expert Help';
+      document.getElementById('bc-mid').style.display = '';
+      document.getElementById('bc-mid-sep').style.display = '';
+      document.getElementById('bc-current').textContent = 'Confirmation';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function populateNavDropdowns() {
+      let products = [];
+      try {
+        const res = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+        products = await res.json();
+      } catch(e) { return; }
+
+      const tree = {};
+      products.forEach(p => {
+        if (!p.category) return;
+        if (!tree[p.category]) tree[p.category] = {};
+        if (p.subcategory) {
+          if (!tree[p.category][p.subcategory]) tree[p.category][p.subcategory] = new Set();
+          if (p.type) tree[p.category][p.subcategory].add(p.type);
+        }
       });
 
+      const categories = Object.keys(tree);
+
+      /* ── 3-column "Products" mega menu (desktop + tablet), cascading hover ── */
+      function initMegaProducts(prefix) {
+        const col1 = document.getElementById(`mega-${prefix}-col1`);
+        const col2 = document.getElementById(`mega-${prefix}-col2`);
+        const col3 = document.getElementById(`mega-${prefix}-col3`);
+        if (!col1 || !col2 || !col3) return;
+
+        function renderCol3(cat, sub) {
+          const types = [...(tree[cat][sub] || [])];
+          col3.innerHTML =
+            `<div class="mega-col__header">${sub}</div>` +
+            types.map(type => `<a class="mega-col__link" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
+        }
+
+        function renderCol2(cat) {
+          const subs = Object.keys(tree[cat]);
+          col2.innerHTML =
+            `<div class="mega-col__header">${cat}</div>` +
+            subs.map((sub, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}" data-idx="${i}">${sub}</a>`).join('');
+
+          col2.querySelectorAll('.mega-col__link').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+              col2.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
+              el.classList.add('active');
+              renderCol3(el.dataset.cat, el.dataset.sub);
+            });
+          });
+
+          if (subs.length) renderCol3(cat, subs[0]);
+          else col3.innerHTML = '';
+        }
+
+        function renderCol1() {
+          col1.innerHTML =
+            `<div class="mega-col__header">Products</div>` +
+            categories.map((cat, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}" data-cat="${cat}" data-idx="${i}">${cat}</a>`).join('');
+
+          col1.querySelectorAll('.mega-col__link').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+              col1.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
+              el.classList.add('active');
+              renderCol2(el.dataset.cat);
+            });
+          });
+        }
+
+        renderCol1();
+        if (categories.length) renderCol2(categories[0]);
+      }
+
+      initMegaProducts('products-desktop');
+      initMegaProducts('products-tablet');
+
+      /* ── Mobile flat list ── */
+      function buildMobileHTML() {
+        return categories.map(cat => {
+          const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
+          let html = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
+          Object.keys(tree[cat]).forEach(sub => {
+            const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
+            html += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
+          });
+          return html;
+        }).join('');
+      }
+      const mobileDD = document.getElementById('mob-products');
+      if (mobileDD) mobileDD.innerHTML = buildMobileHTML();
+    }
+
+    populateNavDropdowns();
+
+    populateNavDropdowns();
+
+    /* ── Mobile overlay ── */
+    function openMenu()  { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow = ''; }
+    document.getElementById('mobileMenu').addEventListener('click', function(e) {
+      if (e.target === this) closeMenu();
+    });
+
+    /* Close dropdowns when clicking outside */
     document.addEventListener('click', e => {
-      const inDropdown  = e.target.closest('.nav-dropdown');
-      const inTypePanel = e.target.closest('.dd-type-list');
-
-      if (!inDropdown && !inTypePanel) {
-        // Clicked completely outside everything — close all
+      if (!e.target.closest('.nav-dropdown')) {
         document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
-        document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-        document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      } else if (inDropdown && !e.target.closest('.dd-sub-list') && !e.target.closest('.dd-cat-chevron') && !e.target.closest('.dd-type-chevron')) {
-        // Clicked on a top-level category link — close sub and type panels
-        document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-        document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
       }
-      // inTypePanel or inside dd-sub-list/chevron: let the event pass through naturally
     });
 
-    // Close type panel when mouse leaves the nav area — use mousemove to check
-    // if mouse is over neither the dropdown nor the type panel
-    document.addEventListener('mousemove', e => {
-      const openTypePanel = document.querySelector('.dd-type-list.open');
-      if (!openTypePanel) return;
-      const inDropdown  = e.target.closest('.nav-dropdown');
-      const inTypePanel = e.target.closest('.dd-type-list');
-      const inSubList   = e.target.closest('.dd-sub-list');
-      if (!inDropdown && !inTypePanel && !inSubList) {
-        openTypePanel.classList.remove('open');
-        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      }
+    /* Hover-based dropdown behavior (desktop/tablet) */
+    document.querySelectorAll('.nav-dropdown').forEach(dd => {
+      dd.addEventListener('mouseenter', () => {
+        const menu = dd.querySelector('.mega-menu');
+        if (menu) menu.style.display = 'flex';
+      });
+      dd.addEventListener('mouseleave', () => {
+        const menu = dd.querySelector('.mega-menu');
+        if (menu) menu.style.display = 'none';
+      });
     });
+
+    /* ── Mobile submenu toggle ── */
     function toggleMobileSubmenu(submenuId, toggleId) {
-      document.getElementById(submenuId).classList.toggle('open');
-      document.getElementById(toggleId).classList.toggle('open');
+      const submenu = document.getElementById(submenuId);
+      const toggle  = document.getElementById(toggleId);
+      const isOpen  = submenu.classList.contains('open');
+      submenu.classList.toggle('open', !isOpen);
+      toggle.classList.toggle('open', !isOpen);
     }
 
-    // ── Init ───────────────────────────────────────────────────
-    loadProducts();
-
-    /* ── Toggle nested nav submenu — positioned alongside the triggering row ── */
-        function toggleNavType(e, id) {
-      e.preventDefault();
-      e.stopPropagation();
-      const typePanel = document.getElementById(id);
-      const btn = e.currentTarget;
-      if (!typePanel) return;
-
-      const isOpen = typePanel.classList.contains('open');
-
-      // Close all type panels and remove lock from all nav-dropdowns
-      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('sub-active'));
-
-      if (!isOpen) {
-        const row = btn.closest('.dd-cat-row');
-        const subList = btn.closest('.dd-sub-list');
-        const navDropdown = btn.closest('.nav-dropdown');
-        const rowRect     = row ? row.getBoundingClientRect() : btn.getBoundingClientRect();
-        const subListRect = subList ? subList.getBoundingClientRect() : rowRect;
-
-        typePanel.style.top  = rowRect.top + 'px';
-        typePanel.style.left = (subListRect.right + 6) + 'px';
-        typePanel.classList.add('open');
-        btn.classList.add('open');
-        // Highlight the sub-category row the same way categories are highlighted when open
-        if (row) row.classList.add('sub-active');
-
-        // Lock the parent nav-dropdown open so CSS :hover loss doesn't close it
-        if (navDropdown) navDropdown.classList.add('type-open');
-      }
-    }
-
-    function toggleNavSub(e, id) {
-      e.preventDefault(); e.stopPropagation();
-      const sub = document.getElementById(id);
-      const btn = e.currentTarget;
-      if (!sub) return;
-      const isOpen = sub.classList.contains('open');
-      document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-      document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
-      // Always close any open type panel when switching categories
-      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('sub-active'));
-      if (!isOpen) {
-        const row = btn.closest('.dd-cat-row');
-        const menu = btn.closest('.dropdown-menu');
-        let offsetTop = 0, el = row;
-        while (el && el !== menu) { offsetTop += el.offsetTop; el = el.offsetParent; }
-        sub.style.top = offsetTop + 'px';
-        sub.classList.add('open');
-        btn.classList.add('open');
-        row.classList.add('open');
-      }
-    }
-
-  </script>
-  <script>
-
-    /* ── Populate footer Products column from products.json ── */
     async function populateFooter() {
       let products = [];
       try {
@@ -1487,19 +2788,20 @@
         products = await r.json();
       } catch(e) { return; }
 
-      // Get unique categories
       const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+      const firstCat = 'Scissors';
+      const rest = categories.filter(c => c !== firstCat).sort((a, b) => a.localeCompare(b));
+      const orderedCategories = categories.includes(firstCat) ? [firstCat, ...rest] : rest;
       const col = document.getElementById('footer-products-col');
       if (!col) return;
 
-      col.innerHTML = categories.map(cat =>
-        `<a href="products.html?cat=${encodeURIComponent(cat)}" style="color:rgba(255,255,255,0.6);font-size:12px;font-weight:400;display:block;transition:color 0.15s;"
-           onmouseover="this.style.color='rgba(255,255,255,0.9)'"
-           onmouseout="this.style.color='rgba(255,255,255,0.6)'">${cat}</a>`
+      col.innerHTML = orderedCategories.map(cat =>
+        `<a href="products.html?cat=${encodeURIComponent(cat)}">${cat}</a>`
       ).join('');
     }
-    populateFooter();
 
+    loadProducts();
+    populateFooter();
   </script>
   <script src="cart.js"></script>
 </body>
