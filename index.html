@@ -29,8 +29,9 @@
       --navy:       #1a2f4a;
       --navy-dark:  #111e2e;
       --blue:       #2e6da4;
-      --gold:       #f2a900;
-      --gold-dark:  #d99400;
+      --gold:       #F2C300;
+      --gold-dark:  #EFA500;
+      --gold-active:#FFDE55;
       --cyan:       #6fe9ef;
       --cream:      #f2e9d3;
       --white:      #ffffff;
@@ -120,42 +121,169 @@
       stroke: currentColor; fill: none;
       stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
     }
-    .chevron-img {
-      width: 9px;
-      height: 12px;
-      display: block;
-      align-self: center;
-    }
-
-    .dropdown-menu {
+    /* ── Mega menu (Products / Resources) ──
+       .mega-menu is an invisible hit-area wrapper: it sits flush against the
+       nav link (top:100%, no gap) and its padding-top forms the visual gap.
+       Because that padding is still part of the element's box, hovering
+       through it keeps the whole thing "inside" .nav-dropdown, so the menu
+       doesn't close while the mouse travels from the link down into it.
+       The actual visible card is .mega-menu__panel, nested inside. */
+    .mega-menu {
       display: none;
       position: absolute;
-      top: calc(100% + 18px);
+      top: 100%;
       left: 50%;
       transform: translateX(-50%);
+      padding-top: 18px;
+      z-index: 9999;
+      max-width: min(720px, 95vw);
+    }
+    .nav-dropdown.open .mega-menu { display: block; }
+
+    .mega-menu__panel {
+      /* .mega-menu (the parent) is itself a flex container so JS can
+         toggle display:flex/none for open/close. That makes this panel a
+         flex ITEM, and flex items size to their own content by default
+         (no flex-grow) instead of stretching to fill the parent — so a
+         column with little/no content (e.g. a category with no
+         sub-categories) would shrink the whole menu. flex:1 1 auto plus
+         width:100% forces it to always fill the menu's fixed width. */
+      flex: 1 1 auto;
+      width: 100%;
+      display: flex;
       background: var(--white);
       border: 1.5px solid var(--border);
-      border-radius: 10px;
+      border-radius: 0;
       box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-      width: 220px;
-      padding: 6px;
-      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .mega-menu--products { width: 720px; }
+    .mega-menu--products .mega-menu__panel { align-items: stretch; padding: 20px 0; }
+    .mega-col {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
       flex-direction: column;
       gap: 2px;
+      padding: 0 18px;
     }
-    .nav-dropdown.open .dropdown-menu { display: flex; }
-
-    .dropdown-menu a {
+    .mega-col + .mega-col { border-left: 1px solid var(--border); }
+    .mega-col__header {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 4px 10px 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .mega-col__link {
       display: block;
-      padding: 10px 14px;
+      padding: 9px 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      border-radius: 6px;
+      white-space: normal;
+      word-break: break-word;
+      line-height: 1.3;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .mega-col__link:hover,
+    .mega-col__link.active {
+      background: #fbe4e4;
+      color: var(--navy);
+    }
+
+    .mega-menu--resources { width: 720px; }
+    .mega-menu--resources .mega-menu__panel { display: flex; min-height: 360px; gap: 40px; }
+    .mega-resources__list {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 20px 12px 20px 20px;
+    }
+    .mega-resources__header {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 4px 12px 12px;
+    }
+    .mega-resources__list a {
+      display: block;
+      padding: 10px 12px;
       font-size: 14px;
       font-weight: 500;
       color: var(--text);
       border-radius: 6px;
       white-space: nowrap;
-      transition: background 0.15s;
+      transition: background 0.15s, color 0.15s;
     }
-    .dropdown-menu a:hover { background: #f0f0f0; color: var(--blue); }
+    .mega-resources__list a:hover { background: #fbe4e4; color: var(--navy); }
+    .mega-resources__promo {
+      position: relative;
+      flex: 0 0 180px;
+      max-width: 180px;
+      background: var(--cream);
+      padding: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    @media (min-width: 1024px) {
+      .mega-menu--resources .mega-menu__panel { min-height: 512px; gap: 80px; }
+      .mega-resources__promo { flex: 0 0 220px; max-width: 220px; }
+    }
+    .mega-resources__eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--navy);
+      opacity: 0.75;
+      margin-bottom: 8px;
+    }
+    .mega-resources__title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .mega-resources__desc {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--navy);
+      max-width: 190px;
+      line-height: 1.4;
+      position: relative;
+      z-index: 1;
+    }
+    .mega-resources__mountain {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 110px;
+      pointer-events: none;
+      background-color: var(--navy);
+      opacity: 0.7;
+      -webkit-mask-image: url('mountain-graphic.png');
+      mask-image: url('mountain-graphic.png');
+      -webkit-mask-size: contain;
+      mask-size: contain;
+      -webkit-mask-position: bottom center;
+      mask-position: bottom center;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
 
     .nav-group > a {
       font-size: 18px;
@@ -211,6 +339,8 @@
     }
     .btn-quote:hover { background: var(--navy); color: var(--white); }
     .btn-quote:hover img { filter: brightness(0) invert(1); }
+    .btn-quote:active { background: var(--gold-active); color: var(--navy); }
+    .btn-quote:active img { filter: none; }
 
     .navbar__tablet { display: none; }
 
@@ -323,9 +453,9 @@
       align-items: center;
       height: 55px;
       background: #fff;
-      border: 1.5px solid var(--navy);
+      border: 1.5px solid #8E8E93;
       border-right: none;
-      border-radius: 10px 0 0 10px;
+      border-radius: 0;
       padding: 0 18px;
       box-sizing: border-box;
     }
@@ -344,14 +474,15 @@
     .search-bar__btn {
       flex-shrink: 0;
       width: 55px; height: 55px;
-      border-radius: 0 10px 10px 0;
+      border-radius: 0;
       background: var(--gold);
-      border: 1.5px solid var(--navy);
+      border: 1.5px solid #8E8E93;
       border-left: none;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.15s;
     }
     .search-bar__btn:hover { background: var(--gold-dark); }
+    .search-bar__btn:active { background: var(--gold-active); }
     .hero-search-icon {
       width: 27px;
       height: 27px;
@@ -362,34 +493,27 @@
       display: flex;
       align-items: stretch;
       margin-top: 20px;
-      gap: 20px;
+      gap: 12px;
     }
     .hero__quicklink {
       position: relative;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
-      width: 250px;
-      height: 64px;
-      padding: 0 8px;
-      border-radius: 8px;
-      transition: background 0.15s;
-      cursor: pointer;
+      flex: 1 1 0;
       min-width: 0;
+      height: auto;
+      min-height: 64px;
+      padding: 12px;
+      border: 1px solid #d9d9d9;
+      border-radius: 6px;
+      background: #fff;
+      transition: background 0.15s, border-color 0.15s;
+      cursor: pointer;
       box-sizing: border-box;
     }
-    .hero__quicklink:not(:first-child)::before {
-      content: '';
-      position: absolute;
-      left: -10px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 2px;
-      height: 48px;
-      background: var(--border);
-    }
     @media (hover: hover) and (pointer: fine) {
-      .hero__quicklink:hover { background: rgba(247, 182, 0, 0.1); }
+      .hero__quicklink:hover { background: #fdf6e3; border-color: #ecdca8; }
     }
     .hero__quicklink-icon {
       flex-shrink: 0;
@@ -397,46 +521,34 @@
       width: auto;
       display: flex; align-items: center; justify-content: center;
       color: var(--navy);
+      margin-top: 2px;
     }
     .hero__quicklink-icon img { height: 40px; width: auto; display: block; }
     .hero__quicklink-text { min-width: 0; flex: 1; }
     .hero__quicklink-title {
+      display: block;
       font-size: 18px;
       font-weight: 600;
       color: var(--navy);
       line-height: 1.3;
     }
     .hero__quicklink-sub {
+      display: block;
       font-size: 16px;
       font-weight: 400;
       color: var(--navy);
       line-height: 1.3;
       margin-top: 2px;
     }
-    .hero__quicklink-chevron {
-      flex-shrink: 0;
-      width: 10px;
-      height: 16px;
-      color: var(--navy);
-      align-self: center;
-      margin-left: auto;
-    }
-
     @media (max-width: 1023px) {
       .hero__title { font-size: 42px; max-width: 480px; }
       .hero__panel { width: 100%; }
-      .hero__quicklinks { flex-wrap: wrap; gap: 16px 0; }
-      .hero__quicklink { width: calc(50% - 8px); }
-      .hero__quicklink:nth-child(2)::before { display: none; }
+      .hero__quicklinks { flex-wrap: wrap; gap: 12px; }
+      .hero__quicklink { flex: 1 1 calc(50% - 6px); }
     }
     @media (max-width: 900px) {
-      .hero__quicklinks { flex-direction: column; gap: 0; }
-      .hero__quicklink { width: 100%; height: auto; padding: 12px 0; }
-      .hero__quicklink:not(:first-child)::before {
-        left: 0; top: 0; transform: none;
-        width: 100%; height: 2px;
-      }
-      .hero__quicklink:nth-child(2)::before { display: block; }
+      .hero__quicklinks { flex-direction: column; gap: 10px; }
+      .hero__quicklink { flex: 1 1 auto; width: 100%; padding: 12px 14px; }
     }
     @media (max-width: 640px) {
       .hero__title { font-size: 30px; }
@@ -500,39 +612,28 @@
        FEATURED PRODUCTS (interactive showcase)
     ══════════════════════════════════════════════════════════ */
     .featured-header {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: start;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 16px;
       margin-bottom: 36px;
     }
     .featured-header__title {
-      justify-self: start;
       font-size: 34px;
       font-weight: 500;
       letter-spacing: 0.02em;
       color: var(--navy);
       text-transform: uppercase;
     }
-    .btn-outline {
-      justify-self: start;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 208px;
-      height: 40px;
-      border: 1.5px solid var(--navy);
-      border-radius: 0;
-      padding: 0;
-      font-size: 16px;
-      font-weight: 600;
+    .featured-header__link {
+      font-size: 20px;
+      font-weight: 500;
       color: var(--navy);
-      background: var(--white);
-      transition: background 0.15s, color 0.15s;
+      text-decoration: underline;
       white-space: nowrap;
+      transition: color 0.15s;
     }
-    .btn-outline:hover { background: var(--navy); color: var(--white); }
+    .featured-header__link:hover { color: var(--blue); }
 
     .featured-showcase {
       display: grid;
@@ -558,8 +659,9 @@
       max-height: 100%;
       object-fit: contain;
       transition: transform 0.2s;
+      transform: rotate(-6deg);
     }
-    .featured-showcase__image:hover img { transform: scale(1.03); }
+    .featured-showcase__image:hover img { transform: rotate(-6deg) scale(1.03); }
 
     .featured-showcase__details {
       width: 600px;
@@ -600,13 +702,14 @@
       background: var(--gold);
       color: var(--navy);
       border: none;
-      border-radius: 8px;
+      border-radius: 0;
       padding: 0;
       font-size: 16px;
       font-weight: 600;
       transition: background 0.15s;
     }
     .btn-add-quote:hover { background: var(--gold-dark); }
+    .btn-add-quote:active { background: var(--gold-active); }
 
     .featured-thumbs {
       display: flex;
@@ -706,9 +809,8 @@
       .fs-label { width: 160px; }
     }
     @media (max-width: 1023px) {
-      .featured-header { grid-template-columns: 1fr; gap: 16px; }
-      .featured-header__title { font-size: 26px; justify-self: center; text-align: center; }
-      .btn-outline { justify-self: center; }
+      .featured-header { flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+      .featured-header__title { font-size: 26px; }
       .featured-showcase { grid-template-columns: 1fr; gap: 28px; }
       .featured-showcase__image { width: 100%; height: auto; aspect-ratio: 600 / 850; max-width: 420px; margin: 0 auto; }
       .featured-thumbs { flex-wrap: wrap; gap: 20px; }
@@ -765,7 +867,7 @@
     }
     .trust-item {
       padding: 16px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.18);
+      border-bottom: 1px solid rgba(255,255,255,0.33);
     }
     .trust-item:first-child { padding-top: 0; }
     .trust-item__title {
@@ -1046,6 +1148,7 @@
       white-space: nowrap;
     }
     .btn-gold:hover { background: var(--gold-dark); }
+    .btn-gold:active { background: var(--gold-active); }
 
     @media (max-width: 1023px) {
       .contact-cta { padding: 56px 24px; }
@@ -1198,54 +1301,6 @@
     .mobile-submenu a { font-size: 13px; font-weight: 500; color: var(--muted); padding: 10px 0; border-bottom: 1px solid #f0f0f0; text-decoration: none; display: block; }
     .mobile-submenu a:last-child { border-bottom: none; }
 
-    /* ── Nested Products dropdown (desktop/tablet) ── */
-    .dd-cat-row { display: flex; align-items: stretch; border-radius: 6px; position: relative; }
-    .dd-cat-row:hover .dd-cat-link, .dd-cat-row:hover .dd-cat-chevron { background: #f0f0f0; }
-    .dd-cat-link {
-      flex: 1; padding: 10px 6px 10px 14px; font-size: 14px; font-weight: 600;
-      color: var(--text); display: flex; align-items: center;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      transition: background 0.15s; border-radius: 6px 0 0 6px; max-width: 180px;
-    }
-    .dd-cat-link:hover { background: #f0f0f0; color: var(--blue); }
-    .dd-cat-chevron {
-      background: none; border: none; padding: 0 12px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 0 6px 6px 0; transition: background 0.15s; flex-shrink: 0; align-self: stretch;
-    }
-    .dd-cat-chevron:hover { background: #f0f0f0; }
-    .dd-cat-chevron svg { width: 12px; height: 12px; stroke: var(--text); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s; }
-    .dd-cat-chevron.open svg { transform: rotate(180deg); }
-    .dd-cat-chevron.open { background: #e4edf6; }
-    .dd-cat-row.open .dd-cat-link { background: #e4edf6; color: var(--blue); }
-    .dd-cat-row.open .dd-cat-chevron { background: #e4edf6; }
-    .dd-cat-row.open .dd-cat-chevron svg { stroke: var(--blue); }
-    .dd-cat-row.sub-active .dd-sub-link { background: #e4edf6; color: var(--blue); }
-    .dd-cat-row.sub-active .dd-cat-chevron { background: #e4edf6; }
-    .dd-cat-row.sub-active .dd-cat-chevron svg { stroke: var(--blue); }
-
-    .dd-sub-list {
-      display: none; position: absolute; left: calc(100% + 2px); top: 0;
-      min-width: 200px; background: var(--white); border: 1.5px solid var(--border);
-      border-radius: 10px; box-shadow: 0 8px 28px rgba(0,0,0,0.12); padding: 6px;
-      z-index: 10000; flex-direction: column; gap: 2px;
-    }
-    .dd-sub-list.open { display: flex; }
-    .dd-sub-link {
-      display: flex; align-items: center; flex: 1; padding: 10px 14px;
-      font-size: 13px; font-weight: 500; color: var(--muted); border-radius: 6px;
-      white-space: normal; word-break: break-word; transition: background 0.15s, color 0.15s;
-    }
-    .dd-cat-row:hover .dd-sub-link { background: #f0f0f0; color: var(--blue); }
-    .dd-sub-list::before { content: ''; position: absolute; top: 0; bottom: 0; left: -8px; width: 8px; }
-
-    .dd-type-list {
-      display: none; position: fixed; min-width: 200px; background: var(--white);
-      border: 1.5px solid var(--border); border-radius: 10px; box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-      padding: 6px; z-index: 10002; flex-direction: column; gap: 2px;
-    }
-    .dd-type-list.open { display: flex; }
-    .dd-type-list::before { content: ''; position: absolute; top: 0; bottom: 0; left: -8px; width: 8px; }
   </style>
 </head>
 <body>
@@ -1261,20 +1316,33 @@
       <nav class="navbar__desktop">
         <div class="nav-group">
           <div class="nav-dropdown" id="dd-products-desktop">
-            <a href="products.html">Products
-              <img class="chevron-img" src="Arrow.png" alt="" />
-            </a>
-            <div class="dropdown-menu" id="nav-dd-desktop-products"></div>
+            <a href="products.html">Products</a>
+            <div class="mega-menu mega-menu--products">
+              <div class="mega-menu__panel">
+                <div class="mega-col mega-col--1" id="mega-products-desktop-col1"></div>
+                <div class="mega-col mega-col--2" id="mega-products-desktop-col2"></div>
+                <div class="mega-col mega-col--3" id="mega-products-desktop-col3"></div>
+              </div>
+            </div>
           </div>
           <div class="nav-dropdown" id="dd-resources-desktop">
-            <a href="resources.html">Resources
-              <img class="chevron-img" src="Arrow.png" alt="" />
-            </a>
-            <div class="dropdown-menu">
-              <a href="video-archive.html">Video Archive</a>
-              <a href="pdf-catalogs.html">PDF Catalogs</a>
-              <a href="education-materials.html">Education Materials</a>
-              <a href="product-ifus.html">Product IFUs</a>
+            <a href="resources.html">Resources</a>
+            <div class="mega-menu mega-menu--resources">
+              <div class="mega-menu__panel">
+                <div class="mega-resources__list">
+                  <div class="mega-resources__header">Resources</div>
+                  <a href="video-archive.html">Video Archive</a>
+                  <a href="pdf-catalogs.html">Digital Catalogs</a>
+                  <a href="education-materials.html">Educational Materials</a>
+                  <a href="product-ifus.html">Product IFUs</a>
+                </div>
+                <div class="mega-resources__promo">
+                  <div class="mega-resources__eyebrow">PEAK Products</div>
+                  <div class="mega-resources__title">Built for the Surgeon</div>
+                  <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                  <div class="mega-resources__mountain"></div>
+                </div>
+              </div>
             </div>
           </div>
           <a href="about.html">About</a>
@@ -1290,20 +1358,33 @@
       <nav class="navbar__tablet">
         <div class="nav-group">
           <div class="nav-dropdown" id="dd-products-tablet">
-            <a href="products.html">Products
-              <img class="chevron-img" src="Arrow.png" alt="" />
-            </a>
-            <div class="dropdown-menu" id="nav-dd-tablet-products"></div>
+            <a href="products.html">Products</a>
+            <div class="mega-menu mega-menu--products">
+              <div class="mega-menu__panel">
+                <div class="mega-col mega-col--1" id="mega-products-tablet-col1"></div>
+                <div class="mega-col mega-col--2" id="mega-products-tablet-col2"></div>
+                <div class="mega-col mega-col--3" id="mega-products-tablet-col3"></div>
+              </div>
+            </div>
           </div>
           <div class="nav-dropdown" id="dd-resources-tablet">
-            <a href="resources.html">Resources
-              <img class="chevron-img" src="Arrow.png" alt="" />
-            </a>
-            <div class="dropdown-menu">
-              <a href="video-archive.html">Video Archive</a>
-              <a href="pdf-catalogs.html">PDF Catalogs</a>
-              <a href="education-materials.html">Education Materials</a>
-              <a href="product-ifus.html">Product IFUs</a>
+            <a href="resources.html">Resources</a>
+            <div class="mega-menu mega-menu--resources">
+              <div class="mega-menu__panel">
+                <div class="mega-resources__list">
+                  <div class="mega-resources__header">Resources</div>
+                  <a href="video-archive.html">Video Archive</a>
+                  <a href="pdf-catalogs.html">Digital Catalogs</a>
+                  <a href="education-materials.html">Educational Materials</a>
+                  <a href="product-ifus.html">Product IFUs</a>
+                </div>
+                <div class="mega-resources__promo">
+                  <div class="mega-resources__eyebrow">PEAK Products</div>
+                  <div class="mega-resources__title">Built for the Surgeon</div>
+                  <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                  <div class="mega-resources__mountain"></div>
+                </div>
+              </div>
             </div>
           </div>
           <a href="about.html">About</a>
@@ -1405,7 +1486,6 @@
               <span class="hero__quicklink-title">Browse Products</span>
               <span class="hero__quicklink-sub">Shop by category</span>
             </span>
-            <svg class="hero__quicklink-chevron" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 9 8 1 15"/></svg>
           </a>
           <a class="hero__quicklink" href="resources.html">
             <span class="hero__quicklink-icon">
@@ -1415,7 +1495,6 @@
               <span class="hero__quicklink-title">Access Resources</span>
               <span class="hero__quicklink-sub">IFUs, catalogs, and clinical info</span>
             </span>
-            <svg class="hero__quicklink-chevron" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 9 8 1 15"/></svg>
           </a>
           <a class="hero__quicklink" href="contact.html">
             <span class="hero__quicklink-icon">
@@ -1425,7 +1504,6 @@
               <span class="hero__quicklink-title">Get Expert Help</span>
               <span class="hero__quicklink-sub">Talk to a product specialist</span>
             </span>
-            <svg class="hero__quicklink-chevron" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 9 8 1 15"/></svg>
           </a>
         </div>
       </div>
@@ -1438,7 +1516,7 @@
   <div class="section">
     <div class="featured-header">
       <h2 class="featured-header__title">Featured Products</h2>
-      <a href="products.html" class="btn-outline">Browse&nbsp; All Products</a>
+      <a href="products.html?all=1" class="featured-header__link">Browse All Products</a>
     </div>
     <div id="featured-showcase-wrap"></div>
     <div class="featured-thumbs" id="featured-thumbs"></div>
@@ -1608,7 +1686,7 @@
     </div>
 
     <div class="footer__bottom">
-      © Copyright 2026 PEAK Medical Distribution INC. &nbsp;Glen Ellyn, IL
+      ©2026 PEAK Medical Distribution, Inc. &bull; Glen Ellyn, IL
     </div>
   </footer>
 
@@ -1634,85 +1712,75 @@
         }
       });
 
-      function buildDropdownHTML(tree) {
-        document.querySelectorAll('.dd-type-list').forEach(el => el.remove());
-        return Object.entries(tree).map(([cat, subs]) => {
-          const catURL  = `products.html?cat=${encodeURIComponent(cat)}`;
-          const catId   = 'navdd-' + cat.replace(/\s+/g, '_');
-          const hasSubs = Object.keys(subs).length > 0;
+      const categories = Object.keys(tree);
 
-          let h = `<div class="dd-cat-row">
-            <a class="dd-cat-link" href="${catURL}">${cat}</a>
-            ${hasSubs ? `<button class="dd-cat-chevron" onclick="toggleNavSub(event,'${catId}')">
-              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>` : ''}
-          </div>`;
+      /* ── 3-column "Products" mega menu (desktop + tablet), cascading hover ── */
+      function initMegaProducts(prefix) {
+        const col1 = document.getElementById(`mega-${prefix}-col1`);
+        const col2 = document.getElementById(`mega-${prefix}-col2`);
+        const col3 = document.getElementById(`mega-${prefix}-col3`);
+        if (!col1 || !col2 || !col3) return;
 
-          if (hasSubs) {
-            h += `<div class="dd-sub-list" id="${catId}">`;
-            Object.keys(subs).forEach(sub => {
-              const types    = subs[sub];
-              const subURL   = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
-              const subId    = 'navtype-' + cat.replace(/\s+/g,'_') + '__' + sub.replace(/\s+/g,'_');
-              const hasTypes = types.size > 0;
-              h += `<div class="dd-cat-row">
-                <a class="dd-sub-link" href="${subURL}">${sub}</a>
-                ${hasTypes ? `<button class="dd-cat-chevron dd-type-chevron" data-typeid="${subId}" onclick="toggleNavType(event,'${subId}')">
-                  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>` : ''}
-              </div>`;
+        function renderCol3(cat, sub) {
+          const types = [...(tree[cat][sub] || [])];
+          col3.innerHTML =
+            `<div class="mega-col__header">${sub}</div>` +
+            types.map(type => `<a class="mega-col__link" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
+        }
+
+        function renderCol2(cat) {
+          const subs = Object.keys(tree[cat]);
+          col2.innerHTML =
+            `<div class="mega-col__header">${cat}</div>` +
+            subs.map((sub, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}" data-idx="${i}">${sub}</a>`).join('');
+
+          col2.querySelectorAll('.mega-col__link').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+              col2.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
+              el.classList.add('active');
+              renderCol3(el.dataset.cat, el.dataset.sub);
             });
-            h += `</div>`;
-          }
-          return h;
-        }).join('');
-      }
-
-      function buildTypePanels(tree) {
-        document.querySelectorAll('.dd-type-list').forEach(el => el.remove());
-        Object.entries(tree).forEach(([cat, subs]) => {
-          Object.keys(subs).forEach(sub => {
-            const types = subs[sub];
-            if (!types.size) return;
-            const subId = 'navtype-' + cat.replace(/\s+/g,'_') + '__' + sub.replace(/\s+/g,'_');
-            const panel = document.createElement('div');
-            panel.className = 'dd-type-list';
-            panel.id = subId;
-            [...types].forEach(type => {
-              const a = document.createElement('a');
-              a.className = 'dd-sub-link';
-              a.href = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}`;
-              a.textContent = type;
-              panel.appendChild(a);
-            });
-            document.body.appendChild(panel);
           });
-        });
+
+          if (subs.length) renderCol3(cat, subs[0]);
+          else col3.innerHTML = '';
+        }
+
+        function renderCol1() {
+          col1.innerHTML =
+            `<div class="mega-col__header">Products</div>` +
+            categories.map((cat, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}" data-cat="${cat}" data-idx="${i}">${cat}</a>`).join('');
+
+          col1.querySelectorAll('.mega-col__link').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+              col1.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
+              el.classList.add('active');
+              renderCol2(el.dataset.cat);
+            });
+          });
+        }
+
+        renderCol1();
+        if (categories.length) renderCol2(categories[0]);
       }
 
-      function buildMobileHTML(tree) {
-        return Object.entries(tree).map(([cat, subs]) => {
+      initMegaProducts('products-desktop');
+      initMegaProducts('products-tablet');
+
+      /* ── Mobile flat list ── */
+      function buildMobileHTML() {
+        return categories.map(cat => {
           const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
           let html = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
-          Object.keys(subs).forEach(sub => {
+          Object.keys(tree[cat]).forEach(sub => {
             const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
             html += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
           });
           return html;
         }).join('');
       }
-
-      const ddHTML = buildDropdownHTML(tree);
-      const mobHTML = buildMobileHTML(tree);
-
-      const desktopDD = document.getElementById('nav-dd-desktop-products');
-      const tabletDD  = document.getElementById('nav-dd-tablet-products');
-      const mobileDD  = document.getElementById('mob-products');
-
-      if (desktopDD) desktopDD.innerHTML = ddHTML;
-      if (tabletDD)  tabletDD.innerHTML  = ddHTML;
-      if (mobileDD)  mobileDD.innerHTML  = mobHTML;
-      buildTypePanels(tree);
+      const mobileDD = document.getElementById('mob-products');
+      if (mobileDD) mobileDD.innerHTML = buildMobileHTML();
     }
 
     populateNavDropdowns();
@@ -1846,51 +1914,20 @@
 
     /* Close dropdowns when clicking outside */
     document.addEventListener('click', e => {
-      const inDropdown  = e.target.closest('.nav-dropdown');
-      const inTypePanel = e.target.closest('.dd-type-list');
-
-      if (!inDropdown && !inTypePanel) {
+      if (!e.target.closest('.nav-dropdown')) {
         document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
-        document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-        document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      } else if (inDropdown && !e.target.closest('.dd-sub-list') && !e.target.closest('.dd-cat-chevron') && !e.target.closest('.dd-type-chevron')) {
-        document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-        document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      }
-    });
-
-    document.addEventListener('mousemove', e => {
-      const openTypePanel = document.querySelector('.dd-type-list.open');
-      if (!openTypePanel) return;
-      const inDropdown  = e.target.closest('.nav-dropdown');
-      const inTypePanel = e.target.closest('.dd-type-list');
-      const inSubList   = e.target.closest('.dd-sub-list');
-      if (!inDropdown && !inTypePanel && !inSubList) {
-        openTypePanel.classList.remove('open');
-        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
       }
     });
 
     /* Hover-based dropdown behavior (desktop/tablet) */
     document.querySelectorAll('.nav-dropdown').forEach(dd => {
       dd.addEventListener('mouseenter', () => {
-        const menu = dd.querySelector('.dropdown-menu');
+        const menu = dd.querySelector('.mega-menu');
         if (menu) menu.style.display = 'flex';
       });
       dd.addEventListener('mouseleave', () => {
-        if (!dd.classList.contains('type-open')) {
-          const menu = dd.querySelector('.dropdown-menu');
-          if (menu) menu.style.display = 'none';
-        }
+        const menu = dd.querySelector('.mega-menu');
+        if (menu) menu.style.display = 'none';
       });
     });
 
@@ -2007,62 +2044,6 @@
       const box = document.getElementById('search-suggestions');
       box.innerHTML = '';
       box.classList.remove('visible');
-    }
-
-    /* ── Toggle nested nav submenu ── */
-    function toggleNavType(e, id) {
-      e.preventDefault();
-      e.stopPropagation();
-      const typePanel = document.getElementById(id);
-      const btn = e.currentTarget;
-      if (!typePanel) return;
-
-      const isOpen = typePanel.classList.contains('open');
-
-      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('sub-active'));
-
-      if (!isOpen) {
-        const row = btn.closest('.dd-cat-row');
-        const subList = btn.closest('.dd-sub-list');
-        const navDropdown = btn.closest('.nav-dropdown');
-        const rowRect     = row ? row.getBoundingClientRect() : btn.getBoundingClientRect();
-        const subListRect = subList ? subList.getBoundingClientRect() : rowRect;
-
-        typePanel.style.top  = rowRect.top + 'px';
-        typePanel.style.left = (subListRect.right + 6) + 'px';
-        typePanel.classList.add('open');
-        btn.classList.add('open');
-        if (row) row.classList.add('sub-active');
-        if (navDropdown) navDropdown.classList.add('type-open');
-      }
-    }
-
-    function toggleNavSub(e, id) {
-      e.preventDefault(); e.stopPropagation();
-      const sub = document.getElementById(id);
-      const btn = e.currentTarget;
-      if (!sub) return;
-      const isOpen = sub.classList.contains('open');
-      document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-      document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('sub-active'));
-      if (!isOpen) {
-        const row = btn.closest('.dd-cat-row');
-        const menu = btn.closest('.dropdown-menu');
-        let offsetTop = 0, el = row;
-        while (el && el !== menu) { offsetTop += el.offsetTop; el = el.offsetParent; }
-        sub.style.top = offsetTop + 'px';
-        sub.classList.add('open');
-        btn.classList.add('open');
-        row.classList.add('open');
-      }
     }
 
     document.addEventListener('click', function(e) {
