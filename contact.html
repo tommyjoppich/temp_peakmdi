@@ -9,351 +9,367 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Montserrat', sans-serif; color: #1a1a1a; background: #fff; min-height: 100vh; display: flex; flex-direction: column; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+      color: #1a1a1a;
+      background: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
     a { text-decoration: none; color: inherit; }
     img { display: block; max-width: 100%; }
     button { cursor: pointer; font-family: inherit; }
 
+    /* ── CSS Variables ────────────────────────────────────────── */
     :root {
-      --navy: #1a2f4a; --navy-dark: #111e2e; --blue: #2e6da4;
-      --white: #ffffff; --off-white: #f8f8f8; --text: #1a1a1a;
-      --muted: #666; --border: #e0e0e0; --radius: 12px;
+      --navy:       #1a2f4a;
+      --navy-dark:  #111e2e;
+      --blue:       #2e6da4;
+      --gold:       #F2C300;
+      --gold-dark:  #EFA500;
+      --gold-active:#FFDE55;
+      --cyan:       #6fe9ef;
+      --cream:      #f2e9d3;
+      --white:      #ffffff;
+      --off-white:  #f8f8f8;
+      --card-hover: #eceef1;
+      --text:       #1a1a1a;
+      --muted:      #666;
+      --border:     #e0e0e0;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.09);
+      --card-shadow-hover: 0 6px 22px rgba(0,0,0,0.14);
+      --radius:     12px;
+      --coral:      #F2705C;
+      --peak-navy:  #1F2E5C;
     }
 
     /* ══════════════════════════════════════════════════════════
        NAVBAR
     ══════════════════════════════════════════════════════════ */
     .navbar {
-      position: sticky; top: 0; z-index: 200;
-      background: var(--white); box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      height: 72px; display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center; padding: 0 28px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--white);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      height: 72px;
     }
+    .navbar__inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 28px;
+    }
+
     .navbar__logo { justify-self: start; }
     .navbar__logo img { height: 52px; width: auto; }
-    .navbar__center { display: flex; justify-content: center; }
-    .navbar__right { justify-self: end; display: flex; align-items: center; }
-    @media (min-width: 1024px) { .navbar { height: 80px; } .navbar__logo img { height: 68px; } }
 
-    .navbar__desktop { display: none; }
-    .nav-group {
-      display: flex; align-items: center;
-      border: 1.5px solid var(--border); border-radius: 9px;
-      padding: 4px 6px; gap: 2px;
+    .navbar__center {
+      display: flex;
+      justify-content: center;
     }
-    .nav-dropdown { position: relative; }
-    .nav-dropdown > a, .nav-group > a {
-      font-size: 14px; font-weight: 600; color: var(--text);
-      padding: 8px 14px; border-radius: 6px;
-      display: flex; align-items: center; gap: 5px;
-      white-space: nowrap; transition: background 0.15s; cursor: pointer;
-    }
-    .nav-dropdown > a:hover, .nav-group > a:hover { background: #f0f0f0; }
-    .nav-group > a.active { background: #e4edf6; color: var(--blue); }
-    .nav-dropdown > a .chevron {
-      width: 12px; height: 12px; stroke: currentColor; fill: none;
-      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
-      transition: transform 0.2s;
-    }
-    .nav-dropdown:hover > a { background: #f0f0f0; }
-    .nav-dropdown:hover > a .chevron { transform: rotate(180deg); }
-    .nav-dropdown:hover .dropdown-menu { display: flex; }
-    .nav-dropdown.type-open .dropdown-menu { display: flex; }
-    .nav-dropdown.type-open .dd-sub-list.open { display: flex; }
-    .nav-dropdown::after {
-      content: ''; position: absolute; top: 100%; left: 0; right: 0;
-      height: 14px; background: transparent;
-    }
-    .dropdown-menu {
-      display: none; position: absolute; top: calc(100% + 14px); left: 50%;
-      transform: translateX(-50%); background: var(--white);
-      border: 1.5px solid var(--border); border-radius: 10px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.12); width: 220px;    
-      padding: 6px; z-index: 9999; flex-direction: column; gap: 2px;
-    }
-    .dropdown-menu a {
-      display: block; padding: 10px 14px; font-size: 14px; font-weight: 500;
-      color: var(--text); border-radius: 6px; white-space: nowrap; transition: background 0.15s;
-    }
-    .dropdown-menu a:hover { background: #f0f0f0; color: var(--blue); }
-    .dropdown-menu .dd-cat-link { border-radius: 6px 0 0 6px; }
-    .dropdown-menu .dd-sub-link { border-radius: 6px 0 0 6px; }
 
-    .btn-quote {
-      display: flex; align-items: center; gap: 10px;
-      border: 2px solid var(--navy); border-radius: 8px;
-      padding: 10px 20px; font-size: 14px; font-weight: 700;
-      color: var(--navy); background: var(--white);
-      transition: background 0.15s, color 0.15s; white-space: nowrap;
+    .navbar__right {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
-    .btn-quote:hover { background: var(--navy); color: var(--white); }
-
-    .navbar__tablet { display: none; }
-    .navbar__mobile { display: none; align-items: center; gap: 12px; }
-    .navbar__mobile .cart-btn {
-      width: 42px; height: 42px; border-radius: 50%;
-      border: 2px solid var(--navy); display: flex; align-items: center;
-      justify-content: center; background: transparent; color: var(--navy);
-    }
-    .navbar__mobile .hamburger { background: none; border: none; color: var(--navy); display: flex; align-items: center; padding: 4px; }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     @media (min-width: 1024px) {
-      .navbar__desktop { display: flex; }
+      .navbar { height: 80px; }
+      .navbar__logo img { height: 68px; }
+    }
+
+    .navbar__desktop { display: none; }
+
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+    }
+
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > a {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
+      color: var(--navy);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: color 0.15s;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+    }
+    .nav-dropdown > a:hover  { color: var(--blue); }
+    .nav-dropdown > a.active { color: var(--coral); }
+    .nav-dropdown > a .chevron {
+      width: 12px; height: 12px;
+      stroke: currentColor; fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+    /* ── Mega menu (Products / Resources) ── */
+    .mega-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding-top: 18px;
+      z-index: 9999;
+      max-width: min(720px, 95vw);
+    }
+    .nav-dropdown.open .mega-menu { display: block; }
+
+    .mega-menu__panel {
+      flex: 1 1 auto;
+      width: 100%;
+      display: flex;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 0;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+      overflow: hidden;
+    }
+
+    .mega-menu--products { width: 720px; }
+    .mega-menu--products .mega-menu__panel { align-items: stretch; padding: 20px 0; }
+    .mega-col {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 0 18px;
+    }
+    .mega-col + .mega-col { border-left: 1px solid var(--border); }
+    .mega-col__header {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 4px 10px 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .mega-col__link {
+      display: block;
+      padding: 9px 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      border-radius: 6px;
+      white-space: normal;
+      word-break: break-word;
+      line-height: 1.3;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .mega-col__link:hover,
+    .mega-col__link.active {
+      background: #fbe4e4;
+      color: var(--navy);
+    }
+
+    .mega-menu--resources { width: 720px; }
+    .mega-menu--resources .mega-menu__panel { display: flex; min-height: 360px; gap: 40px; }
+    .mega-resources__list {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 20px 12px 20px 20px;
+    }
+    .mega-resources__header {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 4px 12px 12px;
+    }
+    .mega-resources__list a {
+      display: block;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+    .mega-resources__list a:hover { background: #fbe4e4; color: var(--navy); }
+    .mega-resources__promo {
+      position: relative;
+      flex: 0 0 180px;
+      max-width: 180px;
+      background: var(--cream);
+      padding: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    @media (min-width: 1024px) {
+      .mega-menu--resources .mega-menu__panel { min-height: 512px; gap: 80px; }
+      .mega-resources__promo { flex: 0 0 220px; max-width: 220px; }
+    }
+    .mega-resources__eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--navy);
+      opacity: 0.75;
+      margin-bottom: 8px;
+    }
+    .mega-resources__title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .mega-resources__desc {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--navy);
+      max-width: 190px;
+      line-height: 1.4;
+      position: relative;
+      z-index: 1;
+    }
+    .mega-resources__mountain {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 110px;
+      pointer-events: none;
+      background-color: var(--navy);
+      opacity: 0.7;
+      -webkit-mask-image: url('mountain-graphic.png');
+      mask-image: url('mountain-graphic.png');
+      -webkit-mask-size: contain;
+      mask-size: contain;
+      -webkit-mask-position: bottom center;
+      mask-position: bottom center;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
+
+    .nav-group > a {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
+      color: var(--navy);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+    .nav-group > a:hover  { color: var(--blue); }
+    .nav-group > a.active { color: var(--coral); }
+
+    .nav-search-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
+      color: var(--navy);
+      padding: 0;
+      cursor: pointer;
+      transition: color 0.15s;
+      background: none;
+      border: none;
+    }
+    .nav-search-link:hover { color: var(--blue); }
+    .nav-search-icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    /* Quote Cart button — gold default, navy on hover */
+    .btn-quote {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      border-radius: 0;
+      padding: 11px 22px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      background: var(--gold);
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+      position: relative;
+    }
+    .btn-quote:hover { background: var(--navy); color: var(--white); }
+    .btn-quote:hover img { filter: brightness(0) invert(1); }
+    .btn-quote:active { background: var(--gold-active); color: var(--navy); }
+    .btn-quote:active img { filter: none; }
+
+    .navbar__tablet { display: none; }
+
+    .navbar__mobile {
+      display: none;
+      align-items: center;
+      gap: 12px;
+    }
+    .navbar__mobile .cart-btn {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      border: 2px solid var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      background: transparent;
+      color: var(--navy);
+    }
+    .navbar__mobile .hamburger {
+      background: none;
+      border: none;
+      color: var(--navy);
+      display: flex; align-items: center;
+      padding: 4px;
+    }
+
+    @media (min-width: 1024px) {
+      .navbar__desktop { display: flex; align-items: center; gap: 40px; }
       .navbar__tablet  { display: none !important; }
       .navbar__mobile  { display: none !important; }
       .btn-quote       { display: flex !important; }
     }
     @media (min-width: 769px) and (max-width: 1023px) {
       .navbar__desktop { display: none !important; }
-      .navbar__tablet  { display: flex; }
+      .navbar__tablet  { display: flex; align-items: center; gap: 8px; }
       .navbar__mobile  { display: none !important; }
       .btn-quote       { display: flex !important; }
+      .navbar__right .cart-btn { display: none !important; }
     }
     @media (max-width: 768px) {
-      .navbar          { padding: 0 16px; }
-      .navbar__logo img{ height: 44px; }
       .navbar__desktop { display: none !important; }
       .navbar__tablet  { display: none !important; }
       .navbar__mobile  { display: flex; }
       .btn-quote       { display: none !important; }
+      .navbar__right > .cart-btn { display: none !important; }
     }
-
-    /* ══════════════════════════════════════════════════════════
-       HERO BANNER
-    ══════════════════════════════════════════════════════════ */
-    .page-hero {
-      position: relative; width: 100%; height: 140px;
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
-    }
-    .page-hero__bg {
-      position: absolute; inset: 0;
-      background:
-        linear-gradient(to bottom, rgba(17,30,46,0.55), rgba(17,30,46,0.45)),
-        url('https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=1400&q=60') center/cover no-repeat;
-    }
-    .page-hero h1 {
-      position: relative; z-index: 1;
-      font-size: 32px; font-weight: 800; color: #fff;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
-    }
-
-    /* ══════════════════════════════════════════════════════════
-       BREADCRUMB
-    ══════════════════════════════════════════════════════════ */
-    .breadcrumb {
-      padding: 12px 32px; font-size: 13px; color: var(--muted);
-      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-    }
-    .breadcrumb a { color: var(--muted); }
-    .breadcrumb a:hover { color: var(--blue); }
-    .breadcrumb span { color: #bbb; }
-
-    /* ══════════════════════════════════════════════════════════
-       CONTACT CONTENT
-    ══════════════════════════════════════════════════════════ */
-    .contact-wrap {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 56px 32px 72px;
-    }
-
-    .contact-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      max-width: 900px;
-      width: 100%;
-    }
-
-    .contact-card {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.09);
-      border: 1px solid var(--border);
-      padding: 36px 24px 32px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      text-align: center;
-    }
-    .contact-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 28px rgba(0,0,0,0.13);
-    }
-
-    /* Clickable cards */
-    .contact-card a {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      width: 100%;
-      color: inherit;
-    }
-
-    .contact-card__icon {
-      width: 72px;
-      height: 72px;
-      object-fit: contain;
-    }
-
-    .contact-card__title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .contact-card__value {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--muted);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .contact-cards {
-        grid-template-columns: 1fr;
-        max-width: 340px;
-      }
-      .contact-wrap { padding: 40px 16px 56px; }
-      .breadcrumb { padding: 12px 16px; }
-    }
-    @media (min-width: 769px) and (max-width: 1023px) {
-      .contact-cards { max-width: 700px; }
-    }
-
-    /* ══════════════════════════════════════════════════════════
-       FOOTER
-    ══════════════════════════════════════════════════════════ */
-    footer { background: var(--navy); color: rgba(255,255,255,0.65); padding: 48px 32px 36px; }
-    .footer__inner {
-      max-width: 1200px; margin: 0 auto;
-      display: grid; grid-template-columns: auto auto auto 1fr;
-      gap: 40px; align-items: start;
-    }
-    .footer__col { display: flex; flex-direction: column; gap: 9px; }
-    .footer__col-title { font-weight: 700; font-size: 13px; color: rgba(255,255,255,0.9); margin-bottom: 2px; }
-    .footer__col a, .footer__col span { font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.6); display: block; transition: color 0.15s; }
-    .footer__col a:hover { color: rgba(255,255,255,0.9); }
-    .footer__copyright { text-align: right; display: flex; flex-direction: column; gap: 4px; justify-self: end; }
-    .footer__copyright span { font-size: 12px; color: rgba(255,255,255,0.55); }
-
-    @media (max-width: 900px) {
-      .footer__inner { grid-template-columns: 1fr 1fr; gap: 24px; }
-      .footer__copyright { grid-column: 1/-1; text-align: left; justify-self: start; }
-      footer { padding: 36px 20px 28px; }
-    }
-
-    
-    
-    /* ── Nested Products dropdown ── */
-    .dd-cat-row {
-      display: flex;
-      align-items: stretch;
-      border-radius: 6px;
-      position: relative;
-    }
-    .dd-cat-row:hover .dd-cat-link,
-    .dd-cat-row:hover .dd-cat-chevron { background: #f0f0f0; }
-
-    .dd-cat-link {
-      flex: 1;
-      padding: 10px 6px 10px 14px;
-      font-size: 14px; font-weight: 600;
-      color: var(--text); display: flex; align-items: center;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      transition: background 0.15s;
-      border-radius: 6px 0 0 6px;
-      max-width: 180px;
-    }
-    .dd-cat-link:hover { background: #f0f0f0; color: var(--blue); }
-
-    .dd-cat-chevron {
-      background: none; border: none;
-      padding: 0 12px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 0 6px 6px 0;
-      transition: background 0.15s; flex-shrink: 0;
-      align-self: stretch;
-    }
-    .dd-cat-chevron:hover { background: #f0f0f0; }
-    .dd-cat-chevron svg {
-      width: 12px; height: 12px; stroke: var(--text); fill: none;
-      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
-      transition: transform 0.2s;
-    }
-    .dd-cat-chevron.open svg { transform: rotate(180deg); }
-    /* Active state — row is open */
-    .dd-cat-chevron.open { background: #e4edf6; }
-    .dd-cat-chevron.open + * { /* sibling trick doesn't work here — use JS class on row */ }
-    .dd-cat-row.open .dd-cat-link { background: #e4edf6; color: var(--blue); }
-    .dd-cat-row.open .dd-cat-chevron { background: #e4edf6; }
-    .dd-cat-row.open .dd-cat-chevron svg { stroke: var(--blue); }
-
-    /* Sub-list flies out to the RIGHT of the main dropdown panel.
-       position:absolute relative to the .dropdown-menu container.
-       top is set per-row by JS so it aligns with the clicked row. */
-    .dd-sub-list {
-      display: none;
-      position: absolute;
-      left: calc(100% + 2px);
-      top: 0; /* overridden by JS */
-      min-width: 200px;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-      padding: 6px;
-      z-index: 10000;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .dd-sub-list.open { display: flex; }
-
-    .dd-sub-link {
-      display: flex; align-items: center; flex: 1;
-      padding: 10px 14px;
-      font-size: 13px; font-weight: 500;
-      color: var(--muted); border-radius: 6px;
-      white-space: normal; word-break: break-word;
-      transition: background 0.15s, color 0.15s;
-    }
-    .dd-cat-row:hover .dd-sub-link { background: #f0f0f0; color: var(--blue); }
-    .dd-cat-row:hover .dd-sub-link ~ .dd-cat-chevron { background: #f0f0f0; }
-    .dd-cat-row:hover .dd-sub-link ~ .dd-cat-chevron svg { stroke: var(--blue); }
-    .dd-type-list .dd-sub-link:hover { background: #f0f0f0; color: var(--blue); }
-    /* Transparent bridge fills the gap so mouse doesn't leave hover zone */
-    .dd-sub-list::before {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0;
-      left: -8px;
-      width: 8px;
-    }
-
 
     /* ── Mobile menu ── */
     .mobile-menu {
@@ -366,99 +382,329 @@
       align-items: stretch;
     }
     .mobile-menu.open { display: flex; }
-    .mobile-menu__backdrop {
-      flex: 0 0 18%;
-      min-width: 48px;
-      cursor: pointer;
-    }
+    .mobile-menu__backdrop { flex: 0 0 18%; min-width: 48px; cursor: pointer; }
     .mobile-menu__panel {
-      flex: 1;
-      background: var(--white);
-      display: flex;
-      flex-direction: column;
-      padding: 24px;
-      overflow-y: auto;
-      max-width: 82vw;
+      flex: 1; background: var(--white); display: flex; flex-direction: column;
+      padding: 24px; overflow-y: auto; max-width: 82vw;
     }
-    .mobile-menu__header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
+    .mobile-menu__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
     .mobile-menu__header img { height: 48px; }
-    .mobile-menu__close {
-      background: none; border: none;
-      color: var(--navy); display: flex; align-items: center;
-    }
-    .mobile-menu__panel nav {
-      display: flex; flex-direction: column; width: 100%;
-    }
-    .mobile-menu__panel nav a,
-    .mobile-menu__panel nav .mobile-nav-toggle {
+    .mobile-menu__close { background: none; border: none; color: var(--navy); display: flex; align-items: center; }
+    .mobile-menu__panel nav { display: flex; flex-direction: column; width: 100%; }
+    .mobile-menu__panel nav a {
       display: flex; justify-content: space-between; align-items: center;
       font-weight: 600; font-size: 18px; padding: 16px 0;
       border-bottom: 1px solid var(--border); color: var(--text);
-      background: none; border-left: none; border-right: none; border-top: none;
-      width: 100%; text-align: left; cursor: pointer; text-decoration: none;
+      text-decoration: none;
     }
-    .mobile-nav-row {
-      display: flex; align-items: center;
-      border-bottom: 1px solid var(--border);
-    }
-    .mobile-nav-link {
-      flex: 1; font-weight: 600; font-size: 18px;
-      padding: 16px 0; color: var(--text);
-      display: block; text-decoration: none;
-    }
-    .mobile-nav-chevron {
-      background: none; border: none; padding: 16px 8px;
-      cursor: pointer; display: flex; align-items: center; color: var(--navy);
-    }
-    .mobile-nav-chevron .chevron, .mobile-nav-toggle .chevron {
-      width: 16px; height: 16px; stroke: var(--navy); fill: none;
-      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
-      transition: transform 0.2s;
-    }
-    .mobile-nav-chevron.open .chevron,
-    .mobile-nav-toggle.open .chevron { transform: rotate(180deg); }
-    .mobile-submenu {
-      display: none; flex-direction: column;
-      padding: 4px 0 4px 16px;
-      border-bottom: 1px solid var(--border);
-    }
+    .mobile-menu__panel nav a.active { color: var(--coral); }
+    .mobile-nav-row { display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+    .mobile-nav-link { flex: 1; font-weight: 600; font-size: 18px; padding: 16px 0; color: var(--text); display: block; text-decoration: none; }
+    .mobile-nav-chevron { background: none; border: none; padding: 16px 8px; cursor: pointer; display: flex; align-items: center; color: var(--navy); }
+    .mobile-nav-chevron .chevron { width: 16px; height: 16px; stroke: var(--navy); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s; }
+    .mobile-nav-chevron.open .chevron { transform: rotate(180deg); }
+    .mobile-submenu { display: none; flex-direction: column; padding: 4px 0 4px 16px; border-bottom: 1px solid var(--border); }
     .mobile-submenu.open { display: flex; }
-    .mobile-submenu a {
-      font-size: 13px; font-weight: 500; color: var(--muted);
-      padding: 10px 0; border-bottom: 1px solid #f0f0f0;
-      text-decoration: none; display: block;
-    }
+    .mobile-submenu a { font-size: 13px; font-weight: 500; color: var(--muted); padding: 10px 0; border-bottom: 1px solid #f0f0f0; text-decoration: none; display: block; }
     .mobile-submenu a:last-child { border-bottom: none; }
 
-    .dd-cat-row.sub-active .dd-sub-link { background: #e4edf6; color: var(--blue); }
-    .dd-cat-row.sub-active .dd-cat-chevron { background: #e4edf6; }
-    .dd-cat-row.sub-active .dd-cat-chevron svg { stroke: var(--blue); }
-  
-    /* ── Type panel (3rd level flyout) ── */
-    .dd-type-list {
-      display: none;
-      position: fixed;
-      min-width: 200px;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-      padding: 6px;
-      z-index: 10002;
-      flex-direction: column;
-      gap: 2px;
+    /* ══════════════════════════════════════════════════════════
+       PAGE HERO
+    ══════════════════════════════════════════════════════════ */
+    .page-hero {
+      position: relative;
+      width: 100%;
+      min-height: 260px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
     }
-    .dd-type-list.open { display: flex; }
-    .dd-type-list::before {
-      content: '';
+    .page-hero__bg {
       position: absolute;
-      top: 0; bottom: 0;
-      left: -8px; width: 8px;
+      inset: 0;
+      background:
+        linear-gradient(100deg, rgba(15,26,41,0.90) 0%, rgba(15,26,41,0.62) 42%, rgba(15,26,41,0.35) 70%, rgba(15,26,41,0.18) 100%),
+        url('hero-background.png') center/cover no-repeat;
+    }
+    .page-hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 40px;
+    }
+    .page-hero h1 {
+      font-size: 44px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 14px;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.3);
+    }
+    .page-hero p {
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.88);
+      max-width: 460px;
+      line-height: 1.55;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.25);
+    }
+    @media (max-width: 640px) {
+      .page-hero { min-height: 200px; }
+      .page-hero__content { padding: 0 20px; }
+      .page-hero h1 { font-size: 30px; }
+      .page-hero p { font-size: 14px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       GET IN TOUCH
+    ══════════════════════════════════════════════════════════ */
+    .contact-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 56px 40px 8px;
+    }
+    .contact-section__title {
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--peak-navy);
+      margin-bottom: 10px;
+    }
+    .contact-section__subtitle {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .contact-tile {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: #F7F8FA;
+      padding: 28px 26px 26px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .contact-tile:hover { background: #FEF9E6; transform: translateY(-2px); }
+    .contact-tile:hover .contact-tile__value { color: var(--blue); }
+    .contact-tile__icon {
+      width: 30px;
+      height: 30px;
+      margin-bottom: 8px;
+    }
+    .contact-tile__icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--peak-navy);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .contact-tile__title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--peak-navy);
+    }
+    .contact-tile__desc {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+    .contact-tile__value {
+      display: inline-block;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--peak-navy);
+      margin-top: 6px;
+      transition: color 0.15s;
+    }
+    .contact-tile__note {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    @media (max-width: 860px) {
+      .contact-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+    }
+    @media (max-width: 640px) {
+      .contact-section { padding: 40px 20px 8px; }
+      .contact-section__title { font-size: 26px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       "NEED HELP FINDING A PRODUCT" CTA
+    ══════════════════════════════════════════════════════════ */
+    .expert-cta {
+      position: relative;
+      overflow: hidden;
+      background: #F5F6F8;
+      width: 100%;
+      max-width: 1200px;
+      margin: 40px auto 72px;
+      padding: 48px 48px;
+      box-sizing: border-box;
+    }
+    .expert-cta__content {
+      position: relative;
+      z-index: 2;
+      max-width: 520px;
+    }
+    .expert-cta__title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--peak-navy);
+      margin-bottom: 14px;
+    }
+    .expert-cta__desc {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 26px;
+      max-width: 440px;
+    }
+    .expert-cta__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      padding: 0 28px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 0;
+      font-size: 15px;
+      font-weight: 700;
+      transition: background 0.15s;
+    }
+    .expert-cta__btn:hover { background: var(--gold-dark); }
+    .expert-cta__btn:active { background: var(--gold-active); }
+    .expert-cta__image {
+      position: absolute;
+      right: -30px;
+      top: 50%;
+      transform: translateY(-50%) rotate(4deg);
+      width: 46%;
+      max-width: 480px;
+      pointer-events: none;
+      z-index: 1;
+      -webkit-mask-image: linear-gradient(to left, #000 55%, transparent 94%);
+      mask-image: linear-gradient(to left, #000 55%, transparent 94%);
+    }
+    .expert-cta__image img { width: 100%; height: auto; display: block; }
+
+    @media (max-width: 1023px) {
+      .expert-cta { padding: 40px 32px; }
+      .expert-cta__image { width: 42%; }
+    }
+    @media (max-width: 768px) {
+      .expert-cta { margin: 32px 20px 56px; padding: 32px 24px; max-width: none; }
+      .expert-cta__image { display: none; }
+      .expert-cta__content { max-width: none; }
+      .expert-cta__title { font-size: 22px; }
+      .expert-cta__desc { font-size: 14px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════════════ */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.65);
+      padding-top: 48px;
+      margin-top: auto;
+      overflow: hidden;
+    }
+    .footer__top {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 32px 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 44px;
+    }
+    .footer__logo img { height: 130px; }
+
+    .footer__columns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .footer__col { display: flex; flex-direction: column; gap: 14px; max-width: 90%; }
+    .footer__col .footer__col-title {
+      font-weight: 600;
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .footer__col a, .footer__col span {
+      font-size: 20px;
+      font-weight: 400;
+      color: #ffffff;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      display: block;
+    }
+    .footer__col a:hover { opacity: 0.75; text-decoration: underline; }
+    .footer__col button {
+      background: none; border: none; padding: 0; text-align: left;
+      font-size: 20px; font-weight: 400; color: #ffffff;
+      transition: opacity 0.15s; font-family: inherit;
+    }
+    .footer__col button:hover { opacity: 0.75; text-decoration: underline; }
+    .footer__contact-row {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .footer__contact-row svg { flex-shrink: 0; color: #ffffff; }
+
+    .footer__watermark {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 4px 32px 8px;
+      box-sizing: border-box;
+    }
+    .footer__watermark-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+    }
+    .footer__bottom {
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding: 18px 32px 22px;
+      max-width: 1440px;
+      margin: 0 auto;
+      font-size: 14px;
+      color: #ffffff;
+    }
+
+    @media (max-width: 1023px) {
+      .footer__columns { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .footer__logo img { height: 92px; }
+    }
+    @media (max-width: 768px) {
+      .navbar__inner { padding: 0 16px; }
+      .navbar__logo img { height: 44px; }
+      .footer__top { padding: 0 20px 32px; gap: 32px; }
+      .footer__logo img { height: 56px; }
+      .footer__columns { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .footer__col .footer__col-title { font-size: 16px; }
+      .footer__col a, .footer__col span, .footer__col button { font-size: 14px; }
+      .footer__watermark { padding-left: 20px; padding-right: 20px; }
+      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 12px; }
+      footer { padding-top: 36px; }
     }
   </style>
 </head>
@@ -468,87 +714,106 @@
        NAVBAR
   ══════════════════════════════════════════════════════════ -->
   <header class="navbar">
-    <a href="index.html" class="navbar__logo">
-      <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" />
-    </a>
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" />
+      </a>
 
-    <div class="navbar__center">
-
-      <!-- Desktop -->
-      <nav class="navbar__desktop">
-        <div class="nav-group">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <div class="nav-dropdown" id="dd-products-desktop">
-            <a href="products.html">Products
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </a>
-            <div class="dropdown-menu" id="nav-dd-desktop-products"></div>
-          </div>
-          <div class="nav-dropdown" id="dd-resources-desktop">
-            <a href="resources.html">Resources
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </a>
-            <div class="dropdown-menu">
-              <a href="video-archive.html">Video Archive</a>
-              <a href="pdf-catalogs.html">PDF Catalogs</a>
-              <a href="education-materials.html">Education Materials</a>
-              <a href="product-ifus.html">Product IFUs</a>
+      <div class="navbar__center">
+        <!-- Desktop -->
+        <nav class="navbar__desktop">
+          <div class="nav-group">
+            <div class="nav-dropdown" id="dd-products-desktop">
+              <a href="products.html">Products</a>
+              <div class="mega-menu mega-menu--products">
+                <div class="mega-menu__panel">
+                  <div class="mega-col mega-col--1" id="mega-products-desktop-col1"></div>
+                  <div class="mega-col mega-col--2" id="mega-products-desktop-col2"></div>
+                  <div class="mega-col mega-col--3" id="mega-products-desktop-col3"></div>
+                </div>
+              </div>
             </div>
-          </div>
-          <a href="contact.html" class="active">Contact Us</a>
-        </div>
-      </nav>
-
-      <!-- Tablet -->
-      <nav class="navbar__tablet">
-        <div class="nav-group">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <div class="nav-dropdown" id="dd-products-tablet">
-            <a href="products.html">Products
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </a>
-            <div class="dropdown-menu" id="nav-dd-tablet-products"></div>
-          </div>
-          <div class="nav-dropdown" id="dd-resources-tablet">
-            <a href="resources.html">Resources
-              <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </a>
-            <div class="dropdown-menu">
-              <a href="video-archive.html">Video Archive</a>
-              <a href="pdf-catalogs.html">PDF Catalogs</a>
-              <a href="education-materials.html">Education Materials</a>
-              <a href="product-ifus.html">Product IFUs</a>
+            <div class="nav-dropdown" id="dd-resources-desktop">
+              <a href="resources.html">Resources</a>
+              <div class="mega-menu mega-menu--resources">
+                <div class="mega-menu__panel">
+                  <div class="mega-resources__list">
+                    <div class="mega-resources__header">Resources</div>
+                    <a href="video-archive.html">Video Archive</a>
+                    <a href="pdf-catalogs.html">Digital Catalogs</a>
+                    <a href="education-materials.html">Educational Materials</a>
+                    <a href="product-ifus.html">Product IFUs</a>
+                  </div>
+                  <div class="mega-resources__promo">
+                    <div class="mega-resources__eyebrow">PEAK Products</div>
+                    <div class="mega-resources__title">Built for the Surgeon</div>
+                    <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                    <div class="mega-resources__mountain"></div>
+                  </div>
+                </div>
+              </div>
             </div>
+            <a href="about.html">About</a>
+            <a href="contact.html" class="active">Contact</a>
           </div>
-          <a href="contact.html" class="active">Contact Us</a>
+          <button class="nav-search-link" onclick="window.location.href='products.html'" aria-label="Search">
+            <img class="nav-search-icon" src="Magnify.png" alt="" />
+            Search
+          </button>
+        </nav>
+
+        <!-- Tablet -->
+        <nav class="navbar__tablet">
+          <div class="nav-group">
+            <div class="nav-dropdown" id="dd-products-tablet">
+              <a href="products.html">Products</a>
+              <div class="mega-menu mega-menu--products">
+                <div class="mega-menu__panel">
+                  <div class="mega-col mega-col--1" id="mega-products-tablet-col1"></div>
+                  <div class="mega-col mega-col--2" id="mega-products-tablet-col2"></div>
+                  <div class="mega-col mega-col--3" id="mega-products-tablet-col3"></div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-dropdown" id="dd-resources-tablet">
+              <a href="resources.html">Resources</a>
+              <div class="mega-menu mega-menu--resources">
+                <div class="mega-menu__panel">
+                  <div class="mega-resources__list">
+                    <div class="mega-resources__header">Resources</div>
+                    <a href="video-archive.html">Video Archive</a>
+                    <a href="pdf-catalogs.html">Digital Catalogs</a>
+                    <a href="education-materials.html">Educational Materials</a>
+                    <a href="product-ifus.html">Product IFUs</a>
+                  </div>
+                  <div class="mega-resources__promo">
+                    <div class="mega-resources__eyebrow">PEAK Products</div>
+                    <div class="mega-resources__title">Built for the Surgeon</div>
+                    <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                    <div class="mega-resources__mountain"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a href="about.html">About</a>
+            <a href="contact.html" class="active">Contact</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="navbar__right">
+        <button class="btn-quote" onclick="cartOpenModal()">
+          <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
+          Quote Cart
+        </button>
+        <div class="navbar__mobile">
+          <button class="cart-btn" aria-label="Cart" onclick="cartOpenModal()">
+            <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
+          </button>
+          <button class="hamburger" aria-label="Open menu" onclick="openMenu()">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
         </div>
-      </nav>
-
-    </div>
-
-    <div class="navbar__right">
-      <button class="btn-quote">Get A Quote
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-        </svg>
-      </button>
-      <div class="navbar__mobile">
-        <button class="cart-btn" aria-label="Cart">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-          </svg>
-        </button>
-        <button class="hamburger" aria-label="Open menu" onclick="openMenu()">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <line x1="3" y1="12" x2="21" y2="12"/>
-            <line x1="3" y1="18" x2="21" y2="18"/>
-          </svg>
-        </button>
       </div>
     </div>
   </header>
@@ -565,7 +830,6 @@
       </div>
       <nav>
         <a href="index.html">Home</a>
-        <a href="about.html">About</a>
         <div class="mobile-nav-row">
           <a href="products.html" class="mobile-nav-link">Products</a>
           <button class="mobile-nav-chevron" id="mob-toggle-products" onclick="toggleMobileSubmenu('mob-products','mob-toggle-products')">
@@ -585,7 +849,8 @@
           <a href="education-materials.html">Education Materials</a>
           <a href="product-ifus.html">Product IFUs</a>
         </div>
-        <a href="contact.html">Contact Us</a>
+        <a href="about.html">About</a>
+        <a href="contact.html" class="active">Contact Us</a>
       </nav>
     </div>
   </div>
@@ -595,170 +860,129 @@
   ══════════════════════════════════════════════════════════ -->
   <div class="page-hero">
     <div class="page-hero__bg"></div>
-    <h1>Contact Us</h1>
+    <div class="page-hero__content">
+      <h1>Contact us</h1>
+      <p>Have a product question or need help finding the right instrument? We're here to help.</p>
+    </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════
-       BREADCRUMB
+       GET IN TOUCH
   ══════════════════════════════════════════════════════════ -->
-  <div class="breadcrumb">
-    <a href="index.html">Home</a><span>›</span>
-    <span>Contact Us</span>
-  </div>
+  <div class="contact-section">
+    <h2 class="contact-section__title">Get in Touch</h2>
+    <p class="contact-section__subtitle">Choose the best way to reach us. Our team is here to help.</p>
 
-  <!-- ══════════════════════════════════════════════════════════
-       CONTACT CARDS
-  ══════════════════════════════════════════════════════════ -->
-  <div class="contact-wrap">
-    <div class="contact-cards">
+    <div class="contact-grid">
 
-      <!-- Phone -->
-      <div class="contact-card">
-        <a href="tel:6305205023">
-          <img class="contact-card__icon" src="phone.png" alt="Phone" />
-          <div class="contact-card__title">Call us by Phone</div>
-          <div class="contact-card__value">630 – 520 – 5023</div>
-        </a>
-      </div>
+      <!-- Call -->
+      <a class="contact-tile" href="tel:6305205023">
+        <div class="contact-tile__icon">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div class="contact-tile__title">Call Us</div>
+        <div class="contact-tile__desc">Speak with a PEAK representative</div>
+        <span class="contact-tile__value">630-520-5023</span>
+        <div class="contact-tile__note">Mon – Fri, 8am–5pm CT</div>
+      </a>
 
       <!-- Email -->
-      <div class="contact-card">
-        <a href="mailto:info@peakmdi.com">
-          <img class="contact-card__icon" src="email.png" alt="Email" />
-          <div class="contact-card__title">Message us on Email</div>
-          <div class="contact-card__value">info@peakmdi.com</div>
-        </a>
-      </div>
+      <a class="contact-tile" href="mailto:info@peakmdi.com">
+        <div class="contact-tile__icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+        </div>
+        <div class="contact-tile__title">Email Us</div>
+        <div class="contact-tile__desc">Send us your questions</div>
+        <span class="contact-tile__value">info@peakmdi.com</span>
+        <div class="contact-tile__note">We typically respond within 1 business day.</div>
+      </a>
 
       <!-- Fax -->
-      <div class="contact-card">
-        <a href="tel:8665578437">
-          <img class="contact-card__icon" src="fax.png" alt="Fax" />
-          <div class="contact-card__title">Contact us by Fax</div>
-          <div class="contact-card__value">866 – 557 – 8437</div>
-        </a>
-      </div>
+      <a class="contact-tile" href="tel:8665578437">
+        <div class="contact-tile__icon">
+          <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        </div>
+        <div class="contact-tile__title">Fax Us</div>
+        <div class="contact-tile__desc">Send documents or purchase orders</div>
+        <span class="contact-tile__value">866-557-8437</span>
+      </a>
 
     </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════
-       FOOTER
+       "NEED HELP FINDING A PRODUCT" CTA
   ══════════════════════════════════════════════════════════ -->
+  <div class="expert-cta">
+    <div class="expert-cta__content">
+      <div class="expert-cta__title">Need Help Finding a Product?</div>
+      <p class="expert-cta__desc">Our PEAK representative can help you find the right instrument for your procedure and answer questions about our products or ordering.</p>
+      <a class="expert-cta__btn" href="products.html?help=1">Get Expert Help</a>
+    </div>
+    <div class="expert-cta__image"><img src="floating-item.svg" alt="" /></div>
+  </div>
+
   <footer>
-    <div class="footer__inner">
+    <div class="footer__top">
 
-      <!-- Col 1: Primary nav links -->
-      <div class="footer__col">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact Us</a>
+      <div class="footer__logo">
+        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" style="filter:brightness(0) invert(1);" />
       </div>
 
-      <!-- Col 2: Products categories — populated dynamically from products.json -->
-      <div class="footer__col">
-        <a href="products.html" style="color:rgba(255,255,255,0.9);font-weight:700;font-size:13px;display:block;margin-bottom:2px;text-decoration:none;">Products</a>
-        <div id="footer-products-col" style="display:contents;"></div>
+      <div class="footer__columns">
+
+        <div class="footer__col">
+          <span class="footer__col-title">Products</span>
+          <div id="footer-products-col" style="display:contents;"></div>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">Resources</span>
+          <a href="pdf-catalogs.html">Digital Catalogs</a>
+          <a href="education-materials.html">Educational Materials</a>
+          <a href="product-ifus.html">Product IFUs</a>
+          <a href="video-archive.html">Video Archive</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">About</span>
+          <a href="about.html">Our Story</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">Support</span>
+          <button onclick="cartOpenModal()">Get a Quote</button>
+          <a href="contact.html">Contact Us</a>
+          <div style="height:4px; width:75%; border-top:1px solid rgba(255,255,255,0.2); margin-top:8px;"></div>
+          <div style="height:6px;"></div>
+          <span>info@peakmdi.com</span>
+          <span>630-520-5023</span>
+          <span>866-557-8437 (Fax)</span>
+        </div>
+
       </div>
 
-      <!-- Col 3: Resources -->
-      <div class="footer__col">
-        <a href="resources.html" style="color:rgba(255,255,255,0.9);font-weight:700;font-size:13px;display:block;margin-bottom:2px;text-decoration:none;">Resources</a>
-        <a href="video-archive.html">Video Archive</a>
-        <a href="pdf-catalogs.html">PDF Catalogs</a>
-        <a href="education-materials.html">Education Materials</a>
-        <a href="product-ifus.html">Product IFUs</a>
-      </div>
+    </div>
 
-      <!-- Copyright -->
-      <div class="footer__copyright">
-        <span>© Copyright 2026 PEAK Medical Distribution INC.<br>Glen Ellyn, IL</span>
-        <span>Phone: 630 - 520 - 5023 &nbsp; Fax: 866 - 557 - 8437</span>
-      </div>
+    <div class="footer__watermark">
+      <svg class="footer__watermark-svg" viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.4)">BUILT FOR THE SURGEON</text>
+      </svg>
+    </div>
 
+    <div class="footer__bottom">
+      ©2026 PEAK Medical Distribution, Inc. &bull; Glen Ellyn, IL
     </div>
   </footer>
 
-  <!-- ══════════════════════════════════════════════════════════
-       JS
-  ══════════════════════════════════════════════════════════ -->
   <script>
-    
-    function openMenu()  { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow = 'hidden'; }
-    function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow = ''; }
-    document.getElementById('mobileMenu').addEventListener('click', function(e) {
-      if (e.target === this) closeMenu();
-    });
-
-    /* ── Close dropdowns on outside click ── */
-    
-      // Also close type panels when dropdown area is left
-      document.querySelectorAll('.nav-dropdown').forEach(dd => {
-        dd.addEventListener('mouseleave', () => {
-          // Small delay so user can move to type panel
-          setTimeout(() => {
-            const typeHovered = document.querySelector('.dd-type-list:hover');
-            if (!typeHovered) {
-              document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-              document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-            }
-          }, 150);
-        });
-      });
-
-    document.addEventListener('click', e => {
-      const inDropdown  = e.target.closest('.nav-dropdown');
-      const inTypePanel = e.target.closest('.dd-type-list');
-
-      if (!inDropdown && !inTypePanel) {
-        // Clicked completely outside everything — close all
-        document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
-        document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-        document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      } else if (inDropdown && !e.target.closest('.dd-sub-list') && !e.target.closest('.dd-cat-chevron') && !e.target.closest('.dd-type-chevron')) {
-        // Clicked on a top-level category link — close sub and type panels
-        document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-        document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      }
-      // inTypePanel or inside dd-sub-list/chevron: let the event pass through naturally
-    });
-
-    // Close type panel when mouse leaves the nav area — use mousemove to check
-    // if mouse is over neither the dropdown nor the type panel
-    document.addEventListener('mousemove', e => {
-      const openTypePanel = document.querySelector('.dd-type-list.open');
-      if (!openTypePanel) return;
-      const inDropdown  = e.target.closest('.nav-dropdown');
-      const inTypePanel = e.target.closest('.dd-type-list');
-      const inSubList   = e.target.closest('.dd-sub-list');
-      if (!inDropdown && !inTypePanel && !inSubList) {
-        openTypePanel.classList.remove('open');
-        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      }
-    });
-
-    /* ── Mobile submenu ── */
-    function toggleMobileSubmenu(submenuId, toggleId) {
-      document.getElementById(submenuId).classList.toggle('open');
-      document.getElementById(toggleId).classList.toggle('open');
-    }
-
-    /* ── Populate Products nav dropdown from products.json ── */
-    (async () => {
+    async function populateNavDropdowns() {
       let products = [];
-      try { const r = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' }); products = await r.json(); } catch(e) { return; }
+      try {
+        const res = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+        products = await res.json();
+      } catch(e) { return; }
 
-      // tree: cat → { sub → Set(types) }
       const tree = {};
       products.forEach(p => {
         if (!p.category) return;
@@ -769,151 +993,114 @@
         }
       });
 
-      function buildDD(tree) {
-        // Remove any stale type panels from previous builds
-        document.querySelectorAll('.dd-type-list').forEach(el => el.remove());
+      const categories = Object.keys(tree);
 
-        // Build HTML string only — no DOM manipulation here
-        return Object.entries(tree).map(([cat, subs]) => {
-          const catURL  = `products.html?cat=${encodeURIComponent(cat)}`;
-          const catId   = 'navdd-' + cat.replace(/\s+/g, '_');
-          const hasSubs = Object.keys(subs).length > 0;
+      /* ── 3-column "Products" mega menu (desktop + tablet), cascading hover ── */
+      function initMegaProducts(prefix) {
+        const col1 = document.getElementById(`mega-${prefix}-col1`);
+        const col2 = document.getElementById(`mega-${prefix}-col2`);
+        const col3 = document.getElementById(`mega-${prefix}-col3`);
+        if (!col1 || !col2 || !col3) return;
 
-          let h = `<div class="dd-cat-row">
-            <a class="dd-cat-link" href="${catURL}">${cat}</a>
-            ${hasSubs ? `<button class="dd-cat-chevron" onclick="toggleNavSub(event,'${catId}')">
-              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>` : ''}
-          </div>`;
+        function renderCol3(cat, sub) {
+          const types = [...(tree[cat][sub] || [])];
+          col3.innerHTML =
+            `<div class="mega-col__header">${sub}</div>` +
+            types.map(type => `<a class="mega-col__link" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
+        }
 
-          if (hasSubs) {
-            h += `<div class="dd-sub-list" id="${catId}">`;
-            Object.keys(subs).forEach(sub => {
-              const types    = subs[sub];
-              const subURL   = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
-              const subId    = 'navtype-' + cat.replace(/\s+/g,'_') + '__' + sub.replace(/\s+/g,'_');
-              const hasTypes = types.size > 0;
-              h += `<div class="dd-cat-row">
-                <a class="dd-sub-link" href="${subURL}">${sub}</a>
-                ${hasTypes ? `<button class="dd-cat-chevron dd-type-chevron" data-typeid="${subId}" onclick="toggleNavType(event,'${subId}')">
-                  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>` : ''}
-              </div>`;
+        function renderCol2(cat) {
+          const subs = Object.keys(tree[cat]);
+          col2.innerHTML =
+            `<div class="mega-col__header">${cat}</div>` +
+            subs.map((sub, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}" data-idx="${i}">${sub}</a>`).join('');
+
+          col2.querySelectorAll('.mega-col__link').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+              col2.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
+              el.classList.add('active');
+              renderCol3(el.dataset.cat, el.dataset.sub);
             });
-            h += `</div>`;
-          }
-          return h;
+          });
+
+          if (subs.length) renderCol3(cat, subs[0]);
+          else col3.innerHTML = '';
+        }
+
+        function renderCol1() {
+          col1.innerHTML =
+            `<div class="mega-col__header">Products</div>` +
+            categories.map((cat, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}" data-cat="${cat}" data-idx="${i}">${cat}</a>`).join('');
+
+          col1.querySelectorAll('.mega-col__link').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+              col1.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
+              el.classList.add('active');
+              renderCol2(el.dataset.cat);
+            });
+          });
+        }
+
+        renderCol1();
+        if (categories.length) renderCol2(categories[0]);
+      }
+
+      initMegaProducts('products-desktop');
+      initMegaProducts('products-tablet');
+
+      /* ── Mobile flat list ── */
+      function buildMobileHTML() {
+        return categories.map(cat => {
+          const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
+          let html = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
+          Object.keys(tree[cat]).forEach(sub => {
+            const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
+            html += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
+          });
+          return html;
         }).join('');
       }
+      const mobileDD = document.getElementById('mob-products');
+      if (mobileDD) mobileDD.innerHTML = buildMobileHTML();
+    }
 
-      function buildTypePanels(tree) {
-        // Called AFTER innerHTML is set — creates body-level type panels
-        document.querySelectorAll('.dd-type-list').forEach(el => el.remove());
-        Object.entries(tree).forEach(([cat, subs]) => {
-          Object.keys(subs).forEach(sub => {
-            const types = subs[sub];
-            if (!types.size) return;
-            const subId = 'navtype-' + cat.replace(/\s+/g,'_') + '__' + sub.replace(/\s+/g,'_');
-            const panel = document.createElement('div');
-            panel.className = 'dd-type-list';
-            panel.id = subId;
-            [...types].forEach(type => {
-              const a = document.createElement('a');
-              a.className = 'dd-sub-link';
-              a.href = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}`;
-              a.textContent = type;
-              panel.appendChild(a);
-            });
-            document.body.appendChild(panel);
-          });
-        });
+    populateNavDropdowns();
+
+    /* ── Mobile overlay ── */
+    function openMenu()  { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow = ''; }
+    document.getElementById('mobileMenu').addEventListener('click', function(e) {
+      if (e.target === this) closeMenu();
+    });
+
+    /* Close dropdowns when clicking outside */
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) {
+        document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
       }
+    });
 
-      function buildMob(tree) {
-        return Object.entries(tree).map(([cat, subs]) => {
-          let h = `<a href="products.html?cat=${encodeURIComponent(cat)}" style="font-weight:700">${cat}</a>`;
-          Object.keys(subs).forEach(sub => {
-            h += `<a href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" style="padding-left:16px;font-size:14px">${sub}</a>`;
-          });
-          return h;
-        }).join('');
-      }
-
-      const ddHTML  = buildDD(tree);
-      const mobHTML = buildMob(tree);
-      ['nav-dd-desktop-products', 'nav-dd-tablet-products'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = ddHTML;
+    /* Hover-based dropdown behavior (desktop/tablet) */
+    document.querySelectorAll('.nav-dropdown').forEach(dd => {
+      dd.addEventListener('mouseenter', () => {
+        const menu = dd.querySelector('.mega-menu');
+        if (menu) menu.style.display = 'flex';
       });
-      const mob = document.getElementById('mob-products');
-      if (mob) mob.innerHTML = mobHTML;
-          buildTypePanels(tree);
-    })();
+      dd.addEventListener('mouseleave', () => {
+        const menu = dd.querySelector('.mega-menu');
+        if (menu) menu.style.display = 'none';
+      });
+    });
 
-        function toggleNavType(e, id) {
-      e.preventDefault();
-      e.stopPropagation();
-      const typePanel = document.getElementById(id);
-      const btn = e.currentTarget;
-      if (!typePanel) return;
-
-      const isOpen = typePanel.classList.contains('open');
-
-      // Close all type panels and remove lock from all nav-dropdowns
-      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('sub-active'));
-
-      if (!isOpen) {
-        const row = btn.closest('.dd-cat-row');
-        const subList = btn.closest('.dd-sub-list');
-        const navDropdown = btn.closest('.nav-dropdown');
-        const rowRect     = row ? row.getBoundingClientRect() : btn.getBoundingClientRect();
-        const subListRect = subList ? subList.getBoundingClientRect() : rowRect;
-
-        typePanel.style.top  = rowRect.top + 'px';
-        typePanel.style.left = (subListRect.right + 6) + 'px';
-        typePanel.classList.add('open');
-        btn.classList.add('open');
-        // Highlight the sub-category row the same way categories are highlighted when open
-        if (row) row.classList.add('sub-active');
-
-        // Lock the parent nav-dropdown open so CSS :hover loss doesn't close it
-        if (navDropdown) navDropdown.classList.add('type-open');
-      }
+    /* ── Mobile submenu toggle ── */
+    function toggleMobileSubmenu(submenuId, toggleId) {
+      const submenu = document.getElementById(submenuId);
+      const toggle  = document.getElementById(toggleId);
+      const isOpen  = submenu.classList.contains('open');
+      submenu.classList.toggle('open', !isOpen);
+      toggle.classList.toggle('open', !isOpen);
     }
 
-    function toggleNavSub(e, id) {
-      e.preventDefault(); e.stopPropagation();
-      const sub = document.getElementById(id);
-      const btn = e.currentTarget;
-      if (!sub) return;
-      const isOpen = sub.classList.contains('open');
-      document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-      document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
-      // Always close any open type panel when switching categories
-      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('sub-active'));
-      if (!isOpen) {
-        const row = btn.closest('.dd-cat-row');
-        const menu = btn.closest('.dropdown-menu');
-        let offsetTop = 0, el = row;
-        while (el && el !== menu) { offsetTop += el.offsetTop; el = el.offsetParent; }
-        sub.style.top = offsetTop + 'px';
-        sub.classList.add('open');
-        btn.classList.add('open');
-        row.classList.add('open');
-      }
-    }
-  </script>
-
-  <script>
-
-    /* ── Populate footer Products column from products.json ── */
     async function populateFooter() {
       let products = [];
       try {
@@ -921,19 +1108,19 @@
         products = await r.json();
       } catch(e) { return; }
 
-      // Get unique categories
       const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+      const firstCat = 'Scissors';
+      const rest = categories.filter(c => c !== firstCat).sort((a, b) => a.localeCompare(b));
+      const orderedCategories = categories.includes(firstCat) ? [firstCat, ...rest] : rest;
       const col = document.getElementById('footer-products-col');
       if (!col) return;
 
-      col.innerHTML = categories.map(cat =>
-        `<a href="products.html?cat=${encodeURIComponent(cat)}" style="color:rgba(255,255,255,0.6);font-size:12px;font-weight:400;display:block;transition:color 0.15s;"
-           onmouseover="this.style.color='rgba(255,255,255,0.9)'"
-           onmouseout="this.style.color='rgba(255,255,255,0.6)'">${cat}</a>`
+      col.innerHTML = orderedCategories.map(cat =>
+        `<a href="products.html?cat=${encodeURIComponent(cat)}">${cat}</a>`
       ).join('');
     }
-    populateFooter();
 
+    populateFooter();
   </script>
   <script src="cart.js"></script>
 </body>
