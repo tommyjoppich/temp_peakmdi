@@ -10,371 +10,306 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Montserrat', sans-serif; color: #1a1a1a; background: #fff; min-height: 100vh; display: flex; flex-direction: column; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Montserrat', Arial, Helvetica, sans-serif; color: #1a1a1a; background: #fff; min-height: 100vh; display: flex; flex-direction: column; }
     a { text-decoration: none; color: inherit; }
     img { display: block; max-width: 100%; }
     button { cursor: pointer; font-family: inherit; }
 
     :root {
       --navy: #1a2f4a; --navy-dark: #111e2e; --blue: #2e6da4;
-      --white: #ffffff; --off-white: #f8f8f8; --text: #1a1a1a;
-      --muted: #666; --border: #e0e0e0;
+      --gold: #F2C300; --gold-dark: #EFA500; --gold-active: #FFDE55;
+      --cyan: #6fe9ef; --cream: #f2e9d3;
+      --white: #ffffff; --off-white: #f8f8f8; --card-hover: #eceef1;
+      --text: #1a1a1a; --muted: #666; --border: #e0e0e0;
       --card-shadow: 0 2px 8px rgba(0,0,0,0.09);
       --card-shadow-hover: 0 6px 22px rgba(0,0,0,0.14);
       --radius: 12px;
+      --coral: #F2705C; --peak-navy: #1F2E5C;
     }
 
-    /* ── NAVBAR ── */
-    .navbar { position: sticky; top: 0; z-index: 200; background: var(--white); box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 72px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 28px; }
+    /* ══════════════════════════════════════════════════════════
+       NAVBAR
+    ══════════════════════════════════════════════════════════ */
+    .navbar { position: sticky; top: 0; z-index: 200; background: var(--white); box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 72px; }
+    .navbar__inner { max-width: 1440px; margin: 0 auto; height: 100%; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 28px; }
     .navbar__logo { justify-self: start; }
     .navbar__logo img { height: 52px; width: auto; }
     .navbar__center { display: flex; justify-content: center; }
-    .navbar__right { justify-self: end; display: flex; align-items: center; }
+    .navbar__right { justify-self: end; display: flex; align-items: center; gap: 14px; }
     @media (min-width: 1024px) { .navbar { height: 80px; } .navbar__logo img { height: 68px; } }
+
     .navbar__desktop { display: none; }
-    .nav-group { display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 9px; padding: 4px 6px; gap: 2px; }
+    .nav-group { display: flex; align-items: center; gap: 34px; }
+    .nav-group > a {
+      font-size: 18px; font-weight: 500; line-height: 22px; color: var(--navy);
+      padding: 0; display: flex; align-items: center; gap: 5px; white-space: nowrap;
+      transition: color 0.15s;
+    }
+    .nav-group > a:hover { color: var(--blue); }
+    .nav-search-link {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 18px; font-weight: 500; line-height: 22px; color: var(--navy);
+      padding: 0; cursor: pointer; transition: color 0.15s; background: none; border: none;
+    }
+    .nav-search-link:hover { color: var(--blue); }
+    .nav-search-icon { width: 16px; height: 16px; display: block; }
     .nav-dropdown { position: relative; }
-    .nav-dropdown > a, .nav-group > a { font-size: 14px; font-weight: 600; color: var(--text); padding: 8px 14px; border-radius: 6px; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: background 0.15s; cursor: pointer; }
-    .nav-dropdown > a:hover, .nav-group > a:hover { background: #f0f0f0; }
-    .nav-group > a.active, .nav-dropdown > a.active { background: #e4edf6; color: var(--blue); }
-    .nav-dropdown > a .chevron { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s; }
-    .nav-dropdown:hover > a { background: #f0f0f0; }
-    .nav-dropdown:hover > a .chevron { transform: rotate(180deg); }
-    .nav-dropdown:hover .dropdown-menu { display: flex; }
-    .nav-dropdown.type-open .dropdown-menu { display: flex; }
-    .nav-dropdown.type-open .dd-sub-list.open { display: flex; }
-    .nav-dropdown::after { content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 14px; background: transparent; }
-    .dropdown-menu { display: none; position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%); background: var(--white); border: 1.5px solid var(--border); border-radius: 10px; box-shadow: 0 8px 28px rgba(0,0,0,0.12); width: 220px; padding: 6px; z-index: 9999; flex-direction: column; gap: 2px; }
-    .dropdown-menu a { display: block; padding: 10px 14px; font-size: 14px; font-weight: 500; color: var(--text); border-radius: 6px; white-space: nowrap; transition: background 0.15s; }
-    .dropdown-menu a:hover { background: #f0f0f0; color: var(--blue); }
-    .dropdown-menu .dd-cat-link { border-radius: 6px 0 0 6px; }
-    .dropdown-menu .dd-sub-link { border-radius: 6px 0 0 6px; }
-    .dd-cat-row { display: flex; align-items: stretch; border-radius: 6px; position: relative; }
-    .dd-cat-row:hover .dd-cat-link, .dd-cat-row:hover .dd-cat-chevron { background: #f0f0f0; }
-    .dd-cat-link { flex: 1; padding: 10px 6px 10px 14px; font-size: 14px; font-weight: 600; color: var(--text); display: flex; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: background 0.15s; border-radius: 6px 0 0 6px; max-width: 180px; }
-    .dd-cat-link:hover { background: #f0f0f0; color: var(--blue); }
-    .dd-cat-chevron { background: none; border: none; padding: 0 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 0 6px 6px 0; transition: background 0.15s; flex-shrink: 0; align-self: stretch; }
-    .dd-cat-chevron:hover { background: #f0f0f0; }
-    .dd-cat-chevron svg { width: 12px; height: 12px; stroke: var(--text); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s; }
-    .dd-cat-chevron.open svg { transform: rotate(180deg); }
-    .dd-cat-chevron.open { background: #e4edf6; }
-    .dd-cat-row.open .dd-cat-link { background: #e4edf6; color: var(--blue); }
-    .dd-cat-row.open .dd-cat-chevron { background: #e4edf6; }
-    .dd-cat-row.open .dd-cat-chevron svg { stroke: var(--blue); }
-    .dd-sub-list { display: none; position: absolute; left: calc(100% + 2px); top: 0; min-width: 200px; background: var(--white); border: 1.5px solid var(--border); border-radius: 10px; box-shadow: 0 8px 28px rgba(0,0,0,0.12); padding: 6px; z-index: 10000; flex-direction: column; gap: 2px; }
-    .dd-sub-list.open { display: flex; }
-    .dd-sub-list::before { content: ''; position: absolute; top: 0; bottom: 0; left: -8px; width: 8px; }
-    .dd-sub-link { display: flex; align-items: center; flex: 1; padding: 10px 14px; font-size: 13px; font-weight: 500; color: var(--muted); border-radius: 6px 0 0 6px; white-space: normal; word-break: break-word; transition: background 0.15s, color 0.15s; }
-    .dd-cat-row:hover .dd-sub-link { background: #f0f0f0; color: var(--blue); }
-    .dd-cat-row:hover .dd-sub-link ~ .dd-cat-chevron { background: #f0f0f0; }
-    .dd-cat-row:hover .dd-sub-link ~ .dd-cat-chevron svg { stroke: var(--blue); }
-    .dd-type-list .dd-sub-link:hover { background: #f0f0f0; color: var(--blue); }
-    .dd-sub-link.active { background: #e4edf6; color: var(--blue); font-weight: 700; }
-    .dd-cat-link.active { color: var(--blue); }
-    .btn-quote { display: flex; align-items: center; gap: 10px; border: 2px solid var(--navy); border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 700; color: var(--navy); background: var(--white); transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .nav-dropdown > a {
+      font-size: 18px; font-weight: 500; line-height: 22px; color: var(--navy);
+      padding: 0; display: flex; align-items: center; gap: 8px; white-space: nowrap;
+      transition: color 0.15s; cursor: pointer; user-select: none; text-decoration: none;
+    }
+    .nav-dropdown > a:hover { color: var(--blue); }
+    .nav-dropdown > a.active { color: var(--coral); }
+    .mega-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); padding-top: 18px; z-index: 9999; max-width: min(720px, 95vw); }
+    .nav-dropdown.open .mega-menu { display: block; }
+    .mega-menu__panel { flex: 1 1 auto; width: 100%; display: flex; background: var(--white); border: 1.5px solid var(--border); border-radius: 0; box-shadow: 0 8px 28px rgba(0,0,0,0.12); overflow: hidden; }
+    .mega-menu--products { width: 720px; }
+    .mega-menu--products .mega-menu__panel { align-items: stretch; padding: 20px 0; }
+    .mega-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 0 18px; }
+    .mega-col + .mega-col { border-left: 1px solid var(--border); }
+    .mega-col__header { font-size: 13px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 10px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mega-col__link { display: block; padding: 9px 10px; font-size: 14px; font-weight: 500; color: var(--text); border-radius: 6px; white-space: normal; word-break: break-word; line-height: 1.3; cursor: pointer; transition: background 0.15s, color 0.15s; }
+    .mega-col__link:hover, .mega-col__link.active { background: #fbe4e4; color: var(--navy); }
+    .mega-menu--resources { width: 720px; }
+    .mega-menu--resources .mega-menu__panel { display: flex; min-height: 360px; gap: 40px; }
+    .mega-resources__list { flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; padding: 20px 12px 20px 20px; }
+    .mega-resources__header { font-size: 13px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px 12px; }
+    .mega-resources__list a { display: block; padding: 10px 12px; font-size: 14px; font-weight: 500; color: var(--text); border-radius: 6px; white-space: nowrap; transition: background 0.15s, color 0.15s; }
+    .mega-resources__list a:hover, .mega-resources__list a.active { background: #fbe4e4; color: var(--navy); }
+    .mega-resources__promo { position: relative; flex: 0 0 180px; max-width: 180px; background: var(--cream); padding: 24px; overflow: hidden; display: flex; flex-direction: column; }
+    @media (min-width: 1024px) { .mega-menu--resources .mega-menu__panel { min-height: 512px; gap: 80px; } .mega-resources__promo { flex: 0 0 220px; max-width: 220px; } }
+    .mega-resources__eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); opacity: 0.75; margin-bottom: 8px; }
+    .mega-resources__title { font-size: 22px; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
+    .mega-resources__desc { font-size: 14px; font-weight: 400; color: var(--navy); max-width: 190px; line-height: 1.4; position: relative; z-index: 1; }
+    .mega-resources__mountain { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 110px; pointer-events: none; background-color: var(--navy); opacity: 0.7; -webkit-mask-image: url('mountain-graphic.png'); mask-image: url('mountain-graphic.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: bottom; mask-position: bottom; }
+
+    .btn-quote { display: flex; align-items: center; gap: 10px; border: none; border-radius: 0; padding: 11px 22px; font-size: 14px; font-weight: 700; color: var(--navy); background: var(--gold); transition: background 0.15s, color 0.15s; white-space: nowrap; position: relative; }
     .btn-quote:hover { background: var(--navy); color: var(--white); }
+    .btn-quote:hover img { filter: brightness(0) invert(1); }
+    .btn-quote:active { background: var(--gold-active); color: var(--navy); }
+    .btn-quote:active img { filter: none; }
     .navbar__tablet { display: none; }
     .navbar__mobile { display: none; align-items: center; gap: 12px; }
     .navbar__mobile .cart-btn { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--navy); display: flex; align-items: center; justify-content: center; background: transparent; color: var(--navy); }
     .navbar__mobile .hamburger { background: none; border: none; color: var(--navy); display: flex; align-items: center; padding: 4px; }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @media (min-width: 1024px) { .navbar__desktop { display: flex; } .navbar__tablet { display: none !important; } .navbar__mobile { display: none !important; } .btn-quote { display: flex !important; } }
-    @media (min-width: 769px) and (max-width: 1023px) { .navbar__desktop { display: none !important; } .navbar__tablet { display: flex; } .navbar__mobile { display: none !important; } .btn-quote { display: flex !important; } }
-    @media (max-width: 768px) { .navbar { padding: 0 16px; } .navbar__logo img { height: 44px; } .navbar__desktop { display: none !important; } .navbar__tablet { display: none !important; } .navbar__mobile { display: flex; } .btn-quote { display: none !important; } }
+    @media (min-width: 1024px) { .navbar__desktop { display: flex; align-items: center; gap: 40px; } .navbar__tablet { display: none !important; } .navbar__mobile { display: none !important; } .btn-quote { display: flex !important; } }
+    @media (min-width: 769px) and (max-width: 1023px) { .navbar__desktop { display: none !important; } .navbar__tablet { display: flex; align-items: center; gap: 8px; } .navbar__mobile { display: none !important; } .btn-quote { display: flex !important; } .navbar__right .cart-btn { display: none !important; } }
+    @media (max-width: 768px) { .navbar__desktop { display: none !important; } .navbar__tablet { display: none !important; } .navbar__mobile { display: flex; } .btn-quote { display: none !important; } .navbar__right > .cart-btn { display: none !important; } }
 
-    /* ── HERO ── */
-    .page-hero { position: relative; width: 100%; height: 140px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .page-hero__bg { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(17,30,46,0.55), rgba(17,30,46,0.45)), url('https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=1400&q=60') center/cover no-repeat; }
-    .page-hero h1 { position: relative; z-index: 1; font-size: 32px; font-weight: 800; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-
-    /* ── BREADCRUMB ── */
-    .breadcrumb { padding: 12px 32px; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    /* ══════════════════════════════════════════════════════════
+       PAGE HEADER (no photo hero — matches site-wide pattern)
+    ══════════════════════════════════════════════════════════ */
+    .page-header { position: relative; overflow: visible; width: 100%; padding: 28px 40px 8px; max-width: 1400px; margin: 0 auto; }
+    .breadcrumb { position: relative; z-index: 2; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
     .breadcrumb a { color: var(--muted); }
     .breadcrumb a:hover { color: var(--blue); }
-    .breadcrumb span { color: #bbb; }
+    .breadcrumb span.sep { color: #c9c9c9; }
+    .breadcrumb span.current { color: var(--navy); font-weight: 600; }
 
-    /* ── RESOURCE DETAIL ── */
-    .detail-wrap {
-      max-width: 960px;
-      margin: 32px auto 64px;
-      padding: 0 32px;
-      width: 100%;
-    }
-
-    .detail-title {
-      font-size: 28px; font-weight: 800; color: var(--text);
-      margin-bottom: 12px;
-    }
-
-    .detail-description {
-      font-size: 15px; color: var(--muted); line-height: 1.7;
-      margin-bottom: 32px; max-width: 700px;
-    }
-
-    /* Embedded resource */
-    .resource-embed {
-      width: 100%;
-      border-radius: var(--radius);
-      overflow: hidden;
-      background: #f0f4f8;
-    }
-
-    /* Video embed — 16:9 */
-    .resource-embed--video {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-    }
-    .resource-embed--video iframe {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      border: none; border-radius: var(--radius);
-    }
-
-    /* PDF embed */
-    .resource-embed--pdf {
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .resource-embed--pdf object {
-      display: block; width: 100%;
-      border-radius: var(--radius);
-    }
-    /* Fallback shown when PDF can't load */
-    .pdf-fallback {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 16px; padding: 48px 32px;
-      background: #f8f9fc; border-radius: var(--radius);
-      border: 1.5px solid var(--border); text-align: center;
-    }
-    .pdf-fallback p {
-      font-size: 14px; color: var(--muted); font-weight: 500;
-    }
-    .pdf-download-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--navy); color: #fff; border-radius: 8px;
-      padding: 11px 22px; font-size: 14px; font-weight: 700;
-      text-decoration: none; transition: background 0.15s;
-    }
-    .pdf-download-btn:hover { background: #24406a; }
-
-    /* Article — link card */
-    .resource-embed--article {
-      padding: 32px;
-      text-align: center;
-      border: 1.5px dashed var(--border);
-    }
-    .resource-embed--article a {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: var(--navy); color: #fff;
-      border-radius: 8px; padding: 12px 24px;
-      font-size: 14px; font-weight: 700;
-      transition: background 0.15s; margin-top: 12px;
-    }
-    .resource-embed--article a:hover { background: #24406a; }
-
-    /* No resource placeholder */
-    .resource-embed--empty {
-      padding: 48px 32px; text-align: center;
-      border: 1.5px dashed var(--border); color: var(--muted);
-      font-size: 14px; font-weight: 500;
-    }
-
+    /* ══════════════════════════════════════════════════════════
+       RESOURCE DETAIL — two-column layout inspired by product-detail.html
+    ══════════════════════════════════════════════════════════ */
+    .detail-wrap { max-width: 1400px; margin: 16px auto 64px; padding: 0 40px; width: 100%; flex: 1; }
+    .detail-layout { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: start; }
+    .detail-type-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--coral); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+    .detail-title { font-size: 28px; font-weight: 800; color: var(--peak-navy); margin-bottom: 14px; line-height: 1.25; }
+    .detail-description { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 0; white-space: pre-line; }
+    .detail-info { position: sticky; top: 100px; }
+    .detail-meta { margin: 24px 0 8px; }
+    .fs-row { display: flex; gap: 16px; padding: 12px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .fs-row:first-of-type { border-top: 1px solid var(--border); }
+    .fs-label { width: 45%; flex-shrink: 0; color: var(--muted); font-weight: 500; }
+    .fs-value { flex: 1; color: var(--text); font-weight: 600; line-height: 1.4; }
+    .detail-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+    .btn-detail-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; background: var(--gold); color: var(--navy); border: none; border-radius: 0; padding: 0 24px; font-size: 15px; font-weight: 700; transition: background 0.15s; }
+    .btn-detail-primary:hover { background: var(--gold-dark); }
+    .btn-detail-primary:active { background: var(--gold-active); }
+    .btn-detail-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 46px; background: var(--white); color: var(--navy); border: 1.5px solid var(--navy); padding: 0 24px; font-size: 14px; font-weight: 700; transition: background 0.15s, color 0.15s; }
+    .btn-detail-secondary:hover { background: var(--navy); color: var(--white); }
+    .resource-embed { width: 100%; border-radius: 0; overflow: hidden; background: var(--off-white); border: 1px solid rgba(0,0,0,0.40); }
+    .resource-embed--video { position: relative; padding-bottom: 56.25%; height: 0; border: none; }
+    .resource-embed--video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .resource-embed--pdf { border: none; }
+    .resource-embed--pdf object { display: block; width: 100%; border: 1px solid rgba(0,0,0,0.40); }
+    .pdf-fallback { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 48px 32px; background: var(--off-white); border: 1px solid rgba(0,0,0,0.40); text-align: center; }
+    .pdf-fallback p { font-size: 14px; color: var(--muted); font-weight: 500; }
+    .resource-embed--article { padding: 56px 32px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .resource-embed--empty { padding: 56px 32px; text-align: center; border: 1.5px dashed var(--border); color: var(--muted); font-size: 14px; font-weight: 500; background: var(--off-white); }
     .detail-loading { text-align: center; padding: 80px 32px; color: var(--muted); font-size: 15px; }
+    .related-resources { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--border); }
+    .related-resources__title { font-size: 18px; font-weight: 700; color: var(--blue); margin-bottom: 20px; }
+    .related-resources__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .related-card { cursor: pointer; display: flex; flex-direction: column; border: 1px solid var(--border); background: var(--white); transition: box-shadow 0.15s, border-color 0.15s; }
+    .related-card:hover { box-shadow: var(--card-shadow-hover); border-color: rgba(0,0,0,0.3); }
+    .related-card__img { height: 140px; background: var(--off-white); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .related-card__img img { width: 100%; height: 100%; object-fit: cover; }
+    .related-card__body { padding: 14px 16px 18px; }
+    .related-card__name { font-size: 14px; font-weight: 700; color: var(--peak-navy); margin-bottom: 4px; line-height: 1.35; }
 
-    @media (max-width: 700px) { .detail-wrap { padding: 0 16px; margin-top: 20px; } .breadcrumb { padding: 12px 16px; } }
+    @media (max-width: 860px) { .detail-layout { grid-template-columns: 1fr; gap: 28px; } .detail-info { position: static; } }
+    @media (max-width: 700px) { .detail-wrap { padding: 0 16px; margin-top: 8px; } .page-header { padding: 20px 16px 8px; } .related-resources__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; } }
+    @media (max-width: 420px) { .related-resources__grid { grid-template-columns: 1fr; } }
 
-    /* ── FOOTER ── */
-    footer { background: var(--navy); color: rgba(255,255,255,0.65); padding: 48px 32px 36px; margin-top: auto; }
-    .footer__inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: auto auto auto 1fr; gap: 40px; align-items: start; }
-    .footer__col { display: flex; flex-direction: column; gap: 9px; }
-    .footer__col-title { font-weight: 700; font-size: 13px; color: rgba(255,255,255,0.9); margin-bottom: 2px; }
-    .footer__col a, .footer__col span { font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.6); display: block; transition: color 0.15s; }
-    .footer__col a:hover { color: rgba(255,255,255,0.9); }
-    .footer__copyright { text-align: right; display: flex; flex-direction: column; gap: 4px; justify-self: end; }
-    .footer__copyright span { font-size: 12px; color: rgba(255,255,255,0.55); }
-    @media (max-width: 900px) { .footer__inner { grid-template-columns: 1fr 1fr; gap: 24px; } .footer__copyright { grid-column: 1/-1; text-align: left; justify-self: start; } footer { padding: 36px 20px 28px; } }
+    /* ══════════════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════════════ */
+    footer { background: var(--navy); color: rgba(255,255,255,0.65); padding-top: 48px; margin-top: auto; overflow: hidden; }
+    .footer__top { max-width: 1440px; margin: 0 auto; padding: 0 32px 44px; display: flex; flex-direction: column; gap: 44px; }
+    .footer__logo img { height: 130px; }
+    .footer__columns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
+    .footer__col { display: flex; flex-direction: column; gap: 14px; max-width: 90%; }
+    .footer__col .footer__col-title { font-weight: 600; font-size: 22px; letter-spacing: 0.02em; text-transform: uppercase; color: #ffffff; margin-bottom: 4px; display: block; }
+    .footer__col a, .footer__col span { font-size: 20px; font-weight: 400; color: #ffffff; cursor: pointer; transition: opacity 0.15s; display: block; }
+    .footer__col a:hover { opacity: 0.75; text-decoration: underline; }
+    .footer__col button { background: none; border: none; padding: 0; text-align: left; font-size: 20px; font-weight: 400; color: #ffffff; transition: opacity 0.15s; font-family: inherit; }
+    .footer__col button:hover { opacity: 0.75; text-decoration: underline; }
+    .footer__watermark { max-width: 1440px; margin: 0 auto; padding: 4px 32px 8px; box-sizing: border-box; }
+    .footer__watermark-svg { display: block; width: 100%; height: auto; user-select: none; }
+    .footer__bottom { border-top: 1px solid rgba(255,255,255,0.15); padding: 18px 32px 22px; max-width: 1440px; margin: 0 auto; font-size: 14px; color: #ffffff; }
+    @media (max-width: 1023px) { .footer__columns { grid-template-columns: 1fr 1fr; gap: 28px; } .footer__logo img { height: 92px; } }
+    @media (max-width: 768px) {
+      .navbar__inner { padding: 0 16px; } .navbar__logo img { height: 44px; }
+      .footer__top { padding: 0 20px 32px; gap: 32px; } .footer__logo img { height: 56px; }
+      .footer__columns { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .footer__col .footer__col-title { font-size: 16px; }
+      .footer__col a, .footer__col span, .footer__col button { font-size: 14px; }
+      .footer__watermark { padding-left: 20px; padding-right: 20px; }
+      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 12px; }
+      footer { padding-top: 36px; }
+    }
 
     /* ── Mobile menu ── */
-    .mobile-menu {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 999;
-      background: rgba(0,0,0,0.45);
-      flex-direction: row;
-      align-items: stretch;
-    }
+    .mobile-menu { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.45); flex-direction: row; align-items: stretch; }
     .mobile-menu.open { display: flex; }
-    .mobile-menu__backdrop {
-      flex: 0 0 18%;
-      min-width: 48px;
-      cursor: pointer;
-    }
-    .mobile-menu__panel {
-      flex: 1;
-      background: var(--white);
-      display: flex;
-      flex-direction: column;
-      padding: 24px;
-      overflow-y: auto;
-      max-width: 82vw;
-    }
-    .mobile-menu__header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
+    .mobile-menu__backdrop { flex: 0 0 18%; min-width: 48px; cursor: pointer; }
+    .mobile-menu__panel { flex: 1; background: var(--white); display: flex; flex-direction: column; padding: 24px; overflow-y: auto; max-width: 82vw; }
+    .mobile-menu__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
     .mobile-menu__header img { height: 48px; }
-    .mobile-menu__close {
-      background: none; border: none;
-      color: var(--navy); display: flex; align-items: center;
-    }
-    .mobile-menu__panel nav {
-      display: flex; flex-direction: column; width: 100%;
-    }
-    .mobile-menu__panel nav a,
-    .mobile-menu__panel nav .mobile-nav-toggle {
-      display: flex; justify-content: space-between; align-items: center;
-      font-weight: 600; font-size: 18px; padding: 16px 0;
-      border-bottom: 1px solid var(--border); color: var(--text);
-      background: none; border-left: none; border-right: none; border-top: none;
-      width: 100%; text-align: left; cursor: pointer; text-decoration: none;
-    }
-    .mobile-nav-row {
-      display: flex; align-items: center;
-      border-bottom: 1px solid var(--border);
-    }
-    .mobile-nav-link {
-      flex: 1; font-weight: 600; font-size: 18px;
-      padding: 16px 0; color: var(--text);
-      display: block; text-decoration: none;
-    }
-    .mobile-nav-chevron {
-      background: none; border: none; padding: 16px 8px;
-      cursor: pointer; display: flex; align-items: center; color: var(--navy);
-    }
-    .mobile-nav-chevron .chevron, .mobile-nav-toggle .chevron {
-      width: 16px; height: 16px; stroke: var(--navy); fill: none;
-      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
-      transition: transform 0.2s;
-    }
-    .mobile-nav-chevron.open .chevron,
-    .mobile-nav-toggle.open .chevron { transform: rotate(180deg); }
-    .mobile-submenu {
-      display: none; flex-direction: column;
-      padding: 4px 0 4px 16px;
-      border-bottom: 1px solid var(--border);
-    }
+    .mobile-menu__close { background: none; border: none; color: var(--navy); display: flex; align-items: center; }
+    .mobile-menu__panel nav { display: flex; flex-direction: column; width: 100%; }
+    .mobile-menu__panel nav a { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 18px; padding: 16px 0; border-bottom: 1px solid var(--border); color: var(--text); text-decoration: none; }
+    .mobile-nav-row { display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+    .mobile-nav-link { flex: 1; font-weight: 600; font-size: 18px; padding: 16px 0; color: var(--text); display: block; text-decoration: none; }
+    .mobile-nav-chevron { background: none; border: none; padding: 16px 8px; cursor: pointer; display: flex; align-items: center; color: var(--navy); }
+    .mobile-nav-chevron .chevron { width: 16px; height: 16px; stroke: var(--navy); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s; }
+    .mobile-nav-chevron.open .chevron { transform: rotate(180deg); }
+    .mobile-submenu { display: none; flex-direction: column; padding: 4px 0 4px 16px; border-bottom: 1px solid var(--border); }
     .mobile-submenu.open { display: flex; }
-    .mobile-submenu a {
-      font-size: 13px; font-weight: 500; color: var(--muted);
-      padding: 10px 0; border-bottom: 1px solid #f0f0f0;
-      text-decoration: none; display: block;
-    }
+    .mobile-submenu a { font-size: 13px; font-weight: 500; color: var(--muted); padding: 10px 0; border-bottom: 1px solid #f0f0f0; text-decoration: none; display: block; }
     .mobile-submenu a:last-child { border-bottom: none; }
-
-    .dd-cat-row.sub-active .dd-sub-link { background: #e4edf6; color: var(--blue); }
-    .dd-cat-row.sub-active .dd-cat-chevron { background: #e4edf6; }
-    .dd-cat-row.sub-active .dd-cat-chevron svg { stroke: var(--blue); }
-  
-    /* ── Type panel (3rd level flyout) ── */
-    .dd-type-list {
-      display: none;
-      position: fixed;
-      min-width: 200px;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-      padding: 6px;
-      z-index: 10002;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .dd-type-list.open { display: flex; }
-    .dd-type-list::before {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0;
-      left: -8px; width: 8px;
-    }
   </style>
 </head>
 <body>
 
   <!-- NAVBAR -->
   <header class="navbar">
-    <a href="index.html" class="navbar__logo"><img src="peak-logo.png" alt="PEAK" /></a>
-    <div class="navbar__center">
-      <nav class="navbar__desktop">
-        <div class="nav-group">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <div class="nav-dropdown" id="dd-products-desktop">
-            <a href="products.html">Products <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></a>
-            <div class="dropdown-menu" id="nav-dd-desktop-products"></div>
-          </div>
-          <div class="nav-dropdown" id="dd-resources-desktop">
-            <a href="resources.html" class="active">Resources <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></a>
-            <div class="dropdown-menu">
-              <a href="video-archive.html">Video Archive</a>
-              <a href="pdf-catalogs.html">PDF Catalogs</a>
-              <a href="education-materials.html">Education Materials</a>
-              <a href="product-ifus.html">Product IFUs</a>
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" />
+      </a>
+
+      <div class="navbar__center">
+        <!-- Desktop -->
+        <nav class="navbar__desktop">
+          <div class="nav-group">
+            <div class="nav-dropdown" id="dd-products-desktop">
+              <a href="products.html">Products</a>
+              <div class="mega-menu mega-menu--products">
+                <div class="mega-menu__panel">
+                  <div class="mega-col mega-col--1" id="mega-products-desktop-col1"></div>
+                  <div class="mega-col mega-col--2" id="mega-products-desktop-col2"></div>
+                  <div class="mega-col mega-col--3" id="mega-products-desktop-col3"></div>
+                </div>
+              </div>
             </div>
-          </div>
-          <a href="contact.html">Contact Us</a>
-        </div>
-      </nav>
-      <nav class="navbar__tablet">
-        <div class="nav-group">
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <div class="nav-dropdown" id="dd-products-tablet">
-            <a href="products.html">Products <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></a>
-            <div class="dropdown-menu" id="nav-dd-tablet-products"></div>
-          </div>
-          <div class="nav-dropdown" id="dd-resources-tablet">
-            <a href="resources.html" class="active">Resources <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></a>
-            <div class="dropdown-menu">
-              <a href="video-archive.html">Video Archive</a>
-              <a href="pdf-catalogs.html">PDF Catalogs</a>
-              <a href="education-materials.html">Education Materials</a>
-              <a href="product-ifus.html">Product IFUs</a>
+            <div class="nav-dropdown" id="dd-resources-desktop">
+              <a href="resources.html" class="active">Resources</a>
+              <div class="mega-menu mega-menu--resources">
+                <div class="mega-menu__panel">
+                  <div class="mega-resources__list">
+                    <div class="mega-resources__header">Resources</div>
+                    <a href="resources.html?type=video" data-type="video">Video Archive</a>
+                    <a href="resources.html?type=pdf" data-type="pdf">Digital Catalogs</a>
+                    <a href="resources.html?type=article" data-type="article">Educational Materials</a>
+                    <a href="resources.html?type=ifu" data-type="ifu">Product IFUs</a>
+                  </div>
+                  <div class="mega-resources__promo">
+                    <div class="mega-resources__eyebrow">PEAK Products</div>
+                    <div class="mega-resources__title">Built for the Surgeon</div>
+                    <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                    <div class="mega-resources__mountain"></div>
+                  </div>
+                </div>
+              </div>
             </div>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
           </div>
-          <a href="contact.html">Contact Us</a>
+          <button class="nav-search-link" onclick="window.location.href='products.html'" aria-label="Search">
+            <img class="nav-search-icon" src="Magnify.png" alt="" />
+            Search
+          </button>
+        </nav>
+
+        <!-- Tablet -->
+        <nav class="navbar__tablet">
+          <div class="nav-group">
+            <div class="nav-dropdown" id="dd-products-tablet">
+              <a href="products.html">Products</a>
+              <div class="mega-menu mega-menu--products">
+                <div class="mega-menu__panel">
+                  <div class="mega-col mega-col--1" id="mega-products-tablet-col1"></div>
+                  <div class="mega-col mega-col--2" id="mega-products-tablet-col2"></div>
+                  <div class="mega-col mega-col--3" id="mega-products-tablet-col3"></div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-dropdown" id="dd-resources-tablet">
+              <a href="resources.html" class="active">Resources</a>
+              <div class="mega-menu mega-menu--resources">
+                <div class="mega-menu__panel">
+                  <div class="mega-resources__list">
+                    <div class="mega-resources__header">Resources</div>
+                    <a href="resources.html?type=video" data-type="video">Video Archive</a>
+                    <a href="resources.html?type=pdf" data-type="pdf">Digital Catalogs</a>
+                    <a href="resources.html?type=article" data-type="article">Educational Materials</a>
+                    <a href="resources.html?type=ifu" data-type="ifu">Product IFUs</a>
+                  </div>
+                  <div class="mega-resources__promo">
+                    <div class="mega-resources__eyebrow">PEAK Products</div>
+                    <div class="mega-resources__title">Built for the Surgeon</div>
+                    <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                    <div class="mega-resources__mountain"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="navbar__right">
+        <button class="btn-quote">
+          <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
+          Quote Cart
+        </button>
+        <div class="navbar__mobile">
+          <button class="cart-btn" aria-label="Cart">
+            <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
+          </button>
+          <button class="hamburger" aria-label="Open menu" onclick="openMenu()">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
         </div>
-      </nav>
-    </div>
-    <div class="navbar__right">
-      <button class="btn-quote">Get A Quote <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></button>
-      <div class="navbar__mobile">
-        <button class="cart-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></button>
-        <button class="hamburger" onclick="openMenu()"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
       </div>
     </div>
   </header>
 
+  <!-- Mobile menu -->
   <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-menu__backdrop" onclick="closeMenu()"></div>
     <div class="mobile-menu__panel">
@@ -386,7 +321,6 @@
       </div>
       <nav>
         <a href="index.html">Home</a>
-        <a href="about.html">About</a>
         <div class="mobile-nav-row">
           <a href="products.html" class="mobile-nav-link">Products</a>
           <button class="mobile-nav-chevron" id="mob-toggle-products" onclick="toggleMobileSubmenu('mob-products','mob-toggle-products')">
@@ -395,34 +329,31 @@
         </div>
         <div class="mobile-submenu" id="mob-products"></div>
         <div class="mobile-nav-row">
-          <a href="resources.html" class="mobile-nav-link">Resources</a>
+          <a href="resources.html" class="mobile-nav-link active">Resources</a>
           <button class="mobile-nav-chevron" id="mob-toggle-resources" onclick="toggleMobileSubmenu('mob-resources','mob-toggle-resources')">
             <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
         </div>
         <div class="mobile-submenu" id="mob-resources">
-          <a href="video-archive.html">Video Archive</a>
-          <a href="pdf-catalogs.html">PDF Catalogs</a>
-          <a href="education-materials.html">Education Materials</a>
-          <a href="product-ifus.html">Product IFUs</a>
+          <a href="resources.html?type=video">Video Archive</a>
+          <a href="resources.html?type=pdf">PDF Catalogs</a>
+          <a href="resources.html?type=article">Education Materials</a>
+          <a href="resources.html?type=ifu">Product IFUs</a>
         </div>
+        <a href="about.html">About</a>
         <a href="contact.html">Contact Us</a>
       </nav>
     </div>
   </div>
 
-  <!-- HERO -->
-  <div class="page-hero">
-    <div class="page-hero__bg"></div>
-    <h1 id="hero-title">Resources</h1>
-  </div>
-
-  <!-- BREADCRUMB -->
-  <div class="breadcrumb">
-    <a href="index.html">Home</a><span>›</span>
-    <a href="resources.html">Resources</a><span>›</span>
-    <a href="#" id="bc-type"></a><span id="bc-sep" style="display:none">›</span>
-    <span id="bc-title">Loading...</span>
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a><span class="sep">&gt;</span>
+      <a href="resources.html">Resources</a><span class="sep">&gt;</span>
+      <a href="#" id="bc-type"></a><span class="sep" id="bc-sep" style="display:none">&gt;</span>
+      <span class="current" id="bc-title">Loading...</span>
+    </div>
   </div>
 
   <!-- CONTENT -->
@@ -432,56 +363,83 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer__inner">
-      <div class="footer__col">
-        <a href="index.html">Home</a><a href="about.html">About</a>
-        <a href="products.html">Products</a><a href="resources.html">Resources</a>
-        <a href="contact.html">Contact Us</a>
-      </div>
-      <div class="footer__col">
-        <a href="products.html" style="color:rgba(255,255,255,0.9);font-weight:700;font-size:13px;display:block;margin-bottom:2px;text-decoration:none;">Products</a>
-        <div id="footer-products-col" style="display:contents;"></div>
-      </div>
-      <div class="footer__col">
-        <a href="resources.html" style="color:rgba(255,255,255,0.9);font-weight:700;font-size:13px;display:block;margin-bottom:2px;text-decoration:none;">Resources</a>
-        <a href="video-archive.html">Video Archive</a>
-        <a href="pdf-catalogs.html">PDF Catalogs</a>
-        <a href="education-materials.html">Education Materials</a>
-        <a href="product-ifus.html">Product IFUs</a>
+    <div class="footer__top">
+
+      <div class="footer__logo">
+        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" style="filter:brightness(0) invert(1);" />
       </div>
 
-      <div class="footer__copyright">
-        <span>© Copyright 2026 PEAK Medical Distribution INC.<br>Glen Ellyn, IL</span>
-        <span>Phone: 630 - 520 - 5023 &nbsp; Fax: 866 - 557 - 8437</span>
+      <div class="footer__columns">
+
+        <div class="footer__col">
+          <span class="footer__col-title">Products</span>
+          <div id="footer-products-col" style="display:contents;"></div>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">Resources</span>
+          <a href="resources.html?type=pdf">Digital Catalogs</a>
+          <a href="resources.html?type=article">Educational Materials</a>
+          <a href="resources.html?type=ifu">Product IFUs</a>
+          <a href="resources.html?type=video">Video Archive</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">About</span>
+          <a href="about.html">Our Story</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">Support</span>
+          <button onclick="cartOpenModal()">Get a Quote</button>
+          <a href="contact.html">Contact Us</a>
+          <div style="height:4px; width:75%; border-top:1px solid rgba(255,255,255,0.2); margin-top:8px;"></div>
+          <div style="height:6px;"></div>
+          <span>info@peakmdi.com</span>
+          <span>630-520-5023</span>
+          <span>866-557-8437 (Fax)</span>
+        </div>
+
       </div>
+
+    </div>
+
+    <div class="footer__watermark">
+      <svg class="footer__watermark-svg" viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.4)">BUILT FOR THE SURGEON</text>
+      </svg>
+    </div>
+
+    <div class="footer__bottom">
+      ©2026 PEAK Medical Distribution, Inc. &bull; Glen Ellyn, IL
     </div>
   </footer>
 
   <script>
     const TYPE_CONFIG = {
-      video:   { label: 'Video Archive',        href: 'video-archive.html' },
-      pdf:     { label: 'PDF Catalogs',         href: 'pdf-catalogs.html' },
-      article: { label: 'Education Materials',  href: 'education-materials.html' },
-      ifu:     { label: 'Product IFUs',         href: 'product-ifus.html' },
+      video:   { label: 'Video Archive',        href: 'resources.html?type=video',   typeLabel: 'Instructional Video' },
+      pdf:     { label: 'PDF Catalogs',          href: 'resources.html?type=pdf',     typeLabel: 'PDF Catalog' },
+      article: { label: 'Education Materials',   href: 'resources.html?type=article', typeLabel: 'Education Material' },
+      ifu:     { label: 'Product IFUs',          href: 'resources.html?type=ifu',     typeLabel: 'Instructions for Use' },
     };
+
+    let allResources = [];
 
     async function loadResource() {
       const id = new URLSearchParams(window.location.search).get('id');
       if (!id) { showError('No resource specified.'); return; }
       try {
         const r = await fetch('resources.json?v=' + Date.now(), { cache: 'no-store' });
-        const all = await r.json();
-        const res = all.find(x => x.id === id);
+        allResources = await r.json();
+        const res = allResources.find(x => x.id === id);
         if (!res) { showError('Resource not found.'); return; }
         renderResource(res);
       } catch(e) { showError('Could not load resources.json.'); }
     }
 
     function renderResource(res) {
-      const cfg = TYPE_CONFIG[res.type] || { label: 'Resources', href: 'resources.html' };
+      const cfg = TYPE_CONFIG[res.type] || { label: 'Resources', href: 'resources.html', typeLabel: 'Resource' };
 
-      // Hero + breadcrumb
-      document.getElementById('hero-title').textContent = cfg.label;
       document.title = `${res.title} – PEAK MDI`;
       const bcType = document.getElementById('bc-type');
       bcType.textContent = cfg.label;
@@ -489,20 +447,17 @@
       document.getElementById('bc-sep').style.display = 'inline';
       document.getElementById('bc-title').textContent = res.title;
 
-      // Build embed
       let embedHTML = '';
-      const thumbSrc = res.thumbnail
-        ? (res.thumbnail.startsWith('Resource_Thumbnails/') ? res.thumbnail : 'Resource_Thumbnails/' + res.thumbnail)
-        : '';
+      let actionsHTML = '';
 
       if (res.type === 'video') {
         if (res.resource) {
-          // Normalize YouTube URL to embed format
           let src = res.resource;
           src = src.replace('watch?v=', 'embed/').replace('youtu.be/', 'www.youtube.com/embed/');
           embedHTML = `<div class="resource-embed resource-embed--video">
             <iframe src="${src}" title="${res.title}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
           </div>`;
+          actionsHTML = `<a href="${res.resource}" target="_blank" rel="noopener" class="btn-detail-secondary">Watch on YouTube ↗</a>`;
         } else {
           embedHTML = `<div class="resource-embed resource-embed--empty">No video link has been provided yet.</div>`;
         }
@@ -510,46 +465,77 @@
         if (res.resource) {
           const pdfSrc = res.resource;
           embedHTML = `<div class="resource-embed resource-embed--pdf">
-            <object data="${pdfSrc}" type="application/pdf" width="100%" style="height:700px;border-radius:12px;">
+            <object data="${pdfSrc}" type="application/pdf" width="100%" style="height:640px;">
               <div class="pdf-fallback">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2e6da4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                 <p>Your browser cannot display this PDF inline.</p>
-                <a href="${pdfSrc}" target="_blank" download class="pdf-download-btn">
-                  Download PDF ↓
-                </a>
               </div>
             </object>
-          </div>
-          <div style="margin-top:12px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-            <a href="${pdfSrc}" target="_blank" style="color:var(--blue);font-size:13px;font-weight:600;">
-              Open PDF in new tab ↗
-            </a>
-            <a href="${pdfSrc}" download style="color:var(--blue);font-size:13px;font-weight:600;">
-              Download PDF ↓
-            </a>
           </div>`;
+          actionsHTML = `
+            <a href="${pdfSrc}" download class="btn-detail-primary">Download PDF ↓</a>
+            <a href="${pdfSrc}" target="_blank" class="btn-detail-secondary">Open in New Tab ↗</a>
+          `;
         } else {
           embedHTML = `<div class="resource-embed resource-embed--empty">No PDF has been provided yet.</div>`;
         }
       } else if (res.type === 'article') {
         if (res.resource) {
           embedHTML = `<div class="resource-embed resource-embed--article">
-            <p style="font-size:14px;color:var(--muted);">This article is hosted externally. Click below to read it.</p>
-            <a href="${res.resource}" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-              Read Article
-            </a>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--peak-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <p style="font-size:14px;color:var(--muted);max-width:360px;">This article is hosted externally. Open it in a new tab to read the full content.</p>
           </div>`;
+          actionsHTML = `<a href="${res.resource}" target="_blank" rel="noopener" class="btn-detail-primary">Read Article ↗</a>`;
         } else {
           embedHTML = `<div class="resource-embed resource-embed--empty">No article link has been provided yet.</div>`;
         }
       }
 
       document.getElementById('detail-container').innerHTML = `
-        <h1 class="detail-title">${res.title}</h1>
-        <p class="detail-description">${res.description}</p>
-        ${embedHTML}
+        <div class="detail-layout">
+          <div class="detail-embed-col">
+            ${embedHTML}
+          </div>
+          <div class="detail-info">
+            <div class="detail-type-tag">${cfg.typeLabel}</div>
+            <h1 class="detail-title">${res.title}</h1>
+            <p class="detail-description">${res.description}</p>
+            <div class="detail-meta">
+              <div class="fs-row"><div class="fs-label">Category</div><div class="fs-value">${cfg.label}</div></div>
+              ${res.sku ? `<div class="fs-row"><div class="fs-label">Related SKU</div><div class="fs-value">${res.sku}</div></div>` : ''}
+            </div>
+            <div class="detail-actions">
+              ${actionsHTML}
+            </div>
+          </div>
+        </div>
       `;
+
+      renderRelated(res, cfg);
+    }
+
+    function renderRelated(res, cfg) {
+      const related = allResources.filter(r => r.type === res.type && r.id !== res.id).slice(0, 3);
+      if (!related.length) return;
+      const thumbOf = r => r.thumbnail
+        ? (r.thumbnail.startsWith('Resource_Thumbnails/') ? r.thumbnail : 'Resource_Thumbnails/' + r.thumbnail)
+        : '';
+      const html = `
+        <div class="related-resources">
+          <div class="related-resources__title">More ${cfg.label}</div>
+          <div class="related-resources__grid">
+            ${related.map(r => {
+              const thumb = thumbOf(r);
+              return `
+              <a class="related-card" href="resource-detail.html?id=${encodeURIComponent(r.id)}">
+                <div class="related-card__img">${thumb ? `<img src="${thumb}" alt="${r.title}" />` : ''}</div>
+                <div class="related-card__body"><div class="related-card__name">${r.title}</div></div>
+              </a>`;
+            }).join('')}
+          </div>
+        </div>
+      `;
+      document.getElementById('detail-container').insertAdjacentHTML('beforeend', html);
     }
 
     function showError(msg) {
@@ -557,128 +543,14 @@
         `<div class="detail-loading">${msg} <a href="resources.html" style="color:var(--blue)">Back to Resources</a></div>`;
     }
 
-    /* Nav + Footer */
-    function openMenu()  { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow='hidden'; }
-    function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow=''; }
-    document.getElementById('mobileMenu').addEventListener('click', e => { if (e.target === document.getElementById('mobileMenu')) closeMenu(); });
-    
-      // Also close type panels when dropdown area is left
-      document.querySelectorAll('.nav-dropdown').forEach(dd => {
-        dd.addEventListener('mouseleave', () => {
-          // Small delay so user can move to type panel
-          setTimeout(() => {
-            const typeHovered = document.querySelector('.dd-type-list:hover');
-            if (!typeHovered) {
-              document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-              document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-            }
-          }, 150);
-        });
-      });
-
-    document.addEventListener('click', e => {
-      const inDropdown  = e.target.closest('.nav-dropdown');
-      const inTypePanel = e.target.closest('.dd-type-list');
-
-      if (!inDropdown && !inTypePanel) {
-        // Clicked completely outside everything — close all
-        document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
-        document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-        document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      } else if (inDropdown && !e.target.closest('.dd-sub-list') && !e.target.closest('.dd-cat-chevron') && !e.target.closest('.dd-type-chevron')) {
-        // Clicked on a top-level category link — close sub and type panels
-        document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-        document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      }
-      // inTypePanel or inside dd-sub-list/chevron: let the event pass through naturally
-    });
-
-    // Close type panel when mouse leaves the nav area — use mousemove to check
-    // if mouse is over neither the dropdown nor the type panel
-    document.addEventListener('mousemove', e => {
-      const openTypePanel = document.querySelector('.dd-type-list.open');
-      if (!openTypePanel) return;
-      const inDropdown  = e.target.closest('.nav-dropdown');
-      const inTypePanel = e.target.closest('.dd-type-list');
-      const inSubList   = e.target.closest('.dd-sub-list');
-      if (!inDropdown && !inTypePanel && !inSubList) {
-        openTypePanel.classList.remove('open');
-        document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-        document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      }
-    });
-    function toggleMobileSubmenu(id, tid) { document.getElementById(id).classList.toggle('open'); document.getElementById(tid).classList.toggle('open'); }
-    function toggleNavType(e, id) {
-      e.preventDefault();
-      e.stopPropagation();
-      const typePanel = document.getElementById(id);
-      const btn = e.currentTarget;
-      if (!typePanel) return;
-
-      const isOpen = typePanel.classList.contains('open');
-
-      // Close all type panels and remove lock from all nav-dropdowns
-      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('sub-active'));
-
-      if (!isOpen) {
-        const row = btn.closest('.dd-cat-row');
-        const subList = btn.closest('.dd-sub-list');
-        const navDropdown = btn.closest('.nav-dropdown');
-        const rowRect     = row ? row.getBoundingClientRect() : btn.getBoundingClientRect();
-        const subListRect = subList ? subList.getBoundingClientRect() : rowRect;
-
-        typePanel.style.top  = rowRect.top + 'px';
-        typePanel.style.left = (subListRect.right + 6) + 'px';
-        typePanel.classList.add('open');
-        btn.classList.add('open');
-        // Highlight the sub-category row the same way categories are highlighted when open
-        if (row) row.classList.add('sub-active');
-
-        // Lock the parent nav-dropdown open so CSS :hover loss doesn't close it
-        if (navDropdown) navDropdown.classList.add('type-open');
-      }
-    }
-
-    function toggleNavSub(e, id) {
-      e.preventDefault(); e.stopPropagation();
-      const sub = document.getElementById(id);
-      const btn = e.currentTarget;
-      if (!sub) return;
-      const isOpen = sub.classList.contains('open');
-      document.querySelectorAll('.dd-sub-list').forEach(el => { el.classList.remove('open'); el.style.top = '0'; });
-      document.querySelectorAll('.dd-cat-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('open'));
-      // Always close any open type panel when switching categories
-      document.querySelectorAll('.dd-type-list').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dd-type-chevron').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.nav-dropdown').forEach(el => el.classList.remove('type-open'));
-      document.querySelectorAll('.dd-cat-row').forEach(el => el.classList.remove('sub-active'));
-      if (!isOpen) {
-        const row = btn.closest('.dd-cat-row');
-        const menu = btn.closest('.dropdown-menu');
-        let offsetTop = 0, el = row;
-        while (el && el !== menu) { offsetTop += el.offsetTop; el = el.offsetParent; }
-        sub.style.top = offsetTop + 'px';
-        sub.classList.add('open');
-        btn.classList.add('open');
-        row.classList.add('open');
-      }
-    }
-    (async () => {
+    /* ── Nav + Footer wiring (mega-menu pattern, matches products.html) ── */
+    async function populateNavDropdowns() {
       let products = [];
-      try { const r = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' }); products = await r.json(); } catch(e) { return; }
+      try {
+        const res = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+        products = await res.json();
+      } catch(e) { return; }
+
       const tree = {};
       products.forEach(p => {
         if (!p.category) return;
@@ -688,84 +560,130 @@
           if (p.type) tree[p.category][p.subcategory].add(p.type);
         }
       });
-      function buildDD(tree) {
-        // Remove any stale type panels from previous builds
-        document.querySelectorAll('.dd-type-list').forEach(el => el.remove());
 
-        // Build HTML string only — no DOM manipulation here
-        return Object.entries(tree).map(([cat, subs]) => {
-          const catURL  = `products.html?cat=${encodeURIComponent(cat)}`;
-          const catId   = 'navdd-' + cat.replace(/\s+/g, '_');
-          const hasSubs = Object.keys(subs).length > 0;
+      const categories = Object.keys(tree);
 
-          let h = `<div class="dd-cat-row">
-            <a class="dd-cat-link" href="${catURL}">${cat}</a>
-            ${hasSubs ? `<button class="dd-cat-chevron" onclick="toggleNavSub(event,'${catId}')">
-              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>` : ''}
-          </div>`;
+      function initMegaProducts(prefix) {
+        const col1 = document.getElementById(`mega-${prefix}-col1`);
+        const col2 = document.getElementById(`mega-${prefix}-col2`);
+        const col3 = document.getElementById(`mega-${prefix}-col3`);
+        if (!col1 || !col2 || !col3) return;
 
-          if (hasSubs) {
-            h += `<div class="dd-sub-list" id="${catId}">`;
-            Object.keys(subs).forEach(sub => {
-              const types    = subs[sub];
-              const subURL   = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
-              const subId    = 'navtype-' + cat.replace(/\s+/g,'_') + '__' + sub.replace(/\s+/g,'_');
-              const hasTypes = types.size > 0;
-              h += `<div class="dd-cat-row">
-                <a class="dd-sub-link" href="${subURL}">${sub}</a>
-                ${hasTypes ? `<button class="dd-cat-chevron dd-type-chevron" data-typeid="${subId}" onclick="toggleNavType(event,'${subId}')">
-                  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>` : ''}
-              </div>`;
+        function renderCol3(cat, sub) {
+          const types = [...(tree[cat][sub] || [])];
+          col3.innerHTML =
+            `<div class="mega-col__header">${sub}</div>` +
+            types.map(type => `<a class="mega-col__link" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
+        }
+
+        function renderCol2(cat) {
+          const subs = Object.keys(tree[cat]);
+          col2.innerHTML =
+            `<div class="mega-col__header">${cat}</div>` +
+            subs.map((sub, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}" data-idx="${i}">${sub}</a>`).join('');
+
+          col2.querySelectorAll('.mega-col__link').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+              col2.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
+              el.classList.add('active');
+              renderCol3(el.dataset.cat, el.dataset.sub);
             });
-            h += `</div>`;
-          }
-          return h;
+          });
+
+          if (subs.length) renderCol3(cat, subs[0]);
+          else col3.innerHTML = '';
+        }
+
+        function renderCol1() {
+          col1.innerHTML =
+            `<div class="mega-col__header">Products</div>` +
+            categories.map((cat, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}" data-cat="${cat}" data-idx="${i}">${cat}</a>`).join('');
+
+          col1.querySelectorAll('.mega-col__link').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+              col1.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
+              el.classList.add('active');
+              renderCol2(el.dataset.cat);
+            });
+          });
+        }
+
+        renderCol1();
+        if (categories.length) renderCol2(categories[0]);
+      }
+
+      initMegaProducts('products-desktop');
+      initMegaProducts('products-tablet');
+
+      function buildMobileHTML() {
+        return categories.map(cat => {
+          const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
+          let html = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
+          Object.keys(tree[cat]).forEach(sub => {
+            const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
+            html += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
+          });
+          return html;
         }).join('');
       }
+      const mobileDD = document.getElementById('mob-products');
+      if (mobileDD) mobileDD.innerHTML = buildMobileHTML();
+    }
 
-      function buildTypePanels(tree) {
-        // Called AFTER innerHTML is set — creates body-level type panels
-        document.querySelectorAll('.dd-type-list').forEach(el => el.remove());
-        Object.entries(tree).forEach(([cat, subs]) => {
-          Object.keys(subs).forEach(sub => {
-            const types = subs[sub];
-            if (!types.size) return;
-            const subId = 'navtype-' + cat.replace(/\s+/g,'_') + '__' + sub.replace(/\s+/g,'_');
-            const panel = document.createElement('div');
-            panel.className = 'dd-type-list';
-            panel.id = subId;
-            [...types].forEach(type => {
-              const a = document.createElement('a');
-              a.className = 'dd-sub-link';
-              a.href = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}`;
-              a.textContent = type;
-              panel.appendChild(a);
-            });
-            document.body.appendChild(panel);
-          });
-        });
+    populateNavDropdowns();
+
+    function openMenu()  { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow = ''; }
+    document.getElementById('mobileMenu').addEventListener('click', function(e) {
+      if (e.target === this) closeMenu();
+    });
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) {
+        document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
       }
-      const ddHTML = buildDD(tree);
-      ['nav-dd-desktop-products','nav-dd-tablet-products'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ddHTML; });
-      const mob = document.getElementById('mob-products');
-      if (mob) mob.innerHTML = Object.entries(tree).map(([cat, subs]) => {
-        let h = `<a href="products.html?cat=${encodeURIComponent(cat)}" style="font-weight:700">${cat}</a>`;
-        Object.keys(subs).forEach(sub => { h += `<a href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" style="padding-left:16px;font-size:14px">${sub}</a>`; });
-        return h;
-      }).join('');
-    buildTypePanels(tree);
-    })();
-    (async () => {
+    });
+
+    document.querySelectorAll('.nav-dropdown').forEach(dd => {
+      dd.addEventListener('mouseenter', () => {
+        const menu = dd.querySelector('.mega-menu');
+        if (menu) menu.style.display = 'flex';
+      });
+      dd.addEventListener('mouseleave', () => {
+        const menu = dd.querySelector('.mega-menu');
+        if (menu) menu.style.display = 'none';
+      });
+    });
+
+    function toggleMobileSubmenu(submenuId, toggleId) {
+      const submenu = document.getElementById(submenuId);
+      const toggle  = document.getElementById(toggleId);
+      const isOpen  = submenu.classList.contains('open');
+      submenu.classList.toggle('open', !isOpen);
+      toggle.classList.toggle('open', !isOpen);
+    }
+
+    async function populateFooter() {
       let products = [];
-      try { const r = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' }); products = await r.json(); } catch(e) { return; }
+      try {
+        const r = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+        products = await r.json();
+      } catch(e) { return; }
+
       const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+      const firstCat = 'Scissors';
+      const rest = categories.filter(c => c !== firstCat).sort((a, b) => a.localeCompare(b));
+      const orderedCategories = categories.includes(firstCat) ? [firstCat, ...rest] : rest;
       const col = document.getElementById('footer-products-col');
-      if (col) col.innerHTML = categories.map(cat => `<a href="products.html?cat=${encodeURIComponent(cat)}" style="color:rgba(255,255,255,0.6);font-size:12px;font-weight:400;display:block;transition:color 0.15s;" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">${cat}</a>`).join('');
-    })();
+      if (!col) return;
+
+      col.innerHTML = orderedCategories.map(cat =>
+        `<a href="products.html?cat=${encodeURIComponent(cat)}">${cat}</a>`
+      ).join('');
+    }
 
     loadResource();
+    populateFooter();
   </script>
   <script src="cart.js"></script>
 </body>
