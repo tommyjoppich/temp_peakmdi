@@ -2,9 +2,17 @@
    cart.js — Shared quote cart for PEAK MDI
    Uses sessionStorage so the cart persists across pages for the
    duration of the user's browser session, then clears automatically.
+
+   Flow:
+     1. Cart view        — review items, adjust quantity, remove items
+     2. Quote form view  — contact details + comments
+     3. Confirmation view — "Quote Request Submitted"
+   (An empty-cart state is shown in place of the cart view when there
+   are no items.)
 ═══════════════════════════════════════════════════════════════ */
 
 const CART_KEY = 'peak_quote_cart';
+let cartModalView = 'cart'; // 'cart' | 'form' | 'confirm'
 
 /* ── Cart data helpers ────────────────────────────────────────── */
 function cartGet() {
@@ -34,231 +42,231 @@ function cartAdd(product) {
   cartSave(items);
 }
 
+function cartItemCount() {
+  return cartGet().reduce((sum, i) => sum + i.qty, 0);
+}
+
 function cartSetQty(id, qty) {
-  if (qty < 1) {
-    // Show confirmation before removing
-    cartConfirmRemove(id);
-    return;
-  }
+  qty = parseInt(qty, 10);
+  if (!qty || qty < 1) qty = 1;
   let items = cartGet();
   const item = items.find(i => i.id === id);
   if (item) item.qty = qty;
   cartSave(items);
-  cartRenderItems();
+  cartRenderCartView();
 }
 
 function cartRemove(id) {
-  cartConfirmRemove(id);
-}
-
-function cartConfirmRemove(id) {
-  const item = cartGet().find(i => i.id === id);
-  if (!item) return;
-  cartShowConfirm(
-    `Remove "${item.title}" from your quote?`,
-    () => {
-      cartSave(cartGet().filter(i => i.id !== id));
-      cartRenderItems();
-    }
-  );
-}
-
-function cartClear() {
-  cartShowConfirm(
-    'Remove all items from your quote cart?',
-    () => {
-      cartSave([]);
-      cartRenderItems();
-    }
-  );
+  cartSave(cartGet().filter(i => i.id !== id));
+  cartRenderCartView();
 }
 
 /* ── Badge — small count indicator on the Get A Quote button ──── */
 function cartUpdateBadge() {
-  const items = cartGet();
-  const total = items.reduce((sum, i) => sum + i.qty, 0);
+  const total = cartItemCount();
   document.querySelectorAll('.cart-badge').forEach(el => {
     el.textContent = total;
     el.style.display = total > 0 ? 'flex' : 'none';
   });
 }
 
-/* ── Modal ────────────────────────────────────────────────────── */
+/* ── Styles (injected once) ──────────────────────────────────── */
+function cartInjectStyles() {
+  if (document.getElementById('quote-cart-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'quote-cart-styles';
+  style.textContent = `
+    #quote-modal-overlay {
+      display: none !important; position: fixed !important; inset: 0 !important; z-index: 10000 !important;
+      background: rgba(0,0,0,0.45) !important; align-items: center !important; justify-content: center !important;
+      padding: 20px !important; margin: 0 !important;
+    }
+    #quote-modal-overlay[style*="flex"] { display: flex !important; }
+    #quote-modal-overlay #quote-modal {
+      background: #fff !important; border-radius: 0 !important; width: 100% !important; max-width: 1120px !important;
+      max-height: min(720px, calc(100vh - 40px)) !important; display: flex !important; flex-direction: column !important;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25) !important; overflow: hidden !important;
+      font-family: 'Montserrat', sans-serif !important; margin: 0 !important; padding: 0 !important;
+    }
+    #quote-modal-overlay #quote-modal.quote-modal--empty {
+      max-height: min(336px, calc(100vh - 40px)) !important;
+    }
+    #quote-modal-overlay #quote-modal.quote-modal--form {
+      max-height: min(840px, calc(100vh - 40px)) !important;
+    }
+    #quote-modal-overlay #quote-modal.quote-modal--confirm {
+      max-height: min(336px, calc(100vh - 40px)) !important;
+    }
+    #quote-modal-overlay .qc-header {
+      display: flex !important; align-items: center !important; justify-content: space-between !important;
+      gap: 16px !important; padding: 28px 34px !important; border-bottom: 1.5px solid var(--border, #e2e2e2) !important;
+      background: #fff !important; flex-shrink: 0 !important; margin: 0 !important;
+    }
+    #quote-modal-overlay .qc-header-title { font-size: 24px !important; font-weight: 800 !important; color: var(--peak-navy, #1a2f4a) !important; line-height: 1.3 !important; }
+    #quote-modal-overlay .qc-header-title span { font-weight: 600 !important; color: var(--muted, #888) !important; font-size: 17px !important; }
+    #quote-modal-overlay .qc-header-sub { font-size: 14px !important; font-weight: 500 !important; color: var(--muted, #888) !important; margin-top: 4px !important; }
+    #quote-modal-overlay .qc-header-right {
+      display: flex !important; align-items: center !important; gap: 6px !important; flex-shrink: 0 !important;
+      background: none !important; border: none !important; cursor: pointer !important; padding: 8px 12px !important; border-radius: 6px !important;
+      font-family: 'Montserrat', sans-serif !important; font-size: 14px !important; font-weight: 600 !important; color: #666 !important;
+      transition: background 0.15s !important;
+    }
+    #quote-modal-overlay .qc-header-right:hover { background: #f0f0f0 !important; }
+    #quote-modal-overlay .qc-close-x {
+      background: none !important; border: none !important; cursor: pointer !important; padding: 6px !important; border-radius: 6px !important;
+      display: flex !important; align-items: center !important; justify-content: center !important; color: #666 !important;
+      transition: background 0.15s !important;
+    }
+    #quote-modal-overlay .qc-close-x:hover { background: #f0f0f0 !important; }
+    #quote-modal-overlay .qc-body { flex: 1 !important; overflow-y: auto !important; padding: 30px 34px 34px !important; }
+    #quote-modal-overlay .qc-body.qc-body--split {
+      display: flex !important; flex-direction: column !important; overflow: hidden !important; padding: 0 !important;
+    }
+    #quote-modal-overlay .qc-cart-scroll { flex: 1 !important; min-height: 0 !important; overflow-y: auto !important; padding: 30px 34px 10px !important; }
+
+    /* Cart table */
+    #quote-modal-overlay .qc-table { width: 100% !important; border-collapse: collapse !important; }
+    #quote-modal-overlay .qc-table thead th {
+      text-align: left !important; padding: 14px 8px !important; font-size: 12px !important; font-weight: 700 !important;
+      color: var(--muted, #999) !important; letter-spacing: 0.08em !important; text-transform: uppercase !important;
+      background-color: #F5F5F5 !important;
+    }
+    #quote-modal-overlay .qc-cart-scroll thead th {
+      position: sticky !important; top: 0 !important; z-index: 2 !important;
+    }
+    #quote-modal-overlay .qc-table thead th:first-child { border-radius: 0 !important; }
+    #quote-modal-overlay .qc-table thead th:last-child { border-radius: 0 !important; }
+    #quote-modal-overlay .qc-table thead th.qc-col-center {
+      text-align: center !important; font-size: 14px !important; font-weight: 700 !important;
+      color: #000 !important; letter-spacing: normal !important; text-transform: none !important;
+    }
+    #quote-modal-overlay .qc-table tbody td { padding: 32px 8px !important; border-bottom: 1px solid #f0f0f0 !important; vertical-align: middle !important; }
+    #quote-modal-overlay .qc-product-cell { display: flex !important; align-items: center !important; gap: 16px !important; }
+    #quote-modal-overlay .qc-product-thumb {
+      width: 60px !important; height: 60px !important; flex-shrink: 0 !important; background: transparent !important; border-radius: 0 !important;
+      overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important;
+      border: none !important;
+    }
+    #quote-modal-overlay .qc-product-thumb img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+    #quote-modal-overlay .qc-product-title { font-size: 16px !important; font-weight: 700 !important; color: var(--peak-navy, #1a2f4a) !important; line-height: 1.3 !important; }
+    #quote-modal-overlay .qc-product-sku { font-size: 13px !important; font-weight: 500 !important; color: var(--muted, #888) !important; margin-top: 4px !important; }
+    #quote-modal-overlay .qc-qty-input {
+      width: 64px !important; height: 44px !important; text-align: center !important; border: 1.5px solid var(--border, #ddd) !important;
+      border-radius: 6px !important; font-family: 'Montserrat', sans-serif !important; font-size: 15px !important; font-weight: 700 !important;
+      color: var(--peak-navy, #1a2f4a) !important; -moz-appearance: textfield !important; background: #fff !important;
+    }
+    #quote-modal-overlay .qc-qty-input::-webkit-outer-spin-button,
+    #quote-modal-overlay .qc-qty-input::-webkit-inner-spin-button { -webkit-appearance: none !important; margin: 0 !important; }
+    #quote-modal-overlay .qc-qty-input:focus { outline: none !important; border-color: var(--blue, #2e6da4) !important; }
+    #quote-modal-overlay .qc-remove-btn {
+      background: none !important; border: none !important; cursor: pointer !important; font-family: 'Montserrat', sans-serif !important;
+      font-size: 14px !important; font-weight: 600 !important; color: #999 !important; transition: color 0.15s !important;
+    }
+    #quote-modal-overlay .qc-remove-btn:hover { color: #D6392B !important; }
+
+    #quote-modal-overlay .qc-cart-footer {
+      display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 20px !important;
+      flex-wrap: wrap !important; background: none !important; border-radius: 0 !important; padding: 26px 8px 4px !important; margin-top: 4px !important;
+    }
+    #quote-modal-overlay .qc-body.qc-body--split .qc-cart-footer {
+      flex-shrink: 0 !important; padding: 20px 34px 28px !important; margin-top: 0 !important;
+      border-top: 1px solid #f0f0f0 !important;
+    }
+    #quote-modal-overlay .qc-cart-footer__title { font-size: 16px !important; font-weight: 700 !important; color: #000 !important; }
+    #quote-modal-overlay .qc-cart-footer__desc { font-size: 14px !important; font-weight: 500 !important; color: #333 !important; margin-top: 3px !important; }
+
+    #quote-modal-overlay .qc-btn-gold {
+      display: inline-flex !important; align-items: center !important; justify-content: center !important; white-space: nowrap !important;
+      height: 52px !important; padding: 0 30px !important; background-color: var(--gold, #F2C300) !important; color: var(--navy, #1a2f4a) !important;
+      border: none !important; border-radius: 0 !important; font-family: 'Montserrat', sans-serif !important; font-size: 15px !important;
+      font-weight: 700 !important; cursor: pointer !important; transition: background 0.15s !important;
+    }
+    #quote-modal-overlay .qc-btn-gold:hover { background-color: var(--gold-dark, #d9ac00) !important; }
+
+    /* Empty state */
+    #quote-modal-overlay .qc-empty { padding: 32px 4px 12px !important; }
+    #quote-modal-overlay .qc-empty p:first-of-type { font-size: 22px !important; font-weight: 700 !important; color: #000 !important; margin-bottom: 10px !important; }
+    #quote-modal-overlay .qc-empty p { font-size: 17px !important; font-weight: 500 !important; color: var(--muted, #888) !important; margin-bottom: 28px !important; line-height: 1.5 !important; }
+
+    /* Quote form view */
+    #quote-modal-overlay .qc-form-group { margin-bottom: 24px !important; }
+    #quote-modal-overlay .qc-form-row { display: flex !important; gap: 20px !important; margin-bottom: 24px !important; }
+    #quote-modal-overlay .qc-form-field { flex: 1 1 0 !important; min-width: 0 !important; }
+    #quote-modal-overlay .qc-form-label { display: block !important; font-size: 15px !important; font-weight: 700 !important; color: #000 !important; margin-bottom: 8px !important; }
+    #quote-modal-overlay .qc-form-input {
+      width: 100% !important; height: 54px !important; padding: 0 16px !important; border: 1.5px solid var(--border, #ddd) !important;
+      border-radius: 6px !important; font-family: 'Montserrat', sans-serif !important; font-size: 16px !important; font-weight: 400 !important;
+      color: #000 !important; background-color: #fff !important; box-sizing: border-box !important;
+    }
+    #quote-modal-overlay .qc-form-input::placeholder { color: rgba(0,0,0,0.35) !important; font-weight: 400 !important; }
+    #quote-modal-overlay .qc-form-input:focus { outline: none !important; border-color: var(--blue, #2e6da4) !important; }
+    #quote-modal-overlay .qc-form-input.qc-input--error { border-color: #D6392B !important; }
+    #quote-modal-overlay .qc-form-error { display: none !important; font-size: 13px !important; font-weight: 600 !important; color: #D6392B !important; margin-top: 7px !important; }
+    #quote-modal-overlay .qc-form-error.visible { display: block !important; }
+    #quote-modal-overlay .qc-form-textarea { height: auto !important; min-height: 130px !important; padding: 14px 16px !important; resize: vertical !important; line-height: 1.5 !important; }
+    #quote-modal-overlay .qc-section-label {
+      font-size: 16px !important; font-weight: 800 !important; color: #000 !important; text-transform: uppercase !important;
+      letter-spacing: 0.04em !important; margin-bottom: 20px !important; padding-bottom: 12px !important; border-bottom: 1.5px solid var(--border, #e2e2e2) !important;
+    }
+    #quote-modal-overlay .qc-form-submit-row { display: flex !important; justify-content: flex-end !important; margin-top: 10px !important; }
+
+    /* Confirmation view */
+    #quote-modal-overlay .qc-confirm {
+      position: relative !important; height: 100% !important; box-sizing: border-box !important; padding: 40px 8px 28px !important; overflow: hidden !important;
+      display: flex !important; flex-direction: column !important; align-items: flex-start !important; justify-content: center !important;
+    }
+    #quote-modal-overlay .qc-confirm__mountain {
+      position: absolute !important; right: 0 !important; bottom: 0 !important; width: 300px !important; max-width: 42% !important; height: auto !important;
+      color: var(--peak-navy, #1a2f4a) !important; opacity: 0.08 !important; pointer-events: none !important; z-index: 0 !important;
+    }
+    #quote-modal-overlay .qc-confirm__mountain svg { display: block !important; width: 100% !important; height: auto !important; }
+    #quote-modal-overlay .qc-confirm h2 { position: relative !important; font-size: 28px !important; font-weight: 800 !important; color: #000 !important; margin-bottom: 12px !important; }
+    #quote-modal-overlay .qc-confirm p { position: relative !important; font-size: 16px !important; font-weight: 500 !important; color: #000 !important; margin-bottom: 28px !important; max-width: 460px !important; line-height: 1.6 !important; }
+    #quote-modal-overlay .qc-confirm .qc-btn-gold {
+      position: relative !important; height: 44px !important; padding: 0 22px !important; font-size: 14px !important;
+    }
+
+    @media (max-width: 640px) {
+      #quote-modal-overlay .qc-header { padding: 18px 20px !important; flex-wrap: wrap !important; row-gap: 10px !important; }
+      #quote-modal-overlay .qc-header-title { font-size: 19px !important; }
+      #quote-modal-overlay button.qc-header-right { font-size: 12px !important; padding: 5px 8px !important; white-space: nowrap !important; }
+      #quote-modal-overlay .qc-body { padding: 20px !important; }
+      #quote-modal-overlay .qc-cart-scroll { padding: 20px 20px 10px !important; }
+      #quote-modal-overlay .qc-body.qc-body--split .qc-cart-footer { padding: 16px 20px 20px !important; }
+      #quote-modal-overlay .qc-form-row { flex-direction: column !important; gap: 20px !important; margin-bottom: 0 !important; }
+      #quote-modal-overlay .qc-form-row .qc-form-field { margin-bottom: 24px !important; }
+      #quote-modal-overlay .qc-cart-footer { flex-direction: column !important; align-items: stretch !important; }
+      #quote-modal-overlay .qc-cart-footer .qc-btn-gold { width: 100% !important; }
+      #quote-modal-overlay .qc-table thead th.qc-col-sku { display: none !important; }
+      #quote-modal-overlay .qc-product-sku { display: block !important; }
+      #quote-modal-overlay .qc-product-cell { gap: 10px !important; }
+      #quote-modal-overlay .qc-product-title { font-size: 14px !important; }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+/* ── Modal shell ──────────────────────────────────────────────── */
 function cartInjectModal() {
   if (document.getElementById('quote-modal-overlay')) return; // already injected
+  cartInjectStyles();
 
   const overlay = document.createElement('div');
   overlay.id = 'quote-modal-overlay';
-  overlay.style.cssText = `
-    display:none; position:fixed; inset:0; z-index:10000;
-    background:rgba(0,0,0,0.45); align-items:center; justify-content:center;
-    padding:20px;
-  `;
-
   overlay.innerHTML = `
-    <div id="quote-modal" style="
-      background:#fff; border-radius:16px; width:100%; max-width:900px;
-      max-height:90vh; display:flex; flex-direction:column;
-      box-shadow:0 20px 60px rgba(0,0,0,0.25); overflow:hidden;
-      font-family:'Montserrat',sans-serif;
-    ">
-      <!-- Header -->
-      <div style="
-        display:flex; align-items:center; justify-content:space-between;
-        padding:20px 24px; border-bottom:1.5px solid #e0e0e0;
-        background:#fff; flex-shrink:0;
-      ">
-        <h2 style="font-size:18px;font-weight:800;color:#1a2f4a;">
-          Current Items to be Quoted
-        </h2>
-        <button onclick="cartCloseModal()" title="Continue Shopping" style="
-          background:none; border:none; cursor:pointer;
-          display:flex; align-items:center; gap:6px;
-          font-family:'Montserrat',sans-serif; font-size:13px;
-          font-weight:600; color:#666; padding:6px 10px; border-radius:6px;
-          transition:background 0.15s;
-        " onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='none'">
-          Continue Shopping
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Items list -->
-      <div id="quote-modal-items" style="
-        flex:1; overflow-y:auto; padding:0 24px;
-      "></div>
-
-      <!-- Footer — contact info -->
-      <div style="
-        padding:18px 24px; border-top:1.5px solid #e0e0e0;
-        background:#f8f9fc; flex-shrink:0;
-      ">
-        <p style="font-size:13px;color:#555;font-weight:500;margin-bottom:12px;line-height:1.6;">
-          Ready to get a quote? Contact us and reference the items above:
-        </p>
-        <div style="display:flex;gap:10px;flex-direction:column;">
-          <a href="tel:6305205023" style="
-            display:flex; align-items:center; gap:8px;
-            background:#1a2f4a; color:#fff; border-radius:8px;
-            padding:10px 18px; font-size:13px; font-weight:700;
-            text-decoration:none; transition:background 0.15s; flex:1; justify-content:center;
-          " onmouseover="this.style.background='#243d5a'" onmouseout="this.style.background='#1a2f4a'">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            630-520-5023
-          </a>
-          <button onclick="openQuoteEmailDialog()" style="
-            display:flex; align-items:center; gap:8px;
-            background:#2e6da4; color:#fff; border-radius:8px;
-            padding:10px 18px; font-size:13px; font-weight:700;
-            border:none; cursor:pointer; transition:background 0.15s; flex:1; justify-content:center;
-          " onmouseover="this.style.background='#245a8c'" onmouseout="this.style.background='#2e6da4'">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            Email Quote Request
-          </button>
-          <!-- Live Quote with AI — inactive / coming soon -->
-          <div style="position:relative;flex:1;">
-            <div style="
-              display:flex; align-items:center; gap:8px; justify-content:center;
-              background:#e8e8e8; color:#aaa; border-radius:8px;
-              padding:10px 18px; font-size:13px; font-weight:700;
-              cursor:not-allowed; user-select:none;
-              border:1.5px dashed #ccc;
-            ">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-              </svg>
-              Live Quote with AI
-            </div>
-            <span style="
-              position:absolute; top:-9px; left:50%; transform:translateX(-50%);
-              background:#f0a500; color:#fff; font-size:10px; font-weight:800;
-              padding:2px 8px; border-radius:999px;
-              font-family:'Montserrat',sans-serif; letter-spacing:0.06em;
-              white-space:nowrap; pointer-events:none;
-            ">Coming Soon</span>
-          </div>
+    <div id="quote-modal">
+      <div class="qc-header">
+        <div>
+          <div class="qc-header-title" id="qc-header-title">Your Quote Cart</div>
+          <div class="qc-header-sub" id="qc-header-sub" style="display:none;"></div>
         </div>
+        <div id="qc-header-right"></div>
       </div>
+      <div class="qc-body" id="qc-body"></div>
     </div>
   `;
-
-  // Close on backdrop click
   overlay.addEventListener('click', e => { if (e.target === overlay) cartCloseModal(); });
   document.body.appendChild(overlay);
-
-  // ── Confirmation dialog ──
-  const confirmEl = document.createElement('div');
-  confirmEl.id = 'cart-confirm-dialog';
-  confirmEl.style.cssText = `
-    display:none; position:fixed; inset:0; z-index:10001;
-    background:rgba(0,0,0,0.35); align-items:center; justify-content:center;
-    padding:20px; font-family:'Montserrat',sans-serif;
-  `;
-  confirmEl.innerHTML = `
-    <div style="
-      background:#fff; border-radius:14px; padding:28px 28px 24px;
-      max-width:380px; width:100%;
-      box-shadow:0 16px 48px rgba(0,0,0,0.22);
-    ">
-      <p id="cart-confirm-msg" style="
-        font-size:15px; font-weight:600; color:#1a1a1a;
-        margin-bottom:20px; line-height:1.5; text-align:center;
-      "></p>
-      <div style="display:flex;gap:10px;justify-content:center;">
-        <button id="cart-confirm-cancel" style="
-          flex:1; padding:11px 16px; border-radius:8px;
-          border:1.5px solid #e0e0e0; background:#fff;
-          font-family:'Montserrat',sans-serif; font-size:14px;
-          font-weight:700; color:#555; cursor:pointer;
-          transition:background 0.15s;
-        " onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='#fff'">
-          Keep Item
-        </button>
-        <button id="cart-confirm-ok" style="
-          flex:1; padding:11px 16px; border-radius:8px;
-          border:none; background:#e03c3c;
-          font-family:'Montserrat',sans-serif; font-size:14px;
-          font-weight:700; color:#fff; cursor:pointer;
-          transition:background 0.15s;
-        " onmouseover="this.style.background='#c82a2a'" onmouseout="this.style.background='#e03c3c'">
-          Remove
-        </button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(confirmEl);
-}
-
-function cartShowConfirm(message, onConfirm) {
-  const dialog = document.getElementById('cart-confirm-dialog');
-  document.getElementById('cart-confirm-msg').textContent = message;
-  dialog.style.display = 'flex';
-
-  const okBtn     = document.getElementById('cart-confirm-ok');
-  const cancelBtn = document.getElementById('cart-confirm-cancel');
-
-  // Clone to remove previous listeners
-  const newOk     = okBtn.cloneNode(true);
-  const newCancel = cancelBtn.cloneNode(true);
-  okBtn.replaceWith(newOk);
-  cancelBtn.replaceWith(newCancel);
-
-  document.getElementById('cart-confirm-ok').addEventListener('click', () => {
-    dialog.style.display = 'none';
-    onConfirm();
-  });
-  document.getElementById('cart-confirm-cancel').addEventListener('click', () => {
-    dialog.style.display = 'none';
-  });
-}
-
-function cartOpenModal() {
-  cartRenderItems();
-  const overlay = document.getElementById('quote-modal-overlay');
-  overlay.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
 }
 
 function cartCloseModal() {
@@ -267,106 +275,321 @@ function cartCloseModal() {
   document.body.style.overflow = '';
 }
 
-function cartRenderItems() {
-  const container = document.getElementById('quote-modal-items');
-  if (!container) return;
+function cartOpenModal() {
+  const overlay = document.getElementById('quote-modal-overlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  cartShowView('cart');
+}
 
+/* ── View switching ──────────────────────────────────────────── */
+function cartShowView(view) {
+  cartModalView = view;
+  const headerTitle = document.getElementById('qc-header-title');
+  const headerSub   = document.getElementById('qc-header-sub');
+  const headerRight = document.getElementById('qc-header-right');
+
+  const xIcon = `
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>`;
+
+  headerSub.style.display = 'none';
+
+  if (view === 'cart') {
+    document.getElementById('quote-modal')?.classList.remove('quote-modal--form');
+    document.getElementById('quote-modal')?.classList.remove('quote-modal--confirm');
+    const count = cartItemCount();
+    headerTitle.innerHTML = count > 0 ? `Your Quote Cart <span>(${count} item${count === 1 ? '' : 's'})</span>` : 'Your Quote Cart';
+    headerRight.innerHTML = count > 0
+      ? `<button class="qc-header-right" onclick="cartCloseModal()">Continue Browsing Products ${xIcon}</button>`
+      : `<button class="qc-close-x" onclick="cartCloseModal()" aria-label="Close">${xIcon}</button>`;
+    cartRenderCartView();
+  } else if (view === 'form') {
+    document.getElementById('quote-modal')?.classList.remove('quote-modal--empty');
+    document.getElementById('quote-modal')?.classList.remove('quote-modal--confirm');
+    document.getElementById('quote-modal')?.classList.add('quote-modal--form');
+    document.getElementById('qc-body')?.classList.remove('qc-body--split');
+    const count = cartItemCount();
+    headerTitle.textContent = 'Request a Quote';
+    headerSub.textContent = `${count} item${count === 1 ? '' : 's'} selected`;
+    headerSub.style.display = 'block';
+    headerRight.innerHTML = `<button class="qc-header-right" onclick="cartShowView('cart')">Back to Quote Cart ${xIcon}</button>`;
+    cartRenderFormView();
+  } else if (view === 'confirm') {
+    document.getElementById('quote-modal')?.classList.remove('quote-modal--empty');
+    document.getElementById('quote-modal')?.classList.remove('quote-modal--form');
+    document.getElementById('quote-modal')?.classList.add('quote-modal--confirm');
+    document.getElementById('qc-body')?.classList.remove('qc-body--split');
+    headerTitle.textContent = 'Quote Request Submitted';
+    headerRight.innerHTML = `<button class="qc-close-x" onclick="cartCloseModal()" aria-label="Close">${xIcon}</button>`;
+    cartRenderConfirmView();
+  }
+}
+
+/* ── View: Cart ──────────────────────────────────────────────── */
+function cartRenderCartView() {
+  const body = document.getElementById('qc-body');
+  if (!body || cartModalView !== 'cart') return;
   const items = cartGet();
+  const modalEl = document.getElementById('quote-modal');
 
   if (!items.length) {
-    container.innerHTML = `
-      <div style="text-align:center;padding:48px 20px;color:#aaa;">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 12px;display:block;">
-          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-        </svg>
-        <p style="font-size:15px;font-weight:600;margin-bottom:4px;">Your quote cart is empty.</p>
-        <p style="font-size:13px;">Browse our products and click "Add to Quote" to get started.</p>
+    if (modalEl) modalEl.classList.add('quote-modal--empty');
+    body.classList.remove('qc-body--split');
+    body.innerHTML = `
+      <div class="qc-empty">
+        <p>Your quote cart is empty.</p>
+        <p>Browse our products and add items to your cart to get started.</p>
+        <button class="qc-btn-gold" onclick="cartCloseModal()">Continue Browsing Products</button>
       </div>
     `;
+    // Header shows no item count / no "continue browsing" text when empty
+    document.getElementById('qc-header-title').textContent = 'Your Quote Cart';
+    document.getElementById('qc-header-right').innerHTML = `
+      <button class="qc-close-x" onclick="cartCloseModal()" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>`;
     return;
   }
 
-  container.innerHTML = `
-    <style>
-      @media (max-width: 520px) {
-        .cart-qty-header { display: none !important; }
-        .cart-qty-cell { display: block !important; width: 100% !important; padding: 4px 8px 12px !important; }
-        .cart-row-main td { vertical-align: top; }
-        .cart-sku-cell { white-space: normal !important; word-break: break-all; }
-      }
-    </style>
-    <table style="width:100%;border-collapse:collapse;margin:8px 0;">
-      <thead>
-        <tr style="border-bottom:1.5px solid #e0e0e0;">
-          <th style="text-align:left;padding:10px 6px;font-size:11px;font-weight:700;color:#999;letter-spacing:0.08em;text-transform:uppercase;">Product</th>
-          <th style="text-align:left;padding:10px 6px;font-size:11px;font-weight:700;color:#999;letter-spacing:0.08em;text-transform:uppercase;">Product No.</th>
-          <th class="cart-qty-header" style="text-align:center;padding:10px 6px;font-size:11px;font-weight:700;color:#999;letter-spacing:0.08em;text-transform:uppercase;">Qty</th>
-          <th class="cart-qty-header" style="width:36px;"></th>
-        </tr>
-      </thead>
-      <tbody>
-        ${items.map(item => {
-          const imgSrc = item.image
-            ? 'Product_Pictures/' + item.image.replace('Product_Pictures/', '')
-            : '';
-          return `
-          <tr class="cart-row-main" style="border-bottom:1px solid #f0f0f0;flex-wrap:wrap;">
-            <td style="padding:12px 8px;">
-              <div style="display:flex;align-items:center;gap:12px;">
-                <div style="
-                  width:52px; height:52px; flex-shrink:0;
-                  background:#f5f5f5; border-radius:8px; overflow:hidden;
-                  display:flex; align-items:center; justify-content:center;
-                  border:1px solid #e8e8e8;
-                ">
-                  ${imgSrc
-                    ? `<img src="${imgSrc}" alt="${item.title}" style="width:100%;height:100%;object-fit:contain;" />`
-                    : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`
-                  }
-                </div>
-                <span style="font-size:14px;font-weight:600;color:#1a1a1a;line-height:1.3;">${item.title}</span>
-              </div>
-            </td>
-            <td class="cart-sku-cell" style="padding:10px 6px;font-size:12px;color:#666;word-break:break-all;max-width:120px;">${item.sku}</td>
-            <td style="padding:14px 8px;text-align:center;">
-              <div style="display:flex;align-items:center;justify-content:center;gap:6px;">
-                <button onclick="cartSetQty('${item.id}', ${item.qty - 1})" style="
-                  width:26px;height:26px;border-radius:6px;border:1.5px solid #e0e0e0;
-                  background:#fff;cursor:pointer;font-size:16px;display:flex;
-                  align-items:center;justify-content:center;color:#555;font-family:inherit;
-                ">−</button>
-                <span style="font-size:14px;font-weight:700;min-width:20px;text-align:center;">${item.qty}</span>
-                <button onclick="cartSetQty('${item.id}', ${item.qty + 1})" style="
-                  width:26px;height:26px;border-radius:6px;border:1.5px solid #e0e0e0;
-                  background:#fff;cursor:pointer;font-size:16px;display:flex;
-                  align-items:center;justify-content:center;color:#555;font-family:inherit;
-                ">+</button>
-              </div>
-            </td>
-            <td class="cart-qty-cell" style="padding:10px 4px;text-align:center;width:36px;">
-              <button onclick="cartRemove('${item.id}')" title="Remove" style="
-                background:none;border:none;cursor:pointer;color:#ccc;
-                display:flex;align-items:center;padding:4px;border-radius:4px;
-                transition:color 0.15s;
-              " onmouseover="this.style.color='#e03c3c'" onmouseout="this.style.color='#ccc'">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
-                  <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
-                </svg>
-              </button>
-            </td>
+  if (modalEl) modalEl.classList.remove('quote-modal--empty');
+  body.classList.add('qc-body--split');
+  body.innerHTML = `
+    <div class="qc-cart-scroll">
+      <table class="qc-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th class="qc-col-center" style="width:100px;">Quantity</th>
+            <th class="qc-col-center" style="width:90px;">Remove</th>
           </tr>
-        `}).join('')}
-      </tbody>
-    </table>
-    <div style="text-align:right;padding:8px 8px 16px;">
-      <button onclick="cartClear()" style="
-        background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;
-        font-size:12px;font-weight:600;color:#bbb;transition:color 0.15s;
-      " onmouseover="this.style.color='#e03c3c'" onmouseout="this.style.color='#bbb'">
-        Clear all items
-      </button>
+        </thead>
+        <tbody>
+          ${items.map(item => {
+            const imgSrc = item.image ? 'Product_Pictures/' + item.image.replace('Product_Pictures/', '') : '';
+            return `
+            <tr>
+              <td>
+                <div class="qc-product-cell">
+                  <div class="qc-product-thumb">
+                    ${imgSrc
+                      ? `<img src="${imgSrc}" alt="${item.title}" />`
+                      : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`
+                    }
+                  </div>
+                  <div>
+                    <div class="qc-product-title">${item.title}</div>
+                    <div class="qc-product-sku">${item.sku || ''}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="qc-col-center">
+                <input class="qc-qty-input" type="number" min="1" value="${item.qty}"
+                  onchange="cartSetQty('${item.id}', this.value)" />
+              </td>
+              <td class="qc-col-center">
+                <button class="qc-remove-btn" onclick="cartRemove('${item.id}')">Remove</button>
+              </td>
+            </tr>
+          `}).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div class="qc-cart-footer">
+      <div>
+        <div class="qc-cart-footer__title">Ready to request a quote?</div>
+        <div class="qc-cart-footer__desc">Review your items, then continue to send your quote request.</div>
+      </div>
+      <button class="qc-btn-gold" onclick="cartShowView('form')">Continue to Quote Request</button>
+    </div>
+  `;
+
+  // Restore normal header (in case it was previously showing the empty state)
+  cartShowViewHeaderOnly('cart');
+}
+
+// Updates just the header (used after re-rendering the cart table so the
+// item count / "Continue Browsing Products" affordance stays in sync).
+function cartShowViewHeaderOnly(view) {
+  if (view !== 'cart') return;
+  const count = cartItemCount();
+  const xIcon = `
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>`;
+  const headerTitle = document.getElementById('qc-header-title');
+  const headerRight = document.getElementById('qc-header-right');
+  if (!headerTitle || !headerRight) return;
+  headerTitle.innerHTML = count > 0 ? `Your Quote Cart <span>(${count} item${count === 1 ? '' : 's'})</span>` : 'Your Quote Cart';
+  headerRight.innerHTML = count > 0
+    ? `<button class="qc-header-right" onclick="cartCloseModal()">Continue Browsing Products ${xIcon}</button>`
+    : `<button class="qc-close-x" onclick="cartCloseModal()" aria-label="Close">${xIcon}</button>`;
+}
+
+/* ── View: Quote request form ────────────────────────────────── */
+const QC_EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const QC_PHONE_PATTERN = /^\d{3}-\d{3}-\d{4}$/;
+
+function cartRenderFormView() {
+  const body = document.getElementById('qc-body');
+  if (!body) return;
+  body.innerHTML = `
+    <form id="qc-form" novalidate onsubmit="cartSubmitQuoteForm(event)">
+      <div class="qc-section-label">Contact Information</div>
+
+      <div class="qc-form-row">
+        <div class="qc-form-field">
+          <label class="qc-form-label">First Name *</label>
+          <input class="qc-form-input" type="text" id="qc-first-name" placeholder="First Name" required />
+        </div>
+        <div class="qc-form-field">
+          <label class="qc-form-label">Last Name *</label>
+          <input class="qc-form-input" type="text" id="qc-last-name" placeholder="Last Name" required />
+        </div>
+      </div>
+
+      <div class="qc-form-row">
+        <div class="qc-form-field">
+          <label class="qc-form-label">Email *</label>
+          <input class="qc-form-input" type="text" inputmode="email" id="qc-email" placeholder="Email" required
+            oninput="cartOnEmailInput()" onblur="cartValidateEmail()" />
+          <span class="qc-form-error" id="qc-email-error">Must be a valid email</span>
+        </div>
+        <div class="qc-form-field">
+          <label class="qc-form-label">Phone *</label>
+          <input class="qc-form-input" type="tel" id="qc-phone" placeholder="XXX-XXX-XXXX" maxlength="12" required
+            oninput="cartOnPhoneInput(this)" onblur="cartValidatePhone()" />
+          <span class="qc-form-error" id="qc-phone-error">Must be a valid phone number of the format "XXX-XXX-XXXX"</span>
+        </div>
+      </div>
+
+      <div class="qc-form-row">
+        <div class="qc-form-field">
+          <label class="qc-form-label">Hospital / Facility *</label>
+          <input class="qc-form-input" type="text" id="qc-facility" placeholder="Hospital / Facility" required />
+        </div>
+        <div class="qc-form-field">
+          <label class="qc-form-label">Title / Position *</label>
+          <input class="qc-form-input" type="text" id="qc-position" placeholder="Title / Position" required />
+        </div>
+      </div>
+
+      <div class="qc-section-label">Additional Information</div>
+
+      <div class="qc-form-group">
+        <label class="qc-form-label">Comments / Questions</label>
+        <textarea class="qc-form-input qc-form-textarea" id="qc-comments" placeholder="Anything else we should know?"></textarea>
+      </div>
+
+      <div class="qc-form-submit-row">
+        <button type="submit" class="qc-btn-gold">Submit Quote Request</button>
+      </div>
+    </form>
+  `;
+}
+
+function cartSetFieldError(input, errorEl, hasError) {
+  input.classList.toggle('qc-input--error', hasError);
+  if (errorEl) errorEl.classList.toggle('visible', hasError);
+}
+
+function cartValidateEmail() {
+  const input = document.getElementById('qc-email');
+  const errorEl = document.getElementById('qc-email-error');
+  const value = input.value.trim();
+  const invalid = value.length > 0 && !QC_EMAIL_PATTERN.test(value);
+  cartSetFieldError(input, errorEl, invalid);
+  return value.length > 0 && !invalid;
+}
+
+function cartOnEmailInput() {
+  const input = document.getElementById('qc-email');
+  if (input.classList.contains('qc-input--error')) cartValidateEmail();
+}
+
+function cartValidatePhone() {
+  const input = document.getElementById('qc-phone');
+  const errorEl = document.getElementById('qc-phone-error');
+  const value = input.value.trim();
+  const invalid = value.length > 0 && !QC_PHONE_PATTERN.test(value);
+  cartSetFieldError(input, errorEl, invalid);
+  return value.length > 0 && !invalid;
+}
+
+function cartFormatPhoneInput(input) {
+  const digits = input.value.replace(/\D/g, '').slice(0, 10);
+  let formatted = digits;
+  if (digits.length > 6) formatted = `${digits.slice(0,3)}-${digits.slice(3,6)}-${digits.slice(6)}`;
+  else if (digits.length > 3) formatted = `${digits.slice(0,3)}-${digits.slice(3)}`;
+  input.value = formatted;
+}
+
+function cartOnPhoneInput(input) {
+  cartFormatPhoneInput(input);
+  if (input.classList.contains('qc-input--error')) cartValidatePhone();
+}
+
+function cartSubmitQuoteForm(event) {
+  event.preventDefault();
+  const form = document.getElementById('qc-form');
+
+  const emailValid = cartValidateEmail();
+  const phoneValid = cartValidatePhone();
+  if (!form.reportValidity()) return;
+  if (!emailValid) { document.getElementById('qc-email').focus(); return; }
+  if (!phoneValid) { document.getElementById('qc-phone').focus(); return; }
+
+  const firstName = document.getElementById('qc-first-name').value.trim();
+  const lastName  = document.getElementById('qc-last-name').value.trim();
+  const email     = document.getElementById('qc-email').value.trim();
+  const phone     = document.getElementById('qc-phone').value.trim();
+  const facility  = document.getElementById('qc-facility').value.trim();
+  const position  = document.getElementById('qc-position').value.trim();
+  const comments  = document.getElementById('qc-comments').value.trim();
+
+  const cart = cartGet();
+  const itemLines = cart.map((p, i) =>
+    `${i + 1}. ${p.title} (SKU: ${p.sku})${p.qty > 1 ? ' x' + p.qty : ''}`
+  ).join('%0A');
+
+  const subject = encodeURIComponent('Quote Request from ' + firstName + ' ' + lastName);
+  const body = encodeURIComponent(
+    'Quote Request Details\n' +
+    '=====================\n' +
+    'Name:               ' + firstName + ' ' + lastName + '\n' +
+    'Hospital / Facility: ' + facility + '\n' +
+    'Title / Position:    ' + position + '\n' +
+    'Email:               ' + email + '\n' +
+    'Phone:               ' + phone + '\n' +
+    (comments ? '\nComments:\n' + comments + '\n' : '') +
+    '\nRequested Items:\n'
+  ) + itemLines;
+
+  window.location.href = `mailto:info@peakmdi.com?subject=${subject}&body=${body}`;
+
+  // The request has effectively been handed off — clear the cart and
+  // show the confirmation screen.
+  cartSave([]);
+  cartShowView('confirm');
+}
+
+/* ── View: Confirmation ──────────────────────────────────────── */
+function cartRenderConfirmView() {
+  const body = document.getElementById('qc-body');
+  if (!body) return;
+  body.innerHTML = `
+    <div class="qc-confirm">
+      <div class="qc-confirm__mountain">
+        <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 200 L55 128 L95 162 L160 55 L205 108 L245 72 L300 150 L345 105 L400 150 L400 200 Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <h2>Thank you.</h2>
+      <p>A PEAK Representative will review your request and contact you shortly.</p>
+      <button class="qc-btn-gold" onclick="cartCloseModal()">Continue Browsing Products</button>
     </div>
   `;
 }
@@ -416,110 +639,3 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape') cartCloseModal();
   });
 });
-
-
-/* ── Quote Email Dialog ── */
-function openQuoteEmailDialog() {
-  // Build cart items summary
-  const cart = cartGet();
-  if (cart.length === 0) { alert('Your cart is empty.'); return; }
-
-  // Remove existing dialog if any
-  const existing = document.getElementById('quote-email-dialog');
-  if (existing) existing.remove();
-
-  const overlay = document.createElement('div');
-  overlay.id = 'quote-email-dialog';
-  overlay.style.cssText = `
-    position:fixed; inset:0; z-index:100001;
-    background:rgba(0,0,0,0.5);
-    display:flex; align-items:center; justify-content:center; padding:20px;
-  `;
-
-  overlay.innerHTML = `
-    <div style="
-      background:#fff; border-radius:12px; padding:36px 32px;
-      width:100%; max-width:480px; max-height:90vh; overflow-y:auto;
-      box-shadow:0 16px 48px rgba(0,0,0,0.2);
-    ">
-      <h2 style="margin:0 0 6px; font-size:20px; color:#1a2b4a;">Request a Quote</h2>
-      <p style="margin:0 0 24px; font-size:13px; color:#888;">Please fill in your details below. All fields are required.</p>
-
-      ${['Full Name','Facility','Staff Position','Email','Phone Number'].map(label => {
-        const id = 'qe-' + label.toLowerCase().replace(/\s+/g,'-');
-        const type = label === 'Email' ? 'email' : label === 'Phone Number' ? 'tel' : 'text';
-        return `
-          <label style="display:block; font-size:13px; font-weight:600; color:#1a2b4a; margin-bottom:4px;">${label}</label>
-          <input id="${id}" type="${type}" placeholder="${label}"
-            oninput="checkQuoteFormReady()"
-            style="width:100%; padding:10px 14px; border:1.5px solid #dde3ec; border-radius:8px;
-                   font-size:14px; margin-bottom:14px; box-sizing:border-box; outline:none;
-                   transition:border-color 0.2s;"
-            onfocus="this.style.borderColor='#2563a8'"
-            onblur="this.style.borderColor='#dde3ec'" />
-        `;
-      }).join('')}
-
-      <button id="qe-submit" disabled
-        onclick="submitQuoteEmail()"
-        style="
-          width:100%; padding:13px; border:none; border-radius:8px;
-          font-size:14px; font-weight:700; cursor:not-allowed;
-          background:#ccc; color:#fff; transition:background 0.2s; margin-top:4px;
-        ">
-        Send Quote Request to PEAK MDI Staff
-      </button>
-      <button onclick="document.getElementById('quote-email-dialog').remove()"
-        style="
-          width:100%; padding:10px; border:1.5px solid #dde3ec; border-radius:8px;
-          font-size:13px; background:#fff; color:#666; cursor:pointer; margin-top:10px;
-        ">
-        Cancel
-      </button>
-    </div>
-  `;
-
-  document.body.appendChild(overlay);
-}
-
-function checkQuoteFormReady() {
-  const ids = ['qe-full-name','qe-facility','qe-staff-position','qe-email','qe-phone-number'];
-  const allFilled = ids.every(id => {
-    const el = document.getElementById(id);
-    return el && el.value.trim() !== '';
-  });
-  const btn = document.getElementById('qe-submit');
-  if (btn) {
-    btn.disabled = !allFilled;
-    btn.style.background   = allFilled ? '#2e6da4' : '#ccc';
-    btn.style.cursor       = allFilled ? 'pointer'  : 'not-allowed';
-  }
-}
-
-function submitQuoteEmail() {
-  const name     = document.getElementById('qe-full-name').value.trim();
-  const facility = document.getElementById('qe-facility').value.trim();
-  const position = document.getElementById('qe-staff-position').value.trim();
-  const email    = document.getElementById('qe-email').value.trim();
-  const phone    = document.getElementById('qe-phone-number').value.trim();
-
-  const cart  = cartGet();
-  const items = cart.map((p, i) =>
-    `${i + 1}. ${p.title} (SKU: ${p.sku})${p.qty > 1 ? ' x' + p.qty : ''}`
-  ).join('%0A');
-
-  const subject = encodeURIComponent('Quote Request from ' + name);
-  const body = encodeURIComponent(
-    'Quote Request Details\n' +
-    '=====================\n' +
-    'Full Name:      ' + name     + '\n' +
-    'Facility:       ' + facility + '\n' +
-    'Staff Position: ' + position + '\n' +
-    'Email:          ' + email    + '\n' +
-    'Phone:          ' + phone    + '\n\n' +
-    'Requested Items:\n'
-  ) + items;
-
-  window.location.href = `mailto:info@peakmdi.com?subject=${subject}&body=${body}`;
-  document.getElementById('quote-email-dialog').remove();
-}
