@@ -26,14 +26,14 @@
 
     /* ── CSS Variables ────────────────────────────────────────── */
     :root {
-      --navy:       #1a2f4a;
+      --navy:       #1F2E5C;
       --navy-dark:  #111e2e;
       --blue:       #2e6da4;
       --gold:       #F2C300;
       --gold-dark:  #EFA500;
       --gold-active:#FFDE55;
-      --cyan:       #6fe9ef;
-      --cream:      #f2e9d3;
+      --cyan:       #68EAEA;
+      --cream:      #F3EDDB;
       --white:      #ffffff;
       --off-white:  #f8f8f8;
       --card-hover: #eceef1;
@@ -393,7 +393,7 @@
       position: relative;
       width: 100%;
       overflow: visible;
-      background: linear-gradient(120deg, var(--navy-dark) 0%, #16324f 45%, #1f4a68 100%);
+      background: linear-gradient(120deg, var(--navy-dark) 0%, #1F2E5C 45%, #1f4a68 100%);
       padding: 0;
     }
     .hero__bg {
@@ -401,7 +401,7 @@
       inset: 0;
       background:
         linear-gradient(100deg, rgba(15,26,41,0.88) 0%, rgba(15,26,41,0.60) 42%, rgba(15,26,41,0.30) 68%, rgba(15,26,41,0.10) 100%),
-        url('hero-background.png') right center/cover no-repeat;
+        url('hero-background.jpg') right center/cover no-repeat;
     }
     .hero__content {
       position: relative;
@@ -1041,10 +1041,10 @@
       .resources-promo__title { font-size: 34px; }
       .resource-tile { width: calc(50% - 10px); height: auto; min-height: 260px; }
       .resource-tile__icon { height: 52px; margin-top: 24px; margin-bottom: 6px; align-items: flex-start; }
-      .resource-tile__icon img[src="video-icon.png"] { width: 58px; height: 35px; }
-      .resource-tile__icon img[src="digital-catalog-icon.png"] { width: 50px; height: 46px; }
-      .resource-tile__icon img[src="educational-materials-icon.png"] { width: 33px; height: 52px; }
-      .resource-tile .resource-tile__icon img[src="document-icon.png"] { width: 33px; height: 44px; }
+      .resource-tile__icon img[src="Video_Icon.svg"] { width: 58px; height: 35px; }
+      .resource-tile__icon img[src="Digital_Catalog_Icon.svg"] { width: 50px; height: 46px; }
+      .resource-tile__icon img[src="Educational_Materials.svg"] { width: 33px; height: 52px; }
+      .resource-tile .resource-tile__icon img[src="Layer_1.svg"] { width: 33px; height: 44px; }
     }
     @media (max-width: 640px) {
       .resources-promo { padding: 54px 20px; }
@@ -1053,19 +1053,19 @@
       .resources-grid { gap: 12px; }
       .resource-tile { width: 100%; height: auto; min-height: 0; padding: 20px 18px 22px; }
       .resource-tile__icon { height: 36px; margin-top: 17px; margin-bottom: 4px; align-items: flex-start; }
-      .resource-tile__icon img[src="video-icon.png"] { width: 40px; height: 24px; }
-      .resource-tile__icon img[src="digital-catalog-icon.png"] { width: 35px; height: 32px; }
-      .resource-tile__icon img[src="educational-materials-icon.png"] { width: 23px; height: 36px; }
-      .resource-tile .resource-tile__icon img[src="document-icon.png"] { width: 23px; height: 31px; }
+      .resource-tile__icon img[src="Video_Icon.svg"] { width: 40px; height: 24px; }
+      .resource-tile__icon img[src="Digital_Catalog_Icon.svg"] { width: 35px; height: 32px; }
+      .resource-tile__icon img[src="Educational_Materials.svg"] { width: 23px; height: 36px; }
+      .resource-tile .resource-tile__icon img[src="Layer_1.svg"] { width: 23px; height: 31px; }
       .resource-tile__title { font-size: 18px; margin-bottom: 6px; }
       .resource-tile__desc { font-size: 14px; }
     }
     @media (min-width: 1024px) {
       .resource-tile__desc { max-width: 202px; }
-      .resource-tile__icon img[src="video-icon.png"] { width: 83px; height: 51px; }
-      .resource-tile__icon img[src="digital-catalog-icon.png"] { width: 72px; height: 67px; }
-      .resource-tile__icon img[src="educational-materials-icon.png"] { width: 48px; height: 75px; }
-      .resource-tile .resource-tile__icon img[src="document-icon.png"] { width: 47px; height: 64px; }
+      .resource-tile__icon img[src="Video_Icon.svg"] { width: 83px; height: 51px; }
+      .resource-tile__icon img[src="Digital_Catalog_Icon.svg"] { width: 72px; height: 67px; }
+      .resource-tile__icon img[src="Educational_Materials.svg"] { width: 48px; height: 75px; }
+      .resource-tile .resource-tile__icon img[src="Layer_1.svg"] { width: 47px; height: 64px; }
 
       /* Hard-pin vertical positions so icon/title alignment can never drift
          based on any individual icon's height — each element is placed at
@@ -1196,7 +1196,7 @@
     .footer__col { display: flex; flex-direction: column; gap: 14px; max-width: 90%; }
     .footer__col .footer__col-title {
       font-weight: 600;
-      font-size: 22px;
+      font-size: 13px;
       letter-spacing: 0.02em;
       text-transform: uppercase;
       color: #ffffff;
@@ -1204,7 +1204,7 @@
       display: block;
     }
     .footer__col a, .footer__col span {
-      font-size: 20px;
+      font-size: 12px;
       font-weight: 400;
       color: #ffffff;
       cursor: pointer;
@@ -1214,7 +1214,7 @@
     .footer__col a:hover { opacity: 0.75; text-decoration: underline; }
     .footer__col button {
       background: none; border: none; padding: 0; text-align: left;
-      font-size: 20px; font-weight: 400; color: #ffffff;
+      font-size: 12px; font-weight: 400; color: #ffffff;
       transition: opacity 0.15s; font-family: inherit;
     }
     .footer__col button:hover { opacity: 0.75; text-decoration: underline; }
@@ -1240,7 +1240,7 @@
       padding: 18px 32px 22px;
       max-width: 1440px;
       margin: 0 auto;
-      font-size: 14px;
+      font-size: 13px;
       color: #ffffff;
     }
 
@@ -1257,10 +1257,10 @@
       .footer__top { padding: 0 20px 32px; gap: 32px; }
       .footer__logo img { height: 56px; }
       .footer__columns { grid-template-columns: 1fr 1fr; gap: 24px; }
-      .footer__col .footer__col-title { font-size: 16px; }
-      .footer__col a, .footer__col span, .footer__col button { font-size: 14px; }
+      .footer__col .footer__col-title { font-size: 13px; }
+      .footer__col a, .footer__col span, .footer__col button { font-size: 12px; }
       .footer__watermark { padding-left: 20px; padding-right: 20px; }
-      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 12px; }
+      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 13px; }
       footer { padding-top: 36px; }
       .contact-cta__inner { flex-direction: column; align-items: flex-start; }
     }
@@ -1307,7 +1307,7 @@
        PRODUCTS PAGE — active nav state
     ══════════════════════════════════════════════════════════ */
     :root {
-      --coral: #F2705C;
+      --coral: #F15A45;
       --page-cream: #F7B6000D;
       --peak-navy: #1F2E5C;
     }
@@ -1315,7 +1315,7 @@
     .nav-dropdown > a.active { color: var(--coral); }
 
     body.products-page { background: var(--page-cream); transition: background 0.15s ease; }
-    body.products-page.is-filtered { background: #F2F3F5; }
+    body.products-page.is-filtered { background: var(--page-cream); }
     body.products-page.is-empty { background: var(--white); }
     body.products-page.is-expert-help { background: var(--white); }
 
@@ -1328,31 +1328,24 @@
       max-width: 1400px;
       margin: 0 auto;
     }
-    .page-header__float {
+    /* Oversized instrument graphic: sits behind the header/search, clipped at the
+       bottom of the nav and bleeding off the right edge. Scales with the viewport. */
+    .products-top { position: relative; }
+    .products-bg {
       position: absolute;
-      top: -8px;
-      right: 20px;
-      width: 48%;
-      max-width: 560px;
-      min-width: 260px;
-      pointer-events: none;
-      z-index: 1;
+      top: 0; left: 0; right: 0;
+      height: min(16vw, 230px);
       overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
     }
-    .page-header__float img {
-      width: 100%;
+    .products-bg__img {
+      position: absolute;
+      top: max(-1.9vw, -27px);
+      right: -0.4vw;
+      width: min(52.76vw, 760px);
       height: auto;
-      max-width: 1174px;
-      max-height: 193px;
       display: block;
-      margin-left: auto;
-      /* The source photo itself is hard-clipped at its own canvas edge
-         (grip end + CE mark get sliced off in the file, not by us), so
-         a straight crop just moves the "cut off" look elsewhere. Fading
-         the right edge out instead means it reads as the image trailing
-         off, not as something being chopped. */
-      -webkit-mask-image: linear-gradient(to right, #000 0%, #000 62%, transparent 82%);
-      mask-image: linear-gradient(to right, #000 0%, #000 62%, transparent 82%);
     }
     .breadcrumb {
       position: relative;
@@ -1378,6 +1371,8 @@
 
     /* ── Layout ── */
     .products-layout {
+      position: relative;
+      z-index: 1;
       display: grid;
       width: 100%;
       grid-template-columns: 240px 1fr;
@@ -1456,7 +1451,7 @@
     .sidebar-flat__type.current {
       background: var(--coral);
       color: var(--white);
-      font-weight: 700;
+      font-weight: 500;
     }
     .sidebar-flat__link.current:hover,
     .sidebar-flat__sub.current:hover,
@@ -1474,7 +1469,7 @@
     }
     .products-main__title {
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 500;
       color: #000;
     }
     .products-main__link {
@@ -1501,6 +1496,10 @@
       font-weight: 600;
       color: var(--peak-navy);
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+      max-width: 100%;
       display: none;
     }
     .products-count.is-visible { display: block; }
@@ -1516,7 +1515,7 @@
       width: 100%;
       height: 48px;
       padding: 0 16px 0 42px;
-      border: 1.5px solid #000;
+      border: 1.5px solid rgba(0,0,0,0.30);
       border-radius: 0;
       font-family: 'Montserrat', sans-serif;
       font-size: 16px;
@@ -1549,8 +1548,8 @@
       display: flex;
       flex-direction: column;
       background: var(--white);
-      border: 1px solid rgba(0,0,0,0.40);
-      border-radius: 0;
+      border: 1px solid rgba(0,0,0,0.30);
+      border-radius: 6px;
       cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
       overflow: hidden;
@@ -1558,7 +1557,7 @@
     .category-card:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 24px rgba(0,0,0,0.10);
-      border-color: rgba(0,0,0,0.55);
+      border-color: rgba(0,0,0,0.45);
     }
     .category-card__img {
       flex: 1 1 auto;
@@ -1597,8 +1596,8 @@
       display: flex;
       flex-direction: column;
       background: var(--white);
-      border: 1px solid rgba(0,0,0,0.40);
-      border-radius: 0;
+      border: 1px solid rgba(0,0,0,0.30);
+      border-radius: 6px;
       cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
       overflow: hidden;
@@ -1606,7 +1605,7 @@
     .product-card:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 24px rgba(0,0,0,0.10);
-      border-color: rgba(0,0,0,0.55);
+      border-color: rgba(0,0,0,0.45);
     }
     .product-card__img {
       flex: 1 1 auto;
@@ -1626,7 +1625,8 @@
     }
     .product-card__body { flex: 0 0 auto; padding: 14px 16px 18px; }
     .product-card__name { font-weight: 600; font-size: 18px; color: #000; margin-bottom: 5px; line-height: 1.3; }
-    .product-card__sku { font-size: 12px; color: var(--muted); }
+    .product-card__sku { font-size: 14px; color: var(--muted); }
+    .category-card__img img.is-placeholder, .product-card__img img.is-placeholder { width: 100%; height: 100%; object-fit: contain; }
 
     .empty-state {
       width: 100%;
@@ -1734,13 +1734,13 @@
     .eh-row .eh-input { flex: 1 1 0; min-width: 0; }
     .eh-input::placeholder { color: rgba(0,0,0,0.4); font-weight: 400; }
     .eh-input:focus { outline: none; border-color: var(--blue); }
-    .eh-input.eh-input--error { border-color: #D6392B; }
-    .eh-input.eh-input--error:focus { border-color: #D6392B; }
+    .eh-input.eh-input--error { border-color: #F15A45; }
+    .eh-input.eh-input--error:focus { border-color: #F15A45; }
     .eh-error {
       display: none;
       font-size: 12px;
       font-weight: 600;
-      color: #D6392B;
+      color: #F15A45;
       margin-top: 6px;
     }
     .eh-error.visible { display: block; }
@@ -1788,7 +1788,6 @@
     @media (max-width: 1100px) {
       .page-header { padding: 24px 28px 8px; }
       .products-layout { padding: 8px 28px 48px; grid-template-columns: 200px 1fr; gap: 24px; }
-      .page-header__float { width: 50%; top: -8px; }
       .page-header h1 { font-size: 40px; }
       .category-card, .product-card { width: 260px; height: 260px; }
     }
@@ -1807,7 +1806,8 @@
       .sidebar-flat__title { width: 100%; margin-bottom: 4px; }
       .sidebar-flat__subs { width: 100%; padding-left: 12px; }
       .sidebar-flat__types { width: 100%; padding-left: 12px; }
-      .page-header__float { position: static; width: 60%; max-width: 320px; margin: 12px auto 0; }
+      .products-bg { position: static; height: auto; overflow: visible; }
+      .products-bg__img { position: static; width: 60%; max-width: 320px; margin: 12px auto 0; }
       .page-header { padding: 20px 20px 4px; overflow: visible; }
       .page-header h1 { font-size: 32px; }
     }
@@ -1823,7 +1823,20 @@
       .category-card, .product-card { width: 100%; }
     }
 
+  
+    /* ── Designer review Oct 7 — shared overrides ── */
+    .nav-dropdown > a, .nav-group > a, .nav-search-link { font-size: 14px; font-weight: 500; line-height: 22px; }
+    .nav-dropdown > a:hover, .nav-group > a:hover, .nav-search-link:hover { color: var(--coral); }
+    .btn-quote { font-weight: 600; }
+    .mega-col__link, .mega-resources__list a { border-radius: 0; }
+    .mega-col__header, .mega-resources__header { font-weight: 600; }
+    .mega-resources__title { font-size: 18px; }
+    .mega-resources__eyebrow { margin-bottom: 25px; }
+    .mega-resources__promo { background: rgba(243,237,219,0.4); }
+    .mega-resources__mountain { opacity: 0.8; left: 50%; right: auto; width: 347px; height: 118px; bottom: 40px; transform: translateX(-50%); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: bottom center; mask-position: bottom center; }
+    .footer__rule { width: 75%; height: 0; border-top: 1px solid rgba(255,255,255,0.75); margin: 26px 0; }
   </style>
+</head>
 <body class="products-page">
 <header class="navbar">
   <div class="navbar__inner">
@@ -1851,10 +1864,10 @@
               <div class="mega-menu__panel">
                 <div class="mega-resources__list">
                   <div class="mega-resources__header">Resources</div>
-                  <a href="resources.html?type=video">Video Archive</a>
-                  <a href="resources.html?type=pdf">Digital Catalogs</a>
+                  <a href="resources.html?type=pdf">Catalogs</a>
                   <a href="resources.html?type=article">Educational Materials</a>
                   <a href="resources.html?type=ifu">Product IFUs</a>
+                  <a href="resources.html?type=video">Video Library</a>
                 </div>
                 <div class="mega-resources__promo">
                   <div class="mega-resources__eyebrow">PEAK Products</div>
@@ -1893,10 +1906,10 @@
               <div class="mega-menu__panel">
                 <div class="mega-resources__list">
                   <div class="mega-resources__header">Resources</div>
-                  <a href="resources.html?type=video">Video Archive</a>
-                  <a href="resources.html?type=pdf">Digital Catalogs</a>
+                  <a href="resources.html?type=pdf">Catalogs</a>
                   <a href="resources.html?type=article">Educational Materials</a>
                   <a href="resources.html?type=ifu">Product IFUs</a>
+                  <a href="resources.html?type=video">Video Library</a>
                 </div>
                 <div class="mega-resources__promo">
                   <div class="mega-resources__eyebrow">PEAK Products</div>
@@ -1914,12 +1927,12 @@
     </div>
 
     <div class="navbar__right">
-      <button class="btn-quote">
+      <button class="btn-quote" onclick="cartOpenModal()">
         <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
         Quote Cart
       </button>
       <div class="navbar__mobile">
-        <button class="cart-btn" aria-label="Cart">
+        <button class="cart-btn" aria-label="Cart" onclick="cartOpenModal()">
           <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
         </button>
         <button class="hamburger" aria-label="Open menu" onclick="openMenu()">
@@ -1956,10 +1969,10 @@
           </button>
         </div>
         <div class="mobile-submenu" id="mob-resources">
-          <a href="resources.html?type=video">Video Archive</a>
-          <a href="resources.html?type=pdf">PDF Catalogs</a>
-          <a href="resources.html?type=article">Education Materials</a>
+          <a href="resources.html?type=pdf">Catalogs</a>
+          <a href="resources.html?type=article">Educational Materials</a>
           <a href="resources.html?type=ifu">Product IFUs</a>
+          <a href="resources.html?type=video">Video Library</a>
         </div>
         <a href="about.html">About</a>
         <a href="contact.html">Contact Us</a>
@@ -1970,8 +1983,9 @@
   <!-- ══════════════════════════════════════════════════════════
        PAGE HEADER
   ══════════════════════════════════════════════════════════ -->
+  <div class="products-top">
+  <div class="products-bg" aria-hidden="true"><img class="products-bg__img" src="Instrument_Layer.png" alt="" /></div>
   <div class="page-header">
-    <div class="page-header__float"><img src="floating-item.svg" alt="" /></div>
     <div class="breadcrumb" id="breadcrumb">
       <a href="index.html">Home</a>
       <span class="sep">&gt;</span>
@@ -1982,6 +1996,7 @@
       <span class="current" id="bc-current">Products</span>
     </div>
     <h1>Products</h1>
+  </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════
@@ -2098,10 +2113,10 @@
 
         <div class="footer__col">
           <span class="footer__col-title">Resources</span>
-          <a href="resources.html?type=pdf">Digital Catalogs</a>
+          <a href="resources.html?type=pdf">Catalogs</a>
           <a href="resources.html?type=article">Educational Materials</a>
           <a href="resources.html?type=ifu">Product IFUs</a>
-          <a href="resources.html?type=video">Video Archive</a>
+          <a href="resources.html?type=video">Video Library</a>
         </div>
 
         <div class="footer__col">
@@ -2113,8 +2128,7 @@
           <span class="footer__col-title">Support</span>
           <button onclick="cartOpenModal()">Get a Quote</button>
           <a href="contact.html">Contact Us</a>
-          <div style="height:4px; width:75%; border-top:1px solid rgba(255,255,255,0.2); margin-top:8px;"></div>
-          <div style="height:6px;"></div>
+          <div class="footer__rule"></div>
           <span>info@peakmdi.com</span>
           <span>630-520-5023</span>
           <span>866-557-8437 (Fax)</span>
@@ -2131,10 +2145,20 @@
     </div>
 
     <div class="footer__bottom">
-      ©2026 PEAK Medical Distribution, Inc. &bull; Glen Ellyn, IL
+      ©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
     </div>
   </footer>
   <script>
+/* Designer review Oct 7 — alphabetical helpers */
+function peakAlpha(list, keyFn){ keyFn = keyFn || function(x){return x;};
+  return list.slice().sort(function(a,b){ return String(keyFn(a)).localeCompare(String(keyFn(b)), undefined, {sensitivity:'base', numeric:true}); }); }
+function peakOrderCategories(cats){ var first='Scissors'; var rest=peakAlpha(cats.filter(function(c){return c!==first;}));
+  return cats.indexOf(first)>-1 ? [first].concat(rest) : rest; }
+function peakSubKey(sub, cat){ var s=String(sub||''); var c=String(cat||'').trim();
+  if(c){ var re=new RegExp('\\s+'+c.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'$','i'); s=s.replace(re,''); } return s; }
+function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return peakSubKey(s,cat); }); }
+</script>
+<script>
 
     /* ══════════════════════════════════════════════════════════
        STATE
@@ -2212,6 +2236,11 @@
         }
       });
 
+      /* Designer review Oct 7 — alphabetical sidebar */
+      categories = peakOrderCategories(categories);
+      Object.keys(categorySubMap).forEach(k => { categorySubMap[k] = peakSortSubs(categorySubMap[k], k); });
+      Object.keys(subTypeMap).forEach(k => { subTypeMap[k] = peakAlpha(subTypeMap[k]); });
+
       buildSidebar();
       buildCategoryGrid();
       applyURLParams();
@@ -2280,7 +2309,7 @@
         return `
         <div class="category-card" onclick="selectCategory('${cat.replace(/'/g, "\\'")}')">
           <div class="category-card__img">
-            ${thumb ? `<img src="${thumb}" alt="${cat}" />` : `<div class="no-img">Image coming soon!</div>`}
+            ${thumb ? `<img src="${thumb}" alt="${cat}" onerror="this.onerror=null;this.src='Coming_Soon-01.svg';this.classList.add('is-placeholder')" />` : `<img class="is-placeholder" src="Coming_Soon-01.svg" alt="${cat}" />`}
           </div>
           <div class="category-card__name">${cat}</div>
         </div>`;
@@ -2434,6 +2463,7 @@
         title.textContent = activeType || activeSubcategory || activeCategory;
         bc.textContent = activeCategory;
         count.textContent = `${filtered.length} of ${inCategory.length} ${activeCategory}`;
+        count.title = count.textContent;
         count.classList.add('is-visible');
       } else {
         // "Browse All Products" view — full catalog, alphabetical by name.
@@ -2490,11 +2520,11 @@
       grid.innerHTML = products.map(p => `
         <div class="product-card" onclick="goToProduct('${p.id}')">
           <div class="product-card__img">
-            ${p.image ? `<img src="${imgSrc(p.image)}" alt="${p.title}" />` : `<div class="no-img">Image coming soon!</div>`}
+            ${p.image ? `<img src="${imgSrc(p.image)}" alt="${p.title}" onerror="this.onerror=null;this.src='Coming_Soon-01.svg';this.classList.add('is-placeholder')" />` : `<img class="is-placeholder" src="Coming_Soon-01.svg" alt="${p.title}" />`}
           </div>
           <div class="product-card__body">
             <div class="product-card__name">${p.title}</div>
-            <div class="product-card__sku">Product Number: ${p.sku}</div>
+            <div class="product-card__sku">${p.sku}</div>
           </div>
         </div>
       `).join('');
@@ -2671,7 +2701,7 @@
         }
       });
 
-      const categories = Object.keys(tree);
+      const categories = peakOrderCategories(Object.keys(tree));
 
       /* ── 3-column "Products" mega menu (desktop + tablet), cascading hover ── */
       function initMegaProducts(prefix) {
@@ -2681,14 +2711,14 @@
         if (!col1 || !col2 || !col3) return;
 
         function renderCol3(cat, sub) {
-          const types = [...(tree[cat][sub] || [])];
+          const types = peakAlpha([...(tree[cat][sub] || [])]);
           col3.innerHTML =
             `<div class="mega-col__header">${sub}</div>` +
             types.map(type => `<a class="mega-col__link" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
         }
 
         function renderCol2(cat) {
-          const subs = Object.keys(tree[cat]);
+          const subs = peakSortSubs(Object.keys(tree[cat]), cat);
           col2.innerHTML =
             `<div class="mega-col__header">${cat}</div>` +
             subs.map((sub, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}" data-idx="${i}">${sub}</a>`).join('');
@@ -2731,7 +2761,7 @@
         return categories.map(cat => {
           const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
           let html = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
-          Object.keys(tree[cat]).forEach(sub => {
+          peakSortSubs(Object.keys(tree[cat]), cat).forEach(sub => {
             const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
             html += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
           });
@@ -2741,8 +2771,6 @@
       const mobileDD = document.getElementById('mob-products');
       if (mobileDD) mobileDD.innerHTML = buildMobileHTML();
     }
-
-    populateNavDropdowns();
 
     populateNavDropdowns();
 

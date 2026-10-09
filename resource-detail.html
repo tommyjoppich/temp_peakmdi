@@ -17,15 +17,15 @@
     button { cursor: pointer; font-family: inherit; }
 
     :root {
-      --navy: #1a2f4a; --navy-dark: #111e2e; --blue: #2e6da4;
+      --navy: #1F2E5C; --navy-dark: #111e2e; --blue: #2e6da4;
       --gold: #F2C300; --gold-dark: #EFA500; --gold-active: #FFDE55;
-      --cyan: #6fe9ef; --cream: #f2e9d3;
+      --cyan: #68EAEA; --cream: #F3EDDB;
       --white: #ffffff; --off-white: #f8f8f8; --card-hover: #eceef1;
       --text: #1a1a1a; --muted: #666; --border: #e0e0e0;
       --card-shadow: 0 2px 8px rgba(0,0,0,0.09);
       --card-shadow-hover: 0 6px 22px rgba(0,0,0,0.14);
       --radius: 12px;
-      --coral: #F2705C; --peak-navy: #1F2E5C;
+      --coral: #F15A45; --peak-navy: #1F2E5C;
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -160,23 +160,23 @@
     .footer__logo img { height: 130px; }
     .footer__columns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
     .footer__col { display: flex; flex-direction: column; gap: 14px; max-width: 90%; }
-    .footer__col .footer__col-title { font-weight: 600; font-size: 22px; letter-spacing: 0.02em; text-transform: uppercase; color: #ffffff; margin-bottom: 4px; display: block; }
-    .footer__col a, .footer__col span { font-size: 20px; font-weight: 400; color: #ffffff; cursor: pointer; transition: opacity 0.15s; display: block; }
+    .footer__col .footer__col-title { font-weight: 600; font-size: 13px; letter-spacing: 0.02em; text-transform: uppercase; color: #ffffff; margin-bottom: 4px; display: block; }
+    .footer__col a, .footer__col span { font-size: 12px; font-weight: 400; color: #ffffff; cursor: pointer; transition: opacity 0.15s; display: block; }
     .footer__col a:hover { opacity: 0.75; text-decoration: underline; }
-    .footer__col button { background: none; border: none; padding: 0; text-align: left; font-size: 20px; font-weight: 400; color: #ffffff; transition: opacity 0.15s; font-family: inherit; }
+    .footer__col button { background: none; border: none; padding: 0; text-align: left; font-size: 12px; font-weight: 400; color: #ffffff; transition: opacity 0.15s; font-family: inherit; }
     .footer__col button:hover { opacity: 0.75; text-decoration: underline; }
     .footer__watermark { max-width: 1440px; margin: 0 auto; padding: 4px 32px 8px; box-sizing: border-box; }
     .footer__watermark-svg { display: block; width: 100%; height: auto; user-select: none; }
-    .footer__bottom { border-top: 1px solid rgba(255,255,255,0.15); padding: 18px 32px 22px; max-width: 1440px; margin: 0 auto; font-size: 14px; color: #ffffff; }
+    .footer__bottom { border-top: 1px solid rgba(255,255,255,0.15); padding: 18px 32px 22px; max-width: 1440px; margin: 0 auto; font-size: 13px; color: #ffffff; }
     @media (max-width: 1023px) { .footer__columns { grid-template-columns: 1fr 1fr; gap: 28px; } .footer__logo img { height: 92px; } }
     @media (max-width: 768px) {
       .navbar__inner { padding: 0 16px; } .navbar__logo img { height: 44px; }
       .footer__top { padding: 0 20px 32px; gap: 32px; } .footer__logo img { height: 56px; }
       .footer__columns { grid-template-columns: 1fr 1fr; gap: 24px; }
-      .footer__col .footer__col-title { font-size: 16px; }
-      .footer__col a, .footer__col span, .footer__col button { font-size: 14px; }
+      .footer__col .footer__col-title { font-size: 13px; }
+      .footer__col a, .footer__col span, .footer__col button { font-size: 12px; }
       .footer__watermark { padding-left: 20px; padding-right: 20px; }
-      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 12px; }
+      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 13px; }
       footer { padding-top: 36px; }
     }
 
@@ -199,6 +199,18 @@
     .mobile-submenu.open { display: flex; }
     .mobile-submenu a { font-size: 13px; font-weight: 500; color: var(--muted); padding: 10px 0; border-bottom: 1px solid #f0f0f0; text-decoration: none; display: block; }
     .mobile-submenu a:last-child { border-bottom: none; }
+  
+    /* ── Designer review Oct 7 — shared overrides ── */
+    .nav-dropdown > a, .nav-group > a, .nav-search-link { font-size: 14px; font-weight: 500; line-height: 22px; }
+    .nav-dropdown > a:hover, .nav-group > a:hover, .nav-search-link:hover { color: var(--coral); }
+    .btn-quote { font-weight: 600; }
+    .mega-col__link, .mega-resources__list a { border-radius: 0; }
+    .mega-col__header, .mega-resources__header { font-weight: 600; }
+    .mega-resources__title { font-size: 18px; }
+    .mega-resources__eyebrow { margin-bottom: 25px; }
+    .mega-resources__promo { background: rgba(243,237,219,0.4); }
+    .mega-resources__mountain { opacity: 0.8; left: 50%; right: auto; width: 347px; height: 118px; bottom: 40px; transform: translateX(-50%); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: bottom center; mask-position: bottom center; }
+    .footer__rule { width: 75%; height: 0; border-top: 1px solid rgba(255,255,255,0.75); margin: 26px 0; }
   </style>
 </head>
 <body>
@@ -230,10 +242,10 @@
                 <div class="mega-menu__panel">
                   <div class="mega-resources__list">
                     <div class="mega-resources__header">Resources</div>
-                    <a href="resources.html?type=video" data-type="video">Video Archive</a>
-                    <a href="resources.html?type=pdf" data-type="pdf">Digital Catalogs</a>
+                    <a href="resources.html?type=pdf" data-type="pdf">Catalogs</a>
                     <a href="resources.html?type=article" data-type="article">Educational Materials</a>
                     <a href="resources.html?type=ifu" data-type="ifu">Product IFUs</a>
+                    <a href="resources.html?type=video" data-type="video">Video Library</a>
                   </div>
                   <div class="mega-resources__promo">
                     <div class="mega-resources__eyebrow">PEAK Products</div>
@@ -272,10 +284,10 @@
                 <div class="mega-menu__panel">
                   <div class="mega-resources__list">
                     <div class="mega-resources__header">Resources</div>
-                    <a href="resources.html?type=video" data-type="video">Video Archive</a>
-                    <a href="resources.html?type=pdf" data-type="pdf">Digital Catalogs</a>
+                    <a href="resources.html?type=pdf" data-type="pdf">Catalogs</a>
                     <a href="resources.html?type=article" data-type="article">Educational Materials</a>
                     <a href="resources.html?type=ifu" data-type="ifu">Product IFUs</a>
+                    <a href="resources.html?type=video" data-type="video">Video Library</a>
                   </div>
                   <div class="mega-resources__promo">
                     <div class="mega-resources__eyebrow">PEAK Products</div>
@@ -293,12 +305,12 @@
       </div>
 
       <div class="navbar__right">
-        <button class="btn-quote">
+        <button class="btn-quote" onclick="cartOpenModal()">
           <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
           Quote Cart
         </button>
         <div class="navbar__mobile">
-          <button class="cart-btn" aria-label="Cart">
+          <button class="cart-btn" aria-label="Cart" onclick="cartOpenModal()">
             <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
           </button>
           <button class="hamburger" aria-label="Open menu" onclick="openMenu()">
@@ -335,10 +347,10 @@
           </button>
         </div>
         <div class="mobile-submenu" id="mob-resources">
-          <a href="resources.html?type=video">Video Archive</a>
-          <a href="resources.html?type=pdf">PDF Catalogs</a>
-          <a href="resources.html?type=article">Education Materials</a>
+          <a href="resources.html?type=pdf">Catalogs</a>
+          <a href="resources.html?type=article">Educational Materials</a>
           <a href="resources.html?type=ifu">Product IFUs</a>
+          <a href="resources.html?type=video">Video Library</a>
         </div>
         <a href="about.html">About</a>
         <a href="contact.html">Contact Us</a>
@@ -378,10 +390,10 @@
 
         <div class="footer__col">
           <span class="footer__col-title">Resources</span>
-          <a href="resources.html?type=pdf">Digital Catalogs</a>
+          <a href="resources.html?type=pdf">Catalogs</a>
           <a href="resources.html?type=article">Educational Materials</a>
           <a href="resources.html?type=ifu">Product IFUs</a>
-          <a href="resources.html?type=video">Video Archive</a>
+          <a href="resources.html?type=video">Video Library</a>
         </div>
 
         <div class="footer__col">
@@ -393,8 +405,7 @@
           <span class="footer__col-title">Support</span>
           <button onclick="cartOpenModal()">Get a Quote</button>
           <a href="contact.html">Contact Us</a>
-          <div style="height:4px; width:75%; border-top:1px solid rgba(255,255,255,0.2); margin-top:8px;"></div>
-          <div style="height:6px;"></div>
+          <div class="footer__rule"></div>
           <span>info@peakmdi.com</span>
           <span>630-520-5023</span>
           <span>866-557-8437 (Fax)</span>
@@ -411,15 +422,25 @@
     </div>
 
     <div class="footer__bottom">
-      ©2026 PEAK Medical Distribution, Inc. &bull; Glen Ellyn, IL
+      ©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
     </div>
   </footer>
 
   <script>
+/* Designer review Oct 7 — alphabetical helpers */
+function peakAlpha(list, keyFn){ keyFn = keyFn || function(x){return x;};
+  return list.slice().sort(function(a,b){ return String(keyFn(a)).localeCompare(String(keyFn(b)), undefined, {sensitivity:'base', numeric:true}); }); }
+function peakOrderCategories(cats){ var first='Scissors'; var rest=peakAlpha(cats.filter(function(c){return c!==first;}));
+  return cats.indexOf(first)>-1 ? [first].concat(rest) : rest; }
+function peakSubKey(sub, cat){ var s=String(sub||''); var c=String(cat||'').trim();
+  if(c){ var re=new RegExp('\\s+'+c.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'$','i'); s=s.replace(re,''); } return s; }
+function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return peakSubKey(s,cat); }); }
+</script>
+<script>
     const TYPE_CONFIG = {
-      video:   { label: 'Video Archive',        href: 'resources.html?type=video',   typeLabel: 'Instructional Video' },
-      pdf:     { label: 'PDF Catalogs',          href: 'resources.html?type=pdf',     typeLabel: 'PDF Catalog' },
-      article: { label: 'Education Materials',   href: 'resources.html?type=article', typeLabel: 'Education Material' },
+      video:   { label: 'Video Library',        href: 'resources.html?type=video',   typeLabel: 'Instructional Video' },
+      pdf:     { label: 'Catalogs',              href: 'resources.html?type=pdf',     typeLabel: 'Catalog' },
+      article: { label: 'Educational Materials',   href: 'resources.html?type=article', typeLabel: 'Educational Material' },
       ifu:     { label: 'Product IFUs',          href: 'resources.html?type=ifu',     typeLabel: 'Instructions for Use' },
     };
 
@@ -480,14 +501,30 @@
           embedHTML = `<div class="resource-embed resource-embed--empty">No PDF has been provided yet.</div>`;
         }
       } else if (res.type === 'article') {
-        if (res.resource) {
+        // Educational Materials can be either an uploaded PDF or an external URL.
+        const isPdf = res.resource && (res.resource.startsWith('Resource_PDFs/Education/') || /\.pdf($|[?#])/i.test(res.resource));
+        if (isPdf) {
+          const pdfSrc = res.resource;
+          embedHTML = `<div class="resource-embed resource-embed--pdf">
+            <object data="${pdfSrc}" type="application/pdf" width="100%" style="height:640px;">
+              <div class="pdf-fallback">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2e6da4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <p>Your browser cannot display this PDF inline.</p>
+              </div>
+            </object>
+          </div>`;
+          actionsHTML = `
+            <a href="${pdfSrc}" download class="btn-detail-primary">Download PDF ↓</a>
+            <a href="${pdfSrc}" target="_blank" class="btn-detail-secondary">Open in New Tab ↗</a>
+          `;
+        } else if (res.resource) {
           embedHTML = `<div class="resource-embed resource-embed--article">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--peak-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             <p style="font-size:14px;color:var(--muted);max-width:360px;">This article is hosted externally. Open it in a new tab to read the full content.</p>
           </div>`;
           actionsHTML = `<a href="${res.resource}" target="_blank" rel="noopener" class="btn-detail-primary">Read Article ↗</a>`;
         } else {
-          embedHTML = `<div class="resource-embed resource-embed--empty">No article link has been provided yet.</div>`;
+          embedHTML = `<div class="resource-embed resource-embed--empty">No article link or PDF has been provided yet.</div>`;
         }
       }
 
@@ -561,7 +598,7 @@
         }
       });
 
-      const categories = Object.keys(tree);
+      const categories = peakOrderCategories(Object.keys(tree));
 
       function initMegaProducts(prefix) {
         const col1 = document.getElementById(`mega-${prefix}-col1`);
@@ -570,14 +607,14 @@
         if (!col1 || !col2 || !col3) return;
 
         function renderCol3(cat, sub) {
-          const types = [...(tree[cat][sub] || [])];
+          const types = peakAlpha([...(tree[cat][sub] || [])]);
           col3.innerHTML =
             `<div class="mega-col__header">${sub}</div>` +
             types.map(type => `<a class="mega-col__link" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
         }
 
         function renderCol2(cat) {
-          const subs = Object.keys(tree[cat]);
+          const subs = peakSortSubs(Object.keys(tree[cat]), cat);
           col2.innerHTML =
             `<div class="mega-col__header">${cat}</div>` +
             subs.map((sub, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}" data-idx="${i}">${sub}</a>`).join('');
@@ -619,7 +656,7 @@
         return categories.map(cat => {
           const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
           let html = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
-          Object.keys(tree[cat]).forEach(sub => {
+          peakSortSubs(Object.keys(tree[cat]), cat).forEach(sub => {
             const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
             html += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
           });

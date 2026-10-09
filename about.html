@@ -26,14 +26,14 @@
 
     /* ── CSS Variables ────────────────────────────────────────── */
     :root {
-      --navy:       #1a2f4a;
+      --navy:       #1F2E5C;
       --navy-dark:  #111e2e;
       --blue:       #2e6da4;
       --gold:       #F2C300;
       --gold-dark:  #EFA500;
       --gold-active:#FFDE55;
-      --cyan:       #6fe9ef;
-      --cream:      #f2e9d3;
+      --cyan:       #68EAEA;
+      --cream:      #F3EDDB;
       --white:      #ffffff;
       --off-white:  #f8f8f8;
       --card-hover: #eceef1;
@@ -43,7 +43,7 @@
       --card-shadow: 0 2px 8px rgba(0,0,0,0.09);
       --card-shadow-hover: 0 6px 22px rgba(0,0,0,0.14);
       --radius:     12px;
-      --coral:      #F2705C;
+      --coral:      #F15A45;
       --peak-navy:  #1F2E5C;
     }
 
@@ -421,18 +421,19 @@
     }
     .about-hero h1 {
       font-size: 54px;
-      font-weight: 600;
+      font-weight: 400;
+      line-height: 1.185;
       color: var(--peak-navy);
       margin-bottom: 28px;
     }
     .about-hero p {
       font-size: 24px;
-      font-weight: 500;
-      line-height: 1.85;
-      color: #17324a;
+      font-weight: 400;
+      line-height: 1.583;
+      color: #1F2E5C;
       margin-bottom: 22px;
     }
-    .about-hero p strong { font-weight: 700; }
+    .about-hero p strong { font-weight: 600; }
     @media (max-width: 900px) {
       .about-hero { padding: 40px 32px 0; }
       .about-hero h1 { font-size: 40px; margin-bottom: 24px; }
@@ -463,18 +464,9 @@
       height: auto;
       margin: 0 auto;
     }
-    .glance-mobile-graphic { display: none; }
 
     @media (max-width: 640px) {
       .glance-wrap { padding: 32px 16px 56px; }
-      .glance-graphic { display: none; }
-      .glance-mobile-graphic {
-        display: block;
-        width: 100%;
-        max-width: 519px;
-        height: auto;
-        margin: 0 auto;
-      }
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -506,7 +498,7 @@
     .footer__col { display: flex; flex-direction: column; gap: 14px; max-width: 90%; }
     .footer__col .footer__col-title {
       font-weight: 600;
-      font-size: 22px;
+      font-size: 13px;
       letter-spacing: 0.02em;
       text-transform: uppercase;
       color: #ffffff;
@@ -514,7 +506,7 @@
       display: block;
     }
     .footer__col a, .footer__col span {
-      font-size: 20px;
+      font-size: 12px;
       font-weight: 400;
       color: #ffffff;
       cursor: pointer;
@@ -524,7 +516,7 @@
     .footer__col a:hover { opacity: 0.75; text-decoration: underline; }
     .footer__col button {
       background: none; border: none; padding: 0; text-align: left;
-      font-size: 20px; font-weight: 400; color: #ffffff;
+      font-size: 12px; font-weight: 400; color: #ffffff;
       transition: opacity 0.15s; font-family: inherit;
     }
     .footer__col button:hover { opacity: 0.75; text-decoration: underline; }
@@ -550,7 +542,7 @@
       padding: 18px 32px 22px;
       max-width: 1440px;
       margin: 0 auto;
-      font-size: 14px;
+      font-size: 13px;
       color: #ffffff;
     }
 
@@ -564,12 +556,24 @@
       .footer__top { padding: 0 20px 32px; gap: 32px; }
       .footer__logo img { height: 56px; }
       .footer__columns { grid-template-columns: 1fr 1fr; gap: 24px; }
-      .footer__col .footer__col-title { font-size: 16px; }
-      .footer__col a, .footer__col span, .footer__col button { font-size: 14px; }
+      .footer__col .footer__col-title { font-size: 13px; }
+      .footer__col a, .footer__col span, .footer__col button { font-size: 12px; }
       .footer__watermark { padding-left: 20px; padding-right: 20px; }
-      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 12px; }
+      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 13px; }
       footer { padding-top: 36px; }
     }
+  
+    /* ── Designer review Oct 7 — shared overrides ── */
+    .nav-dropdown > a, .nav-group > a, .nav-search-link { font-size: 14px; font-weight: 500; line-height: 22px; }
+    .nav-dropdown > a:hover, .nav-group > a:hover, .nav-search-link:hover { color: var(--coral); }
+    .btn-quote { font-weight: 600; }
+    .mega-col__link, .mega-resources__list a { border-radius: 0; }
+    .mega-col__header, .mega-resources__header { font-weight: 600; }
+    .mega-resources__title { font-size: 18px; }
+    .mega-resources__eyebrow { margin-bottom: 25px; }
+    .mega-resources__promo { background: rgba(243,237,219,0.4); }
+    .mega-resources__mountain { opacity: 0.8; left: 50%; right: auto; width: 347px; height: 118px; bottom: 40px; transform: translateX(-50%); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: bottom center; mask-position: bottom center; }
+    .footer__rule { width: 75%; height: 0; border-top: 1px solid rgba(255,255,255,0.75); margin: 26px 0; }
   </style>
 </head>
 <body>
@@ -603,10 +607,10 @@
                 <div class="mega-menu__panel">
                   <div class="mega-resources__list">
                     <div class="mega-resources__header">Resources</div>
-                    <a href="resources.html?type=video">Video Archive</a>
-                    <a href="resources.html?type=pdf">Digital Catalogs</a>
+                    <a href="resources.html?type=pdf">Catalogs</a>
                     <a href="resources.html?type=article">Educational Materials</a>
                     <a href="resources.html?type=ifu">Product IFUs</a>
+                    <a href="resources.html?type=video">Video Library</a>
                   </div>
                   <div class="mega-resources__promo">
                     <div class="mega-resources__eyebrow">PEAK Products</div>
@@ -645,10 +649,10 @@
                 <div class="mega-menu__panel">
                   <div class="mega-resources__list">
                     <div class="mega-resources__header">Resources</div>
-                    <a href="resources.html?type=video">Video Archive</a>
-                    <a href="resources.html?type=pdf">Digital Catalogs</a>
+                    <a href="resources.html?type=pdf">Catalogs</a>
                     <a href="resources.html?type=article">Educational Materials</a>
                     <a href="resources.html?type=ifu">Product IFUs</a>
+                    <a href="resources.html?type=video">Video Library</a>
                   </div>
                   <div class="mega-resources__promo">
                     <div class="mega-resources__eyebrow">PEAK Products</div>
@@ -708,10 +712,10 @@
           </button>
         </div>
         <div class="mobile-submenu" id="mob-resources">
-          <a href="resources.html?type=video">Video Archive</a>
-          <a href="resources.html?type=pdf">PDF Catalogs</a>
-          <a href="resources.html?type=article">Education Materials</a>
+          <a href="resources.html?type=pdf">Catalogs</a>
+          <a href="resources.html?type=article">Educational Materials</a>
           <a href="resources.html?type=ifu">Product IFUs</a>
+          <a href="resources.html?type=video">Video Library</a>
         </div>
         <a href="about.html" class="active">About</a>
         <a href="contact.html">Contact Us</a>
@@ -737,18 +741,10 @@
   <div class="glance-wrap">
     <img
       class="glance-graphic"
-      src="peak-glance-desktop.png"
+      src="Peak_at_a_Glance.png"
       width="1041"
       height="1320"
       alt="PEAK at a Glance: PEAK Medical Surgical Instrument Solutions, built on quality, availability and cost-effectiveness. 2009 &ndash; serving the surgical community since 2009. UDI + QR on every PEAK instrument. Chicago-Based, expanding in key U.S. markets on the West Coast, East Coast and in the Southeast. 2,500 PEAK-Branded SKUs. 5 Core Specialties: Cardiac, Vascular, Micro, Neuro, ENT. PEAK Partners with domestic manufacturers to bring legacy orthopaedic instruments to market."
-    />
-
-    <img
-      class="glance-mobile-graphic"
-      src="peak-glance-mobile.png"
-      width="519"
-      height="872"
-      alt="PEAK at a Glance: 2007, serving the surgical community since 2007. 2,500 PEAK-branded SKUs. 5 Core Specialties: Cardiac, Vascular, Micro, Neuro, ENT. UDI + QR on every PEAK item. Chicago Area, based in the Chicagoland Area. Growing Reach, expanding into key U.S. markets including Texas, California, Florida and Colorado."
     />
   </div>
 
@@ -768,10 +764,10 @@
 
         <div class="footer__col">
           <span class="footer__col-title">Resources</span>
-          <a href="resources.html?type=pdf">Digital Catalogs</a>
+          <a href="resources.html?type=pdf">Catalogs</a>
           <a href="resources.html?type=article">Educational Materials</a>
           <a href="resources.html?type=ifu">Product IFUs</a>
-          <a href="resources.html?type=video">Video Archive</a>
+          <a href="resources.html?type=video">Video Library</a>
         </div>
 
         <div class="footer__col">
@@ -783,8 +779,7 @@
           <span class="footer__col-title">Support</span>
           <button onclick="cartOpenModal()">Get a Quote</button>
           <a href="contact.html">Contact Us</a>
-          <div style="height:4px; width:75%; border-top:1px solid rgba(255,255,255,0.2); margin-top:8px;"></div>
-          <div style="height:6px;"></div>
+          <div class="footer__rule"></div>
           <span>info@peakmdi.com</span>
           <span>630-520-5023</span>
           <span>866-557-8437 (Fax)</span>
@@ -801,11 +796,21 @@
     </div>
 
     <div class="footer__bottom">
-      ©2026 PEAK Medical Distribution, Inc. &bull; Glen Ellyn, IL
+      ©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
     </div>
   </footer>
 
   <script>
+/* Designer review Oct 7 — alphabetical helpers */
+function peakAlpha(list, keyFn){ keyFn = keyFn || function(x){return x;};
+  return list.slice().sort(function(a,b){ return String(keyFn(a)).localeCompare(String(keyFn(b)), undefined, {sensitivity:'base', numeric:true}); }); }
+function peakOrderCategories(cats){ var first='Scissors'; var rest=peakAlpha(cats.filter(function(c){return c!==first;}));
+  return cats.indexOf(first)>-1 ? [first].concat(rest) : rest; }
+function peakSubKey(sub, cat){ var s=String(sub||''); var c=String(cat||'').trim();
+  if(c){ var re=new RegExp('\\s+'+c.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'$','i'); s=s.replace(re,''); } return s; }
+function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return peakSubKey(s,cat); }); }
+</script>
+<script>
     async function populateNavDropdowns() {
       let products = [];
       try {
@@ -823,7 +828,7 @@
         }
       });
 
-      const categories = Object.keys(tree);
+      const categories = peakOrderCategories(Object.keys(tree));
 
       /* ── 3-column "Products" mega menu (desktop + tablet), cascading hover ── */
       function initMegaProducts(prefix) {
@@ -833,14 +838,14 @@
         if (!col1 || !col2 || !col3) return;
 
         function renderCol3(cat, sub) {
-          const types = [...(tree[cat][sub] || [])];
+          const types = peakAlpha([...(tree[cat][sub] || [])]);
           col3.innerHTML =
             `<div class="mega-col__header">${sub}</div>` +
             types.map(type => `<a class="mega-col__link" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
         }
 
         function renderCol2(cat) {
-          const subs = Object.keys(tree[cat]);
+          const subs = peakSortSubs(Object.keys(tree[cat]), cat);
           col2.innerHTML =
             `<div class="mega-col__header">${cat}</div>` +
             subs.map((sub, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}" data-idx="${i}">${sub}</a>`).join('');
@@ -883,7 +888,7 @@
         return categories.map(cat => {
           const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
           let html = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
-          Object.keys(tree[cat]).forEach(sub => {
+          peakSortSubs(Object.keys(tree[cat]), cat).forEach(sub => {
             const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
             html += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
           });

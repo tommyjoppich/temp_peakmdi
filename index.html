@@ -26,14 +26,15 @@
 
     /* ── CSS Variables ────────────────────────────────────────── */
     :root {
-      --navy:       #1a2f4a;
+      --navy:       #1F2E5C;
       --navy-dark:  #111e2e;
       --blue:       #2e6da4;
       --gold:       #F2C300;
       --gold-dark:  #EFA500;
       --gold-active:#FFDE55;
-      --cyan:       #6fe9ef;
-      --cream:      #f2e9d3;
+      --cyan:       #68EAEA;
+      --cream:      #F3EDDB;
+      --coral:      #F15A45;
       --white:      #ffffff;
       --off-white:  #f8f8f8;
       --card-hover: #eceef1;
@@ -393,7 +394,7 @@
       position: relative;
       width: 100%;
       overflow: visible;
-      background: linear-gradient(120deg, var(--navy-dark) 0%, #16324f 45%, #1f4a68 100%);
+      background: linear-gradient(120deg, var(--navy-dark) 0%, #1F2E5C 45%, #1f4a68 100%);
       padding: 0;
     }
     .hero__bg {
@@ -401,7 +402,7 @@
       inset: 0;
       background:
         linear-gradient(100deg, rgba(15,26,41,0.88) 0%, rgba(15,26,41,0.60) 42%, rgba(15,26,41,0.30) 68%, rgba(15,26,41,0.10) 100%),
-        url('hero-background.png') right center/cover no-repeat;
+        url('hero-background.jpg') 57% calc(100% + 1.1vw) / auto max(100%, 43.6vw) no-repeat;
     }
     .hero__content {
       position: relative;
@@ -453,7 +454,7 @@
       align-items: center;
       height: 55px;
       background: #fff;
-      border: 1.5px solid #8E8E93;
+      border: 1.5px solid rgba(0,0,0,0.30);
       border-right: none;
       border-radius: 0;
       padding: 0 18px;
@@ -620,14 +621,14 @@
     }
     .featured-header__title {
       font-size: 34px;
-      font-weight: 500;
+      font-weight: 400;
       letter-spacing: 0.02em;
       color: var(--navy);
       text-transform: uppercase;
     }
     .featured-header__link {
       font-size: 20px;
-      font-weight: 500;
+      font-weight: 400;
       color: var(--navy);
       text-decoration: underline;
       white-space: nowrap;
@@ -646,9 +647,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 600px;
-      height: 850px;
-      max-width: 100%;
+      width: 100%;
+      max-width: 672px;
+      height: 960px;
       box-sizing: border-box;
       cursor: pointer;
       min-width: 0;
@@ -671,7 +672,7 @@
       flex-direction: column;
     }
     .featured-showcase__name {
-      font-size: 32px;
+      font-size: 26px;
       font-weight: 500;
       color: var(--navy);
       margin-bottom: 18px;
@@ -712,14 +713,13 @@
     .btn-add-quote:active { background: var(--gold-active); }
 
     .featured-thumbs {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 32px;
     }
     .featured-thumb {
       position: relative;
-      flex: 1;
       min-width: 0;
-      max-width: 340px;
       border-radius: 0;
       display: flex;
       flex-direction: column;
@@ -727,23 +727,13 @@
       padding: 14px 14px 16px;
       cursor: pointer;
       transition: background 0.15s;
-      border: 1.5px solid transparent;
+      border: 1px solid transparent;
     }
-    .featured-thumb:not(:first-child)::before {
-      content: '';
-      position: absolute;
-      left: -16px;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: var(--border);
-    }
-    .featured-thumb:hover { background: var(--card-hover); }
-    .featured-thumb.active { background: var(--card-hover); border-color: var(--border); }
+    .featured-thumb:hover { background: #F2F4F6; }
+    .featured-thumb.active { background: #F2F4F6; }
     .featured-thumb__img {
-      width: 340px;
+      width: 100%;
       height: 196px;
-      max-width: 100%;
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 12px;
       overflow: hidden;
@@ -812,10 +802,12 @@
       .featured-header { flex-direction: column; align-items: center; gap: 8px; text-align: center; }
       .featured-header__title { font-size: 26px; }
       .featured-showcase { grid-template-columns: 1fr; gap: 28px; }
+      .featured-thumbs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
       .featured-showcase__image { width: 100%; height: auto; aspect-ratio: 600 / 850; max-width: 420px; margin: 0 auto; }
-      .featured-thumbs { flex-wrap: wrap; gap: 20px; }
-      .featured-thumb { flex: 1 1 calc(50% - 20px); max-width: none; }
-      .featured-thumb:not(:first-child)::before { display: none; }
+    }
+    @media (min-width: 641px) {
+      .fs-label { font-size: 18px; }
+      .fs-value { font-size: 20px; }
     }
     @media (max-width: 640px) {
       .featured-showcase__image { max-width: 280px; }
@@ -841,7 +833,7 @@
     }
     .trust-section__mountains {
       position: absolute;
-      left: 240px; bottom: 0;
+      left: max(0px, calc(50% - 590px)); bottom: 0;
       width: 1030px;
       height: 330px;
       pointer-events: none;
@@ -882,7 +874,7 @@
       line-height: 1.5;
     }
     @media (max-width: 1023px) {
-      .trust-section__mountains { left: 80px; width: 720px; height: 231px; }
+      .trust-section__mountains { left: 30px; width: 720px; height: 231px; }
       .trust-section__heading { font-size: 26px; min-width: 0; max-width: none; }
       .trust-item__title { font-size: 19px; }
       .trust-item__desc { font-size: 15px; }
@@ -1021,6 +1013,7 @@
       height: 75px;
     }
     .resource-tile__icon img { height: 52px; width: auto; max-width: 83px; display: block; }
+    .resource-tile__icon img[src="Video_Icon.svg"] { position: relative; top: 6px; }
     .resource-tile__title {
       font-size: 28px;
       font-weight: 500;
@@ -1041,10 +1034,10 @@
       .resources-promo__title { font-size: 34px; }
       .resource-tile { width: calc(50% - 10px); height: auto; min-height: 260px; }
       .resource-tile__icon { height: 52px; margin-top: 24px; margin-bottom: 6px; align-items: flex-start; }
-      .resource-tile__icon img[src="video-icon.png"] { width: 58px; height: 35px; }
-      .resource-tile__icon img[src="digital-catalog-icon.png"] { width: 50px; height: 46px; }
-      .resource-tile__icon img[src="educational-materials-icon.png"] { width: 33px; height: 52px; }
-      .resource-tile .resource-tile__icon img[src="document-icon.png"] { width: 33px; height: 44px; }
+      .resource-tile__icon img[src="Video_Icon.svg"] { width: 58px; height: 35px; }
+      .resource-tile__icon img[src="Digital_Catalog_Icon.svg"] { width: 50px; height: 46px; }
+      .resource-tile__icon img[src="Educational_Materials.svg"] { width: 33px; height: 52px; }
+      .resource-tile .resource-tile__icon img[src="Layer_1.svg"] { width: 33px; height: 44px; }
     }
     @media (max-width: 640px) {
       .resources-promo { padding: 54px 20px; }
@@ -1053,19 +1046,19 @@
       .resources-grid { gap: 12px; }
       .resource-tile { width: 100%; height: auto; min-height: 0; padding: 20px 18px 22px; }
       .resource-tile__icon { height: 36px; margin-top: 17px; margin-bottom: 4px; align-items: flex-start; }
-      .resource-tile__icon img[src="video-icon.png"] { width: 40px; height: 24px; }
-      .resource-tile__icon img[src="digital-catalog-icon.png"] { width: 35px; height: 32px; }
-      .resource-tile__icon img[src="educational-materials-icon.png"] { width: 23px; height: 36px; }
-      .resource-tile .resource-tile__icon img[src="document-icon.png"] { width: 23px; height: 31px; }
+      .resource-tile__icon img[src="Video_Icon.svg"] { width: 40px; height: 24px; }
+      .resource-tile__icon img[src="Digital_Catalog_Icon.svg"] { width: 35px; height: 32px; }
+      .resource-tile__icon img[src="Educational_Materials.svg"] { width: 23px; height: 36px; }
+      .resource-tile .resource-tile__icon img[src="Layer_1.svg"] { width: 23px; height: 31px; }
       .resource-tile__title { font-size: 18px; margin-bottom: 6px; }
       .resource-tile__desc { font-size: 14px; }
     }
     @media (min-width: 1024px) {
       .resource-tile__desc { max-width: 202px; }
-      .resource-tile__icon img[src="video-icon.png"] { width: 83px; height: 51px; }
-      .resource-tile__icon img[src="digital-catalog-icon.png"] { width: 72px; height: 67px; }
-      .resource-tile__icon img[src="educational-materials-icon.png"] { width: 48px; height: 75px; }
-      .resource-tile .resource-tile__icon img[src="document-icon.png"] { width: 47px; height: 64px; }
+      .resource-tile__icon img[src="Video_Icon.svg"] { width: 83px; height: 51px; }
+      .resource-tile__icon img[src="Digital_Catalog_Icon.svg"] { width: 72px; height: 67px; }
+      .resource-tile__icon img[src="Educational_Materials.svg"] { width: 41px; height: 64px; }
+      .resource-tile .resource-tile__icon img[src="Layer_1.svg"] { width: 47px; height: 64px; }
 
       /* Hard-pin vertical positions so icon/title alignment can never drift
          based on any individual icon's height — each element is placed at
@@ -1085,6 +1078,7 @@
         margin: 0;
       }
       .resource-tile__desc {
+        line-height: 22px;
         position: absolute;
         top: 195px;
         left: 24px;
@@ -1130,7 +1124,7 @@
       color: var(--navy);
       margin-bottom: 14px;
     }
-    .contact-cta__desc { font-size: 24px; color: #000000; }
+    .contact-cta__desc { font-size: 24px; color: var(--navy); }
     .btn-gold {
       display: inline-flex;
       align-items: center;
@@ -1143,7 +1137,7 @@
       border-radius: 0;
       padding: 0 24px;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 600;
       transition: background 0.15s;
       white-space: nowrap;
     }
@@ -1196,7 +1190,7 @@
     .footer__col { display: flex; flex-direction: column; gap: 14px; max-width: 90%; }
     .footer__col .footer__col-title {
       font-weight: 600;
-      font-size: 22px;
+      font-size: 13px;
       letter-spacing: 0.02em;
       text-transform: uppercase;
       color: #ffffff;
@@ -1204,7 +1198,7 @@
       display: block;
     }
     .footer__col a, .footer__col span {
-      font-size: 20px;
+      font-size: 12px;
       font-weight: 400;
       color: #ffffff;
       cursor: pointer;
@@ -1214,7 +1208,7 @@
     .footer__col a:hover { opacity: 0.75; text-decoration: underline; }
     .footer__col button {
       background: none; border: none; padding: 0; text-align: left;
-      font-size: 20px; font-weight: 400; color: #ffffff;
+      font-size: 12px; font-weight: 400; color: #ffffff;
       transition: opacity 0.15s; font-family: inherit;
     }
     .footer__col button:hover { opacity: 0.75; text-decoration: underline; }
@@ -1240,7 +1234,7 @@
       padding: 18px 32px 22px;
       max-width: 1440px;
       margin: 0 auto;
-      font-size: 14px;
+      font-size: 13px;
       color: #ffffff;
     }
 
@@ -1257,10 +1251,10 @@
       .footer__top { padding: 0 20px 32px; gap: 32px; }
       .footer__logo img { height: 56px; }
       .footer__columns { grid-template-columns: 1fr 1fr; gap: 24px; }
-      .footer__col .footer__col-title { font-size: 16px; }
-      .footer__col a, .footer__col span, .footer__col button { font-size: 14px; }
+      .footer__col .footer__col-title { font-size: 13px; }
+      .footer__col a, .footer__col span, .footer__col button { font-size: 12px; }
       .footer__watermark { padding-left: 20px; padding-right: 20px; }
-      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 12px; }
+      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 13px; }
       footer { padding-top: 36px; }
       .contact-cta__inner { flex-direction: column; align-items: flex-start; }
     }
@@ -1301,6 +1295,18 @@
     .mobile-submenu a { font-size: 13px; font-weight: 500; color: var(--muted); padding: 10px 0; border-bottom: 1px solid #f0f0f0; text-decoration: none; display: block; }
     .mobile-submenu a:last-child { border-bottom: none; }
 
+  
+    /* ── Designer review Oct 7 — shared overrides ── */
+    .nav-dropdown > a, .nav-group > a, .nav-search-link { font-size: 14px; font-weight: 500; line-height: 22px; }
+    .nav-dropdown > a:hover, .nav-group > a:hover, .nav-search-link:hover { color: var(--coral); }
+    .btn-quote { font-weight: 600; }
+    .mega-col__link, .mega-resources__list a { border-radius: 0; }
+    .mega-col__header, .mega-resources__header { font-weight: 600; }
+    .mega-resources__title { font-size: 18px; }
+    .mega-resources__eyebrow { margin-bottom: 25px; }
+    .mega-resources__promo { background: rgba(243,237,219,0.4); }
+    .mega-resources__mountain { opacity: 0.8; left: 50%; right: auto; width: 347px; height: 118px; bottom: 40px; transform: translateX(-50%); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: bottom center; mask-position: bottom center; }
+    .footer__rule { width: 75%; height: 0; border-top: 1px solid rgba(255,255,255,0.75); margin: 26px 0; }
   </style>
 </head>
 <body>
@@ -1331,10 +1337,10 @@
               <div class="mega-menu__panel">
                 <div class="mega-resources__list">
                   <div class="mega-resources__header">Resources</div>
-                  <a href="resources.html?type=video">Video Archive</a>
-                  <a href="resources.html?type=pdf">Digital Catalogs</a>
+                  <a href="resources.html?type=pdf">Catalogs</a>
                   <a href="resources.html?type=article">Educational Materials</a>
                   <a href="resources.html?type=ifu">Product IFUs</a>
+                  <a href="resources.html?type=video">Video Library</a>
                 </div>
                 <div class="mega-resources__promo">
                   <div class="mega-resources__eyebrow">PEAK Products</div>
@@ -1373,10 +1379,10 @@
               <div class="mega-menu__panel">
                 <div class="mega-resources__list">
                   <div class="mega-resources__header">Resources</div>
-                  <a href="resources.html?type=video">Video Archive</a>
-                  <a href="resources.html?type=pdf">Digital Catalogs</a>
+                  <a href="resources.html?type=pdf">Catalogs</a>
                   <a href="resources.html?type=article">Educational Materials</a>
                   <a href="resources.html?type=ifu">Product IFUs</a>
+                  <a href="resources.html?type=video">Video Library</a>
                 </div>
                 <div class="mega-resources__promo">
                   <div class="mega-resources__eyebrow">PEAK Products</div>
@@ -1394,12 +1400,12 @@
     </div>
 
     <div class="navbar__right">
-      <button class="btn-quote">
+      <button class="btn-quote" onclick="cartOpenModal()">
         <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
         Quote Cart
       </button>
       <div class="navbar__mobile">
-        <button class="cart-btn" aria-label="Cart">
+        <button class="cart-btn" aria-label="Cart" onclick="cartOpenModal()">
           <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
         </button>
         <button class="hamburger" aria-label="Open menu" onclick="openMenu()">
@@ -1436,10 +1442,10 @@
           </button>
         </div>
         <div class="mobile-submenu" id="mob-resources">
-          <a href="resources.html?type=video">Video Archive</a>
-          <a href="resources.html?type=pdf">PDF Catalogs</a>
-          <a href="resources.html?type=article">Education Materials</a>
+          <a href="resources.html?type=pdf">Catalogs</a>
+          <a href="resources.html?type=article">Educational Materials</a>
           <a href="resources.html?type=ifu">Product IFUs</a>
+          <a href="resources.html?type=video">Video Library</a>
         </div>
         <a href="about.html">About</a>
         <a href="contact.html">Contact Us</a>
@@ -1480,7 +1486,7 @@
         <div class="hero__quicklinks">
           <a class="hero__quicklink" href="products.html">
             <span class="hero__quicklink-icon">
-              <img src="box-icon.png" alt="" />
+              <img src="Resources_Icons_2_Products.svg" alt="" />
             </span>
             <span class="hero__quicklink-text">
               <span class="hero__quicklink-title">Browse Products</span>
@@ -1489,7 +1495,7 @@
           </a>
           <a class="hero__quicklink" href="resources.html">
             <span class="hero__quicklink-icon">
-              <img src="document-icon.png" alt="" />
+              <img src="Layer_1.svg" alt="" />
             </span>
             <span class="hero__quicklink-text">
               <span class="hero__quicklink-title">Access Resources</span>
@@ -1582,23 +1588,23 @@
 
         <a href="resources.html?type=video" class="resource-tile">
           <div class="resource-tile__icon">
-            <img src="video-icon.png" alt="" />
+            <img src="Video_Icon.svg" alt="" />
           </div>
-          <div class="resource-tile__title">Video Archive</div>
+          <div class="resource-tile__title">Video Library</div>
           <div class="resource-tile__desc">Watch practical videos and troubleshooting tips.</div>
         </a>
 
         <a href="resources.html?type=pdf" class="resource-tile">
           <div class="resource-tile__icon">
-            <img src="digital-catalog-icon.png" alt="" />
+            <img src="Digital_Catalog_Icon.svg" alt="" />
           </div>
-          <div class="resource-tile__title">Digital Catalogs</div>
+          <div class="resource-tile__title">Catalogs</div>
           <div class="resource-tile__desc">Browse and download catalogs with product details and specifications.</div>
         </a>
 
         <a href="resources.html?type=article" class="resource-tile">
           <div class="resource-tile__icon">
-            <img src="educational-materials-icon.png" alt="" />
+            <img src="Educational_Materials.svg" alt="" />
           </div>
           <div class="resource-tile__title">Educational Materials</div>
           <div class="resource-tile__desc">Find helpful guidance on instrumentation, product applications and best practices.</div>
@@ -1606,7 +1612,7 @@
 
         <a href="resources.html?type=ifu" class="resource-tile">
           <div class="resource-tile__icon">
-            <img src="document-icon.png" alt="" />
+            <img src="Layer_1.svg" alt="" />
           </div>
           <div class="resource-tile__title">Product IFUs</div>
           <div class="resource-tile__desc">Access instructions for use and proper handling, use and care.</div>
@@ -1653,10 +1659,10 @@
 
         <div class="footer__col">
           <span class="footer__col-title">Resources</span>
-          <a href="resources.html?type=pdf">Digital Catalogs</a>
+          <a href="resources.html?type=pdf">Catalogs</a>
           <a href="resources.html?type=article">Educational Materials</a>
           <a href="resources.html?type=ifu">Product IFUs</a>
-          <a href="resources.html?type=video">Video Archive</a>
+          <a href="resources.html?type=video">Video Library</a>
         </div>
 
         <div class="footer__col">
@@ -1668,8 +1674,7 @@
           <span class="footer__col-title">Support</span>
           <button onclick="cartOpenModal()">Get a Quote</button>
           <a href="contact.html">Contact Us</a>
-          <div style="height:4px; width:75%; border-top:1px solid rgba(255,255,255,0.2); margin-top:8px;"></div>
-          <div style="height:6px;"></div>
+          <div class="footer__rule"></div>
           <span>info@peakmdi.com</span>
           <span>630-520-5023</span>
           <span>866-557-8437 (Fax)</span>
@@ -1686,7 +1691,7 @@
     </div>
 
     <div class="footer__bottom">
-      ©2026 PEAK Medical Distribution, Inc. &bull; Glen Ellyn, IL
+      ©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
     </div>
   </footer>
 
@@ -1694,6 +1699,16 @@
        JS
   ══════════════════════════════════════════════════════════ -->
   <script>
+/* Designer review Oct 7 — alphabetical helpers */
+function peakAlpha(list, keyFn){ keyFn = keyFn || function(x){return x;};
+  return list.slice().sort(function(a,b){ return String(keyFn(a)).localeCompare(String(keyFn(b)), undefined, {sensitivity:'base', numeric:true}); }); }
+function peakOrderCategories(cats){ var first='Scissors'; var rest=peakAlpha(cats.filter(function(c){return c!==first;}));
+  return cats.indexOf(first)>-1 ? [first].concat(rest) : rest; }
+function peakSubKey(sub, cat){ var s=String(sub||''); var c=String(cat||'').trim();
+  if(c){ var re=new RegExp('\\s+'+c.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'$','i'); s=s.replace(re,''); } return s; }
+function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return peakSubKey(s,cat); }); }
+</script>
+<script>
     /* ── Populate nav dropdowns from products.json ── */
     async function populateNavDropdowns() {
       let products = [];
@@ -1712,7 +1727,7 @@
         }
       });
 
-      const categories = Object.keys(tree);
+      const categories = peakOrderCategories(Object.keys(tree));
 
       /* ── 3-column "Products" mega menu (desktop + tablet), cascading hover ── */
       function initMegaProducts(prefix) {
@@ -1722,14 +1737,14 @@
         if (!col1 || !col2 || !col3) return;
 
         function renderCol3(cat, sub) {
-          const types = [...(tree[cat][sub] || [])];
+          const types = peakAlpha([...(tree[cat][sub] || [])]);
           col3.innerHTML =
             `<div class="mega-col__header">${sub}</div>` +
             types.map(type => `<a class="mega-col__link" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
         }
 
         function renderCol2(cat) {
-          const subs = Object.keys(tree[cat]);
+          const subs = peakSortSubs(Object.keys(tree[cat]), cat);
           col2.innerHTML =
             `<div class="mega-col__header">${cat}</div>` +
             subs.map((sub, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}" data-idx="${i}">${sub}</a>`).join('');
@@ -1772,7 +1787,7 @@
         return categories.map(cat => {
           const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
           let html = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
-          Object.keys(tree[cat]).forEach(sub => {
+          peakSortSubs(Object.keys(tree[cat]), cat).forEach(sub => {
             const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
             html += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
           });
@@ -1828,7 +1843,7 @@
 
       _featuredIndex = 0;
       renderFeaturedMain(_featuredIndex);
-      renderFeaturedThumbs(_featuredIndex);
+      renderFeaturedThumbs(0);             /* first thumbnail starts active */
       renderFeaturedDots(_featuredIndex);
     }
 
@@ -1843,8 +1858,8 @@
         <div class="featured-showcase">
           <div class="featured-showcase__image" onclick="window.location.href='product-detail.html?id=${p.id}'">
             ${img
-              ? `<img src="${img}" alt="${p.title}" />`
-              : `<div style="width:60%;aspect-ratio:1/1;background:rgba(0,0,0,0.06);border-radius:12px;"></div>`
+              ? `<img src="${img}" alt="${p.title}" onerror="this.onerror=null;this.src='Coming_Soon-01.svg';this.style.cssText='width:100%;height:100%;max-width:100%;max-height:100%;transform:none'" />`
+              : `<img src="Coming_Soon-01.svg" alt="${p.title}" style="width:100%;height:100%;transform:none;" />`
             }
           </div>
           <div class="featured-showcase__details">
@@ -1867,7 +1882,7 @@
         return `
           <div class="featured-thumb ${i === activeIdx ? 'active' : ''}" onclick="selectFeatured(${i})">
             <div class="featured-thumb__img">
-              ${img ? `<img src="${img}" alt="${p.title}" />` : `<div style="width:60%;aspect-ratio:1/1;background:rgba(0,0,0,0.06);border-radius:8px;"></div>`}
+              ${img ? `<img src="${img}" alt="${p.title}" onerror="this.onerror=null;this.src='Coming_Soon-01.svg';this.style.cssText='width:100%;height:100%;max-width:100%;max-height:100%;transform:none'" />` : `<img src="Coming_Soon-01.svg" alt="${p.title}" style="width:100%;height:100%;transform:none;" />`}
             </div>
             <div class="featured-thumb__text">
               <div class="featured-thumb__name">${p.title}</div>

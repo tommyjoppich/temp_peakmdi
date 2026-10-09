@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="peak-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     /* ── Reset & Base ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,14 +26,14 @@
 
     /* ── CSS Variables ────────────────────────────────────────── */
     :root {
-      --navy:       #1a2f4a;
+      --navy:       #1F2E5C;
       --navy-dark:  #111e2e;
       --blue:       #2e6da4;
       --gold:       #F2C300;
       --gold-dark:  #EFA500;
       --gold-active:#FFDE55;
-      --cyan:       #6fe9ef;
-      --cream:      #f2e9d3;
+      --cyan:       #68EAEA;
+      --cream:      #F3EDDB;
       --white:      #ffffff;
       --off-white:  #f8f8f8;
       --card-hover: #eceef1;
@@ -43,7 +43,7 @@
       --card-shadow: 0 2px 8px rgba(0,0,0,0.09);
       --card-shadow-hover: 0 6px 22px rgba(0,0,0,0.14);
       --radius:     12px;
-      --coral:      #F2705C;
+      --coral:      #F15A45;
       --peak-navy:  #1F2E5C;
     }
 
@@ -424,7 +424,7 @@
       inset: 0;
       background:
         linear-gradient(100deg, rgba(15,26,41,0.90) 0%, rgba(15,26,41,0.62) 42%, rgba(15,26,41,0.35) 70%, rgba(15,26,41,0.18) 100%),
-        url('hero-background.png') center/cover no-repeat;
+        url('hero-background.jpg') 70% calc(100% + 15.1vw) / 264% auto no-repeat;
     }
     .page-hero__content {
       position: relative;
@@ -435,18 +435,18 @@
       padding: 0 40px;
     }
     .page-hero h1 {
-      font-size: 44px;
-      font-weight: 600;
+      font-size: 60px;
+      font-weight: 300;
       color: #fff;
       margin-bottom: 14px;
       text-shadow: 0 2px 14px rgba(0,0,0,0.3);
     }
     .page-hero p {
-      font-size: 16px;
-      font-weight: 500;
+      font-size: 22px;
+      font-weight: 400;
       color: rgba(255,255,255,0.88);
       max-width: 460px;
-      line-height: 1.55;
+      line-height: 32px;
       text-shadow: 0 1px 8px rgba(0,0,0,0.25);
     }
     @media (max-width: 640px) {
@@ -466,14 +466,15 @@
       padding: 56px 40px 8px;
     }
     .contact-section__title {
-      font-size: 34px;
-      font-weight: 700;
+      font-size: 44px;
+      font-weight: 600;
       color: var(--peak-navy);
       margin-bottom: 10px;
     }
     .contact-section__subtitle {
-      font-size: 15px;
-      font-weight: 500;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 32px;
       color: var(--muted);
       margin-bottom: 32px;
     }
@@ -494,10 +495,11 @@
     .contact-tile:hover { background: #FEF9E6; transform: translateY(-2px); }
     .contact-tile:hover .contact-tile__value { color: var(--blue); }
     .contact-tile__icon {
-      width: 30px;
-      height: 30px;
+      width: 48px;
+      height: 48px;
       margin-bottom: 8px;
     }
+    .contact-tile__icon img { width: 100%; height: 100%; display: block; }
     .contact-tile__icon svg {
       width: 100%;
       height: 100%;
@@ -537,6 +539,7 @@
     @media (max-width: 640px) {
       .contact-section { padding: 40px 20px 8px; }
       .contact-section__title { font-size: 26px; }
+      .contact-section__subtitle { font-size: 16px; line-height: 24px; }
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -589,17 +592,17 @@
     .expert-cta__btn:active { background: var(--gold-active); }
     .expert-cta__image {
       position: absolute;
-      right: -30px;
+      right: 0;
       top: 50%;
-      transform: translateY(-50%) rotate(4deg);
-      width: 46%;
-      max-width: 480px;
+      transform: translateY(-50%);
+      width: 44%;
+      max-width: 460px;
+      overflow: hidden;
       pointer-events: none;
       z-index: 1;
-      -webkit-mask-image: linear-gradient(to left, #000 55%, transparent 94%);
-      mask-image: linear-gradient(to left, #000 55%, transparent 94%);
     }
-    .expert-cta__image img { width: 100%; height: auto; display: block; }
+    /* Image is scaled up inside the box so the instrument is cropped by (and sits flush with) the right edge */
+    .expert-cta__image img { width: 112%; max-width: none; height: auto; display: block; margin-left: -4%; }
 
     @media (max-width: 1023px) {
       .expert-cta { padding: 40px 32px; }
@@ -642,7 +645,7 @@
     .footer__col { display: flex; flex-direction: column; gap: 14px; max-width: 90%; }
     .footer__col .footer__col-title {
       font-weight: 600;
-      font-size: 22px;
+      font-size: 13px;
       letter-spacing: 0.02em;
       text-transform: uppercase;
       color: #ffffff;
@@ -650,7 +653,7 @@
       display: block;
     }
     .footer__col a, .footer__col span {
-      font-size: 20px;
+      font-size: 12px;
       font-weight: 400;
       color: #ffffff;
       cursor: pointer;
@@ -660,7 +663,7 @@
     .footer__col a:hover { opacity: 0.75; text-decoration: underline; }
     .footer__col button {
       background: none; border: none; padding: 0; text-align: left;
-      font-size: 20px; font-weight: 400; color: #ffffff;
+      font-size: 12px; font-weight: 400; color: #ffffff;
       transition: opacity 0.15s; font-family: inherit;
     }
     .footer__col button:hover { opacity: 0.75; text-decoration: underline; }
@@ -686,7 +689,7 @@
       padding: 18px 32px 22px;
       max-width: 1440px;
       margin: 0 auto;
-      font-size: 14px;
+      font-size: 13px;
       color: #ffffff;
     }
 
@@ -700,12 +703,24 @@
       .footer__top { padding: 0 20px 32px; gap: 32px; }
       .footer__logo img { height: 56px; }
       .footer__columns { grid-template-columns: 1fr 1fr; gap: 24px; }
-      .footer__col .footer__col-title { font-size: 16px; }
-      .footer__col a, .footer__col span, .footer__col button { font-size: 14px; }
+      .footer__col .footer__col-title { font-size: 13px; }
+      .footer__col a, .footer__col span, .footer__col button { font-size: 12px; }
       .footer__watermark { padding-left: 20px; padding-right: 20px; }
-      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 12px; }
+      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 13px; }
       footer { padding-top: 36px; }
     }
+  
+    /* ── Designer review Oct 7 — shared overrides ── */
+    .nav-dropdown > a, .nav-group > a, .nav-search-link { font-size: 14px; font-weight: 500; line-height: 22px; }
+    .nav-dropdown > a:hover, .nav-group > a:hover, .nav-search-link:hover { color: var(--coral); }
+    .btn-quote { font-weight: 600; }
+    .mega-col__link, .mega-resources__list a { border-radius: 0; }
+    .mega-col__header, .mega-resources__header { font-weight: 600; }
+    .mega-resources__title { font-size: 18px; }
+    .mega-resources__eyebrow { margin-bottom: 25px; }
+    .mega-resources__promo { background: rgba(243,237,219,0.4); }
+    .mega-resources__mountain { opacity: 0.8; left: 50%; right: auto; width: 347px; height: 118px; bottom: 40px; transform: translateX(-50%); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: bottom center; mask-position: bottom center; }
+    .footer__rule { width: 75%; height: 0; border-top: 1px solid rgba(255,255,255,0.75); margin: 26px 0; }
   </style>
 </head>
 <body>
@@ -739,10 +754,10 @@
                 <div class="mega-menu__panel">
                   <div class="mega-resources__list">
                     <div class="mega-resources__header">Resources</div>
-                    <a href="resources.html?type=video">Video Archive</a>
-                    <a href="resources.html?type=pdf">Digital Catalogs</a>
+                    <a href="resources.html?type=pdf">Catalogs</a>
                     <a href="resources.html?type=article">Educational Materials</a>
                     <a href="resources.html?type=ifu">Product IFUs</a>
+                    <a href="resources.html?type=video">Video Library</a>
                   </div>
                   <div class="mega-resources__promo">
                     <div class="mega-resources__eyebrow">PEAK Products</div>
@@ -781,10 +796,10 @@
                 <div class="mega-menu__panel">
                   <div class="mega-resources__list">
                     <div class="mega-resources__header">Resources</div>
-                    <a href="resources.html?type=video">Video Archive</a>
-                    <a href="resources.html?type=pdf">Digital Catalogs</a>
+                    <a href="resources.html?type=pdf">Catalogs</a>
                     <a href="resources.html?type=article">Educational Materials</a>
                     <a href="resources.html?type=ifu">Product IFUs</a>
+                    <a href="resources.html?type=video">Video Library</a>
                   </div>
                   <div class="mega-resources__promo">
                     <div class="mega-resources__eyebrow">PEAK Products</div>
@@ -844,10 +859,10 @@
           </button>
         </div>
         <div class="mobile-submenu" id="mob-resources">
-          <a href="resources.html?type=video">Video Archive</a>
-          <a href="resources.html?type=pdf">PDF Catalogs</a>
-          <a href="resources.html?type=article">Education Materials</a>
+          <a href="resources.html?type=pdf">Catalogs</a>
+          <a href="resources.html?type=article">Educational Materials</a>
           <a href="resources.html?type=ifu">Product IFUs</a>
+          <a href="resources.html?type=video">Video Library</a>
         </div>
         <a href="about.html">About</a>
         <a href="contact.html" class="active">Contact Us</a>
@@ -878,7 +893,7 @@
       <!-- Call -->
       <a class="contact-tile" href="tel:6305205023">
         <div class="contact-tile__icon">
-          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <img src="Resources_Icons_2_Phone.svg" alt="" />
         </div>
         <div class="contact-tile__title">Call Us</div>
         <div class="contact-tile__desc">Speak with a PEAK representative</div>
@@ -889,7 +904,7 @@
       <!-- Email -->
       <a class="contact-tile" href="mailto:info@peakmdi.com">
         <div class="contact-tile__icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+          <img src="Resources_Icons_2_Email.svg" alt="" />
         </div>
         <div class="contact-tile__title">Email Us</div>
         <div class="contact-tile__desc">Send us your questions</div>
@@ -900,7 +915,7 @@
       <!-- Fax -->
       <a class="contact-tile" href="tel:8665578437">
         <div class="contact-tile__icon">
-          <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <img src="Resources_Icons_2_Fax.svg" alt="" />
         </div>
         <div class="contact-tile__title">Fax Us</div>
         <div class="contact-tile__desc">Send documents or purchase orders</div>
@@ -919,7 +934,7 @@
       <p class="expert-cta__desc">Our PEAK representative can help you find the right instrument for your procedure and answer questions about our products or ordering.</p>
       <a class="expert-cta__btn" href="products.html?help=1">Get Expert Help</a>
     </div>
-    <div class="expert-cta__image"><img src="floating-item.svg" alt="" /></div>
+    <div class="expert-cta__image"><img src="Kerrison_Rongeur.png" alt="" /></div>
   </div>
 
   <footer>
@@ -938,10 +953,10 @@
 
         <div class="footer__col">
           <span class="footer__col-title">Resources</span>
-          <a href="resources.html?type=pdf">Digital Catalogs</a>
+          <a href="resources.html?type=pdf">Catalogs</a>
           <a href="resources.html?type=article">Educational Materials</a>
           <a href="resources.html?type=ifu">Product IFUs</a>
-          <a href="resources.html?type=video">Video Archive</a>
+          <a href="resources.html?type=video">Video Library</a>
         </div>
 
         <div class="footer__col">
@@ -953,8 +968,7 @@
           <span class="footer__col-title">Support</span>
           <button onclick="cartOpenModal()">Get a Quote</button>
           <a href="contact.html">Contact Us</a>
-          <div style="height:4px; width:75%; border-top:1px solid rgba(255,255,255,0.2); margin-top:8px;"></div>
-          <div style="height:6px;"></div>
+          <div class="footer__rule"></div>
           <span>info@peakmdi.com</span>
           <span>630-520-5023</span>
           <span>866-557-8437 (Fax)</span>
@@ -971,11 +985,21 @@
     </div>
 
     <div class="footer__bottom">
-      ©2026 PEAK Medical Distribution, Inc. &bull; Glen Ellyn, IL
+      ©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
     </div>
   </footer>
 
   <script>
+/* Designer review Oct 7 — alphabetical helpers */
+function peakAlpha(list, keyFn){ keyFn = keyFn || function(x){return x;};
+  return list.slice().sort(function(a,b){ return String(keyFn(a)).localeCompare(String(keyFn(b)), undefined, {sensitivity:'base', numeric:true}); }); }
+function peakOrderCategories(cats){ var first='Scissors'; var rest=peakAlpha(cats.filter(function(c){return c!==first;}));
+  return cats.indexOf(first)>-1 ? [first].concat(rest) : rest; }
+function peakSubKey(sub, cat){ var s=String(sub||''); var c=String(cat||'').trim();
+  if(c){ var re=new RegExp('\\s+'+c.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'$','i'); s=s.replace(re,''); } return s; }
+function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return peakSubKey(s,cat); }); }
+</script>
+<script>
     async function populateNavDropdowns() {
       let products = [];
       try {
@@ -993,7 +1017,7 @@
         }
       });
 
-      const categories = Object.keys(tree);
+      const categories = peakOrderCategories(Object.keys(tree));
 
       /* ── 3-column "Products" mega menu (desktop + tablet), cascading hover ── */
       function initMegaProducts(prefix) {
@@ -1003,14 +1027,14 @@
         if (!col1 || !col2 || !col3) return;
 
         function renderCol3(cat, sub) {
-          const types = [...(tree[cat][sub] || [])];
+          const types = peakAlpha([...(tree[cat][sub] || [])]);
           col3.innerHTML =
             `<div class="mega-col__header">${sub}</div>` +
             types.map(type => `<a class="mega-col__link" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
         }
 
         function renderCol2(cat) {
-          const subs = Object.keys(tree[cat]);
+          const subs = peakSortSubs(Object.keys(tree[cat]), cat);
           col2.innerHTML =
             `<div class="mega-col__header">${cat}</div>` +
             subs.map((sub, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}" data-idx="${i}">${sub}</a>`).join('');
@@ -1053,7 +1077,7 @@
         return categories.map(cat => {
           const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
           let html = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
-          Object.keys(tree[cat]).forEach(sub => {
+          peakSortSubs(Object.keys(tree[cat]), cat).forEach(sub => {
             const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
             html += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
           });
