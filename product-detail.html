@@ -643,8 +643,23 @@
       .page-header { padding: 20px 20px 4px; }
       .page-header h1 { font-size: 32px; }
     }
+    .mcats { display: none; }
     @media (max-width: 640px) {
       .products-layout { padding: 8px 16px 40px; }
+      .sidebar-flat { display: block; border-bottom: none; padding-bottom: 0; margin-bottom: 20px; }
+      #sidebar-cats { display: none; }
+      .sidebar-flat__title { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; margin-bottom: 14px; }
+      .mcats { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      .mcats--grid { grid-template-columns: 1fr 1fr; }
+      .mcats--empty, .sidebar-flat:has(.mcats--empty) .sidebar-flat__title { display: none; }
+      .mcats__box {
+        display: flex; align-items: center; justify-content: space-between; gap: 8px;
+        min-height: 64px; padding: 10px 14px; box-sizing: border-box;
+        background: #fff; border: 1px solid var(--navy); border-radius: 4px;
+        color: var(--navy); font-size: 14px; font-weight: 500; line-height: 1.3; text-decoration: none;
+      }
+      .mcats__box svg { flex: none; }
+      .mcats__box--current { background: var(--navy); color: #fff; }
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -981,6 +996,7 @@
     <aside class="sidebar-flat">
       <div class="sidebar-flat__title">Product Categories</div>
       <div id="sidebar-cats"></div>
+      <div class="mcats" id="mobile-cats"></div>
     </aside>
 
     <main class="products-main">
@@ -1136,9 +1152,27 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
        the product most specifically — type, else sub-category, else
        category — never more than one at a time.
     ══════════════════════════════════════════════════════════ */
+    function buildMobileCats(product) {
+      const el = document.getElementById('mobile-cats'); if (!el) return;
+      const chev = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>';
+      const e = encodeURIComponent, cat = product.category, sub = product.subcategory, type = product.type;
+      const catItems = () => _categories.map(c => ({ key: c, label: c, href: 'products.html?cat=' + e(c) }));
+      const subItems = () => (_categorySubMap[cat] || []).map(x => ({ key: x, label: x, href: 'products.html?cat=' + e(cat) + '&sub=' + e(x) }));
+      const typeItems = () => (_subTypeMap[cat + '||' + sub] || []).map(t => ({ key: t, label: t, href: 'products.html?cat=' + e(cat) + '&sub=' + e(sub) + '&type=' + e(t) }));
+      let items = [], grid = false, current = null;
+      if (cat && sub && type && typeItems().length) { items = typeItems(); current = type; }
+      else if (cat && sub && subItems().length) { items = subItems(); current = sub; }
+      else if (cat && subItems().length) { items = subItems(); }
+      else { grid = true; items = catItems(); current = cat || null; }
+      el.classList.toggle('mcats--grid', grid);
+      el.classList.toggle('mcats--empty', !items.length);
+      el.innerHTML = items.map(i => `<a class="mcats__box${i.key === current ? ' mcats__box--current' : ''}" href="${i.href}"><span>${i.label}</span>${i.key === current ? '' : chev}</a>`).join('');
+    }
+
     function buildSidebar(product) {
       const wrap = document.getElementById('sidebar-cats');
       if (!wrap) return;
+      buildMobileCats(product);
 
       wrap.innerHTML = _categories.map(cat => {
         const esc = cat.replace(/'/g, "\\'");
