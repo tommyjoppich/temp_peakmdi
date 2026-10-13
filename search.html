@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search – PEAK MDI</title>
+  <link rel="icon" type="image/png" href="peak-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Lora:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+      color: #1a1a1a;
+      background: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; font-family: inherit; }
+
+    /* ── CSS Variables ────────────────────────────────────────── */
+    :root {
+      --navy:       #1F2E5C;
+      --navy-dark:  #111e2e;
+      --blue:       #2e6da4;
+      --gold:       #F2C300;
+      --gold-dark:  #EFA500;
+      --gold-active:#FFDE55;
+      --cyan:       #68EAEA;
+      --cream:      #F3EDDB;
+      --white:      #ffffff;
+      --off-white:  #f8f8f8;
+      --card-hover: #eceef1;
+      --text:       #1a1a1a;
+      --muted:      #666;
+      --border:     #e0e0e0;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.09);
+      --card-shadow-hover: 0 6px 22px rgba(0,0,0,0.14);
+      --radius:     12px;
+      --coral:      #F15A45;
+      --peak-navy:  #1F2E5C;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       NAVBAR
+    ══════════════════════════════════════════════════════════ */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--white);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      height: 72px;
+    }
+    .navbar__inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 28px;
+    }
+
+    .navbar__logo { justify-self: start; }
+    .navbar__logo img { height: 52px; width: auto; }
+
+    .navbar__center {
+      display: flex;
+      justify-content: center;
+    }
+
+    .navbar__right {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    @media (min-width: 1024px) {
+      .navbar { height: 80px; }
+      .navbar__logo img { height: 68px; }
+    }
+
+    .navbar__desktop { display: none; }
+
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+    }
+
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > a {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
+      color: var(--navy);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: color 0.15s;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+    }
+    .nav-dropdown > a:hover  { color: var(--blue); }
+    .nav-dropdown > a.active { color: var(--coral); }
+    .nav-dropdown > a .chevron {
+      width: 12px; height: 12px;
+      stroke: currentColor; fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+    /* ── Mega menu (Products / Resources) ── */
+    .mega-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding-top: 18px;
+      z-index: 9999;
+      max-width: min(720px, 95vw);
+    }
+    .nav-dropdown.open .mega-menu { display: block; }
+
+    .mega-menu__panel {
+      flex: 1 1 auto;
+      width: 100%;
+      display: flex;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 0;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+      overflow: hidden;
+    }
+
+    .mega-menu--products { width: 720px; }
+    .mega-menu--products .mega-menu__panel { align-items: stretch; padding: 20px 0; }
+    .mega-col {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 0 18px;
+    }
+    .mega-col + .mega-col { border-left: 1px solid var(--border); }
+    .mega-col__header {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 4px 10px 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .mega-col__link {
+      display: block;
+      padding: 9px 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      border-radius: 6px;
+      white-space: normal;
+      word-break: break-word;
+      line-height: 1.3;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .mega-col__link:hover,
+    .mega-col__link.active {
+      background: #fbe4e4;
+      color: var(--navy);
+    }
+
+    .mega-menu--resources { width: 720px; }
+    .mega-menu--resources .mega-menu__panel { display: flex; min-height: 360px; gap: 40px; }
+    .mega-resources__list {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 20px 12px 20px 20px;
+    }
+    .mega-resources__header {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 4px 12px 12px;
+    }
+    .mega-resources__list a {
+      display: block;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+    .mega-resources__list a:hover { background: #fbe4e4; color: var(--navy); }
+    .mega-resources__promo {
+      position: relative;
+      flex: 0 0 180px;
+      max-width: 180px;
+      background: var(--cream);
+      padding: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    @media (min-width: 1024px) {
+      .mega-menu--resources .mega-menu__panel { min-height: 512px; gap: 80px; }
+      .mega-resources__promo { flex: 0 0 220px; max-width: 220px; }
+    }
+    .mega-resources__eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--navy);
+      opacity: 0.75;
+      margin-bottom: 8px;
+    }
+    .mega-resources__title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .mega-resources__desc {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--navy);
+      max-width: 190px;
+      line-height: 1.4;
+      position: relative;
+      z-index: 1;
+    }
+    .mega-resources__mountain {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 110px;
+      pointer-events: none;
+      background-color: var(--navy);
+      opacity: 0.7;
+      -webkit-mask-image: url('mountain-graphic.png');
+      mask-image: url('mountain-graphic.png');
+      -webkit-mask-size: contain;
+      mask-size: contain;
+      -webkit-mask-position: bottom center;
+      mask-position: bottom center;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
+
+    .nav-group > a {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
+      color: var(--navy);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+    .nav-group > a:hover  { color: var(--blue); }
+    .nav-group > a.active { color: var(--coral); }
+
+    .nav-search-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 22px;
+      color: var(--navy);
+      padding: 0;
+      cursor: pointer;
+      transition: color 0.15s;
+      background: none;
+      border: none;
+    }
+    .nav-search-link:hover { color: var(--blue); }
+    .nav-search-icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    /* Quote Cart button — gold default, navy on hover */
+    .btn-quote {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      border-radius: 0;
+      padding: 11px 22px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      background: var(--gold);
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+      position: relative;
+    }
+    .btn-quote:hover { background: var(--navy); color: var(--white); }
+    .btn-quote:hover img { filter: brightness(0) invert(1); }
+    .btn-quote:active { background: var(--gold-active); color: var(--navy); }
+    .btn-quote:active img { filter: none; }
+
+    .navbar__tablet { display: none; }
+
+    .navbar__mobile {
+      display: none;
+      align-items: center;
+      gap: 12px;
+    }
+    .navbar__mobile .cart-btn {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      border: 2px solid var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      background: transparent;
+      color: var(--navy);
+    }
+    .navbar__mobile .hamburger {
+      background: none;
+      border: none;
+      color: var(--navy);
+      display: flex; align-items: center;
+      padding: 4px;
+    }
+
+    @media (min-width: 1024px) {
+      .navbar__desktop { display: flex; align-items: center; gap: 40px; }
+      .navbar__tablet  { display: none !important; }
+      .navbar__mobile  { display: none !important; }
+      .btn-quote       { display: flex !important; }
+    }
+    @media (min-width: 769px) and (max-width: 1023px) {
+      .navbar__desktop { display: none !important; }
+      .navbar__tablet  { display: flex; align-items: center; gap: 8px; }
+      .navbar__mobile  { display: none !important; }
+      .btn-quote       { display: flex !important; }
+      .navbar__right .cart-btn { display: none !important; }
+    }
+    @media (max-width: 768px) {
+      .navbar__desktop { display: none !important; }
+      .navbar__tablet  { display: none !important; }
+      .navbar__mobile  { display: flex; }
+      .btn-quote       { display: none !important; }
+      .navbar__right > .cart-btn { display: none !important; }
+    }
+
+    /* ── Mobile menu ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0,0,0,0.45);
+      flex-direction: row;
+      align-items: stretch;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu__backdrop { flex: 0 0 18%; min-width: 48px; cursor: pointer; }
+    .mobile-menu__panel {
+      flex: 1; background: var(--white); display: flex; flex-direction: column;
+      padding: 24px; overflow-y: auto; max-width: 82vw;
+    }
+    .mobile-menu__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .mobile-menu__header img { height: 48px; }
+    .mobile-menu__close { background: none; border: none; color: var(--navy); display: flex; align-items: center; }
+    .mobile-menu__panel nav { display: flex; flex-direction: column; width: 100%; }
+    .mobile-menu__panel nav a {
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 600; font-size: 18px; padding: 16px 0;
+      border-bottom: 1px solid var(--border); color: var(--text);
+      text-decoration: none;
+    }
+    .mobile-menu__panel nav a.active { color: var(--coral); }
+    .mobile-nav-row { display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+    .mobile-nav-link { flex: 1; font-weight: 600; font-size: 18px; padding: 16px 0; color: var(--text); display: block; text-decoration: none; }
+    .mobile-nav-chevron { background: none; border: none; padding: 16px 8px; cursor: pointer; display: flex; align-items: center; color: var(--navy); }
+    .mobile-nav-chevron .chevron { width: 16px; height: 16px; stroke: var(--navy); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s; }
+    .mobile-nav-chevron.open .chevron { transform: rotate(180deg); }
+    .mobile-submenu { display: none; flex-direction: column; padding: 4px 0 4px 16px; border-bottom: 1px solid var(--border); }
+    .mobile-submenu.open { display: flex; }
+    .mobile-submenu a { font-size: 13px; font-weight: 500; color: var(--muted); padding: 10px 0; border-bottom: 1px solid #f0f0f0; text-decoration: none; display: block; }
+    .mobile-submenu a:last-child { border-bottom: none; }
+
+    /* ══════════════════════════════════════════════════════════
+       ABOUT HERO (cyan band, no photo)
+    ══════════════════════════════════════════════════════════ */
+    .about-hero {
+      background: var(--cyan);
+      padding: 48px 40px 0;
+    }
+    .about-hero__inner {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .about-hero h1 {
+      font-size: 54px;
+      font-weight: 400;
+      line-height: 1.185;
+      color: var(--peak-navy);
+      margin-bottom: 28px;
+    }
+    .about-hero p {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.583;
+      color: #1F2E5C;
+      margin-bottom: 22px;
+    }
+    .about-hero p strong { font-weight: 600; }
+    @media (max-width: 900px) {
+      .about-hero { padding: 40px 32px 0; }
+      .about-hero h1 { font-size: 40px; margin-bottom: 24px; }
+      .about-hero p { font-size: 19px; }
+    }
+    @media (max-width: 640px) {
+      .about-hero { padding: 32px 20px 0; }
+      .about-hero h1 { font-size: 28px; margin-bottom: 20px; }
+      .about-hero p { font-size: 16px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       PEAK AT A GLANCE
+       Delivered as designer-exported images (pixel-exact to the
+       Figma source) rather than a hand-coded recreation, so it
+       renders identically to the design and scales down like any
+       image — no JS, no font/layout guessing.
+    ══════════════════════════════════════════════════════════ */
+    .glance-wrap {
+      background: var(--cyan);
+      padding: 40px 40px 72px;
+    }
+    .glance-graphic {
+      display: block;
+      width: 100%;
+      max-width: 1041px;
+      max-height: 1320px;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 640px) {
+      .glance-wrap { padding: 32px 16px 56px; }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════════════ */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.65);
+      padding-top: 48px;
+      margin-top: auto;
+      overflow: hidden;
+    }
+    .footer__top {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 32px 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 44px;
+    }
+    .footer__logo img { height: 130px; }
+
+    .footer__columns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .footer__col { display: flex; flex-direction: column; gap: 14px; max-width: 90%; }
+    .footer__col .footer__col-title {
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .footer__col a, .footer__col span {
+      font-size: 12px;
+      font-weight: 400;
+      color: #ffffff;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      display: block;
+    }
+    .footer__col a:hover { opacity: 0.75; text-decoration: underline; }
+    .footer__col button {
+      background: none; border: none; padding: 0; text-align: left;
+      font-size: 12px; font-weight: 400; color: #ffffff;
+      transition: opacity 0.15s; font-family: inherit;
+    }
+    .footer__col button:hover { opacity: 0.75; text-decoration: underline; }
+    .footer__contact-row {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .footer__contact-row svg { flex-shrink: 0; color: #ffffff; }
+
+    .footer__watermark {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 4px 32px 8px;
+      box-sizing: border-box;
+    }
+    .footer__watermark-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+    }
+    .footer__bottom {
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding: 18px 32px 22px;
+      max-width: 1440px;
+      margin: 0 auto;
+      font-size: 13px;
+      color: #ffffff;
+    }
+
+    @media (max-width: 1023px) {
+      .footer__columns { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .footer__logo img { height: 92px; }
+    }
+    @media (max-width: 768px) {
+      .navbar__inner { padding: 0 16px; }
+      .navbar__logo img { height: 44px; }
+      .footer__top { padding: 0 20px 32px; gap: 32px; }
+      .footer__logo img { height: 56px; }
+      .footer__columns { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .footer__col .footer__col-title { font-size: 13px; }
+      .footer__col a, .footer__col span, .footer__col button { font-size: 12px; }
+      .footer__watermark { padding-left: 20px; padding-right: 20px; }
+      .footer__bottom { padding-left: 20px; padding-right: 20px; font-size: 13px; }
+      footer { padding-top: 36px; }
+    }
+  
+    /* ── Designer review Oct 7 — shared overrides ── */
+    .nav-dropdown > a, .nav-group > a, .nav-search-link { font-size: 14px; font-weight: 500; line-height: 22px; }
+    .nav-dropdown > a:hover, .nav-group > a:hover, .nav-search-link:hover { color: var(--coral); }
+    .btn-quote { font-weight: 600; }
+    .mega-col__link, .mega-resources__list a { border-radius: 0; }
+    .mega-col__header, .mega-resources__header { font-weight: 600; }
+    .mega-resources__title { font-size: 18px; }
+    .mega-resources__eyebrow { margin-bottom: 25px; }
+    .mega-resources__promo { background: rgba(243,237,219,0.4); }
+    .mega-resources__mountain { opacity: 0.8; left: 50%; right: auto; width: 347px; height: 118px; bottom: 40px; transform: translateX(-50%); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: bottom center; mask-position: bottom center; }
+    .footer__rule { width: 75%; height: 0; border-top: 1px solid rgba(255,255,255,0.75); margin: 26px 0; }
+
+    /* ── Search results page ── */
+    body { background: var(--white, #fff); }
+    .sr { padding: 40px 24px 80px; min-height: 60vh; }
+    .sr__inner { max-width: 960px; margin: 0 auto; }
+    .sr__title { font-size: 40px; font-weight: 400; color: var(--navy, #1F2E5C); line-height: 1.2; margin-bottom: 20px; }
+    .sr__form { display: flex; align-items: center; gap: 12px; border: 1px solid #1F2E5C; height: 58px; padding: 0 0 0 16px; background: #fff; }
+    .sr__form:focus-within { box-shadow: 0 0 0 3px rgba(31,46,92,.15); }
+    .sr__mag { width: 22px; height: 22px; flex: none; fill: none; stroke: #1F2E5C; stroke-width: 2; stroke-linecap: round; }
+    .sr__form input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font: 500 18px Montserrat, Arial, sans-serif; color: #1a1a1a; height: 100%; }
+    .sr__form input::placeholder { color: rgba(0,0,0,.45); font-weight: 400; }
+    .sr__go { height: 100%; padding: 0 28px; border: none; background: #F2C300; color: #1F2E5C; font: 600 15px Montserrat, Arial, sans-serif; cursor: pointer; }
+    .sr__go:hover { background: #EFA500; }
+    .sr__summary { margin: 22px 0 14px; font-size: 15px; font-weight: 500; color: #555; }
+    .sr__summary strong { color: #1F2E5C; font-weight: 600; }
+    .sr__tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid rgba(0,0,0,.15); margin-bottom: 18px; }
+    .sr__tab { background: none; border: none; padding: 12px 16px; font: 500 14px Montserrat, Arial, sans-serif; color: #1F2E5C; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -1px; }
+    .sr__tab:hover { background: #F2F4F8; }
+    .sr__tab.is-active { font-weight: 600; border-bottom-color: #F15A45; }
+    .sr__tab span { color: #667085; font-weight: 500; margin-left: 4px; }
+    .sr__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .sr__chips:empty { display: none; }
+    .sr__chip { padding: 7px 14px; border: 1px solid rgba(0,0,0,.25); border-radius: 999px; background: #fff; color: #1F2E5C; font: 500 13px Montserrat, Arial, sans-serif; cursor: pointer; }
+    .sr__chip.is-active, .sr__chip:hover { background: #1F2E5C; color: #fff; border-color: #1F2E5C; }
+    .sr__group { margin-bottom: 30px; }
+    .sr__group-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,.12); }
+    .sr__group-head h2 { font-size: 18px; font-weight: 600; color: #1F2E5C; }
+    .sr__group-head button { background: none; border: none; color: #247294; font: 600 13px Montserrat, Arial, sans-serif; cursor: pointer; }
+    .sr__group-head button:hover { text-decoration: underline; }
+    .sr__list .ss-item { padding: 14px 12px; border-bottom: 1px solid rgba(0,0,0,.08); border-radius: 0; }
+    .sr__list .ss-media { width: 72px; height: 72px; }
+    .sr__list .ss-title { font-size: 16px; }
+    .sr__more { text-align: center; margin-top: 12px; }
+    .sr__more button { padding: 12px 28px; border: 1px solid #1F2E5C; background: #fff; color: #1F2E5C; font: 600 14px Montserrat, Arial, sans-serif; cursor: pointer; }
+    .sr__more button:hover { background: #1F2E5C; color: #fff; }
+    .sr__empty { padding: 30px 0; color: #555; font-size: 15px; line-height: 1.7; }
+    .sr__empty a { color: #247294; font-weight: 600; }
+    @media (max-width: 640px) {
+      .sr { padding: 24px 16px 56px; }
+      .sr__title { font-size: 30px; }
+      .sr__form { height: 50px; }
+      .sr__form input { font-size: 16px; }
+      .sr__go { padding: 0 16px; }
+      .sr__list .ss-media { width: 56px; height: 56px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════════════════════════ -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" />
+      </a>
+
+      <div class="navbar__center">
+        <!-- Desktop -->
+        <nav class="navbar__desktop">
+          <div class="nav-group">
+            <div class="nav-dropdown" id="dd-products-desktop">
+              <a href="products.html">Products</a>
+              <div class="mega-menu mega-menu--products">
+                <div class="mega-menu__panel">
+                  <div class="mega-col mega-col--1" id="mega-products-desktop-col1"></div>
+                  <div class="mega-col mega-col--2" id="mega-products-desktop-col2"></div>
+                  <div class="mega-col mega-col--3" id="mega-products-desktop-col3"></div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-dropdown" id="dd-resources-desktop">
+              <a href="resources.html">Resources</a>
+              <div class="mega-menu mega-menu--resources">
+                <div class="mega-menu__panel">
+                  <div class="mega-resources__list">
+                    <div class="mega-resources__header">Resources</div>
+                    <a href="resources.html?type=pdf">Catalogs</a>
+                    <a href="resources.html?type=article">Educational Materials</a>
+                    <a href="resources.html?type=ifu">Product IFUs</a>
+                    <a href="resources.html?type=video">Video Library</a>
+                  </div>
+                  <div class="mega-resources__promo">
+                    <div class="mega-resources__eyebrow">PEAK Products</div>
+                    <div class="mega-resources__title">Built for the Surgeon</div>
+                    <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                    <div class="mega-resources__mountain"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+          </div>
+          <button class="nav-search-link" onclick="window.location.href='products.html'" aria-label="Search">
+            <img class="nav-search-icon" src="Magnify.png" alt="" />
+            Search
+          </button>
+        </nav>
+
+        <!-- Tablet -->
+        <nav class="navbar__tablet">
+          <div class="nav-group">
+            <div class="nav-dropdown" id="dd-products-tablet">
+              <a href="products.html">Products</a>
+              <div class="mega-menu mega-menu--products">
+                <div class="mega-menu__panel">
+                  <div class="mega-col mega-col--1" id="mega-products-tablet-col1"></div>
+                  <div class="mega-col mega-col--2" id="mega-products-tablet-col2"></div>
+                  <div class="mega-col mega-col--3" id="mega-products-tablet-col3"></div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-dropdown" id="dd-resources-tablet">
+              <a href="resources.html">Resources</a>
+              <div class="mega-menu mega-menu--resources">
+                <div class="mega-menu__panel">
+                  <div class="mega-resources__list">
+                    <div class="mega-resources__header">Resources</div>
+                    <a href="resources.html?type=pdf">Catalogs</a>
+                    <a href="resources.html?type=article">Educational Materials</a>
+                    <a href="resources.html?type=ifu">Product IFUs</a>
+                    <a href="resources.html?type=video">Video Library</a>
+                  </div>
+                  <div class="mega-resources__promo">
+                    <div class="mega-resources__eyebrow">PEAK Products</div>
+                    <div class="mega-resources__title">Built for the Surgeon</div>
+                    <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                    <div class="mega-resources__mountain"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="navbar__right">
+        <button class="btn-quote" onclick="cartOpenModal()">
+          <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
+          Quote Cart
+        </button>
+        <div class="navbar__mobile">
+          <button class="cart-btn" aria-label="Cart" onclick="cartOpenModal()">
+            <img src="cart-icon.png?v=2" alt="" style="width:30px;height:30px;" />
+          </button>
+          <button class="hamburger" aria-label="Open menu" onclick="openMenu()">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu__backdrop" onclick="closeMenu()"></div>
+    <div class="mobile-menu__panel">
+      <div class="mobile-menu__header">
+        <a href="index.html"><img src="peak-logo.png" alt="PEAK" /></a>
+        <button class="mobile-menu__close" onclick="closeMenu()">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <div class="mobile-nav-row">
+          <a href="products.html" class="mobile-nav-link">Products</a>
+          <button class="mobile-nav-chevron" id="mob-toggle-products" onclick="toggleMobileSubmenu('mob-products','mob-toggle-products')">
+            <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="mobile-submenu" id="mob-products"></div>
+        <div class="mobile-nav-row">
+          <a href="resources.html" class="mobile-nav-link">Resources</a>
+          <button class="mobile-nav-chevron" id="mob-toggle-resources" onclick="toggleMobileSubmenu('mob-resources','mob-toggle-resources')">
+            <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="mobile-submenu" id="mob-resources">
+          <a href="resources.html?type=pdf">Catalogs</a>
+          <a href="resources.html?type=article">Educational Materials</a>
+          <a href="resources.html?type=ifu">Product IFUs</a>
+          <a href="resources.html?type=video">Video Library</a>
+        </div>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SEARCH RESULTS
+  ══════════════════════════════════════════════════════════ -->
+  <main class="sr">
+    <div class="sr__inner">
+      <h1 class="sr__title">Search</h1>
+      <form class="sr__form" id="sr-form" role="search" autocomplete="off">
+        <svg class="sr__mag" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><line x1="21" y1="21" x2="16.7" y2="16.7"/></svg>
+        <input type="text" id="sr-input" placeholder="Search products, resources, and pages" aria-label="Search the site" />
+        <button type="submit" class="sr__go">Search</button>
+      </form>
+      <div class="sr__summary" id="sr-summary" aria-live="polite"></div>
+      <div class="sr__tabs" id="sr-tabs" role="tablist"></div>
+      <div class="sr__chips" id="sr-chips"></div>
+      <div class="sr__list" id="sr-list" role="list"></div>
+      <div class="sr__more" id="sr-more-wrap" hidden><button type="button" id="sr-more">Show more results</button></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer__top">
+
+      <div class="footer__logo">
+        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" style="filter:brightness(0) invert(1);" />
+      </div>
+
+      <div class="footer__columns">
+
+        <div class="footer__col">
+          <span class="footer__col-title">Products</span>
+          <div id="footer-products-col" style="display:contents;"></div>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">Resources</span>
+          <a href="resources.html?type=pdf">Catalogs</a>
+          <a href="resources.html?type=article">Educational Materials</a>
+          <a href="resources.html?type=ifu">Product IFUs</a>
+          <a href="resources.html?type=video">Video Library</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">About</span>
+          <a href="about.html">Our Story</a>
+        </div>
+
+        <div class="footer__col">
+          <span class="footer__col-title">Support</span>
+          <button onclick="cartOpenModal()">Get a Quote</button>
+          <a href="contact.html">Contact Us</a>
+          <div class="footer__rule"></div>
+          <span>info@peakmdi.com</span>
+          <span>630-520-5023</span>
+          <span>866-557-8437 (Fax)</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer__watermark">
+      <svg class="footer__watermark-svg" viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.4)">BUILT FOR THE SURGEON</text>
+      </svg>
+    </div>
+
+    <div class="footer__bottom">
+      ©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
+    </div>
+  </footer>
+
+  <script>
+/* Designer review Oct 7 — alphabetical helpers */
+function peakAlpha(list, keyFn){ keyFn = keyFn || function(x){return x;};
+  return list.slice().sort(function(a,b){ return String(keyFn(a)).localeCompare(String(keyFn(b)), undefined, {sensitivity:'base', numeric:true}); }); }
+function peakOrderCategories(cats){ var first='Scissors'; var rest=peakAlpha(cats.filter(function(c){return c!==first;}));
+  return cats.indexOf(first)>-1 ? [first].concat(rest) : rest; }
+function peakSubKey(sub, cat){ var s=String(sub||''); var c=String(cat||'').trim();
+  if(c){ var re=new RegExp('\\s+'+c.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'$','i'); s=s.replace(re,''); } return s; }
+function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return peakSubKey(s,cat); }); }
+</script>
+<script>
+    async function populateNavDropdowns() {
+      let products = [];
+      try {
+        const res = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+        products = await res.json();
+      } catch(e) { return; }
+
+      const tree = {};
+      products.forEach(p => {
+        if (!p.category) return;
+        if (!tree[p.category]) tree[p.category] = {};
+        if (p.subcategory) {
+          if (!tree[p.category][p.subcategory]) tree[p.category][p.subcategory] = new Set();
+          if (p.type) tree[p.category][p.subcategory].add(p.type);
+        }
+      });
+
+      const categories = peakOrderCategories(Object.keys(tree));
+
+      /* ── 3-column "Products" mega menu (desktop + tablet), cascading hover ── */
+      function initMegaProducts(prefix) {
+        const col1 = document.getElementById(`mega-${prefix}-col1`);
+        const col2 = document.getElementById(`mega-${prefix}-col2`);
+        const col3 = document.getElementById(`mega-${prefix}-col3`);
+        if (!col1 || !col2 || !col3) return;
+
+        function renderCol3(cat, sub) {
+          const types = peakAlpha([...(tree[cat][sub] || [])]);
+          col3.innerHTML =
+            `<div class="mega-col__header">${sub}</div>` +
+            types.map(type => `<a class="mega-col__link" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
+        }
+
+        function renderCol2(cat) {
+          const subs = peakSortSubs(Object.keys(tree[cat]), cat);
+          col2.innerHTML =
+            `<div class="mega-col__header">${cat}</div>` +
+            subs.map((sub, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}" data-idx="${i}">${sub}</a>`).join('');
+
+          col2.querySelectorAll('.mega-col__link').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+              col2.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
+              el.classList.add('active');
+              renderCol3(el.dataset.cat, el.dataset.sub);
+            });
+          });
+
+          if (subs.length) renderCol3(cat, subs[0]);
+          else col3.innerHTML = '';
+        }
+
+        function renderCol1() {
+          col1.innerHTML =
+            `<div class="mega-col__header">Products</div>` +
+            categories.map((cat, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}" data-cat="${cat}" data-idx="${i}">${cat}</a>`).join('');
+
+          col1.querySelectorAll('.mega-col__link').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+              col1.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
+              el.classList.add('active');
+              renderCol2(el.dataset.cat);
+            });
+          });
+        }
+
+        renderCol1();
+        if (categories.length) renderCol2(categories[0]);
+      }
+
+      initMegaProducts('products-desktop');
+      initMegaProducts('products-tablet');
+
+      /* ── Mobile flat list ── */
+      function buildMobileHTML() {
+        return categories.map(cat => {
+          const catURL = `products.html?cat=${encodeURIComponent(cat)}`;
+          let html = `<a href="${catURL}" style="font-weight:700">${cat}</a>`;
+          peakSortSubs(Object.keys(tree[cat]), cat).forEach(sub => {
+            const subURL = `products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}`;
+            html += `<a href="${subURL}" style="padding-left:16px;font-size:14px">${sub}</a>`;
+          });
+          return html;
+        }).join('');
+      }
+      const mobileDD = document.getElementById('mob-products');
+      if (mobileDD) mobileDD.innerHTML = buildMobileHTML();
+    }
+
+    populateNavDropdowns();
+
+    /* ── Mobile overlay ── */
+    function openMenu()  { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow = ''; }
+    document.getElementById('mobileMenu').addEventListener('click', function(e) {
+      if (e.target === this) closeMenu();
+    });
+
+    /* Close dropdowns when clicking outside */
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) {
+        document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+      }
+    });
+
+    /* Hover-based dropdown behavior (desktop/tablet) */
+    document.querySelectorAll('.nav-dropdown').forEach(dd => {
+      dd.addEventListener('mouseenter', () => {
+        const menu = dd.querySelector('.mega-menu');
+        if (menu) menu.style.display = 'flex';
+      });
+      dd.addEventListener('mouseleave', () => {
+        const menu = dd.querySelector('.mega-menu');
+        if (menu) menu.style.display = 'none';
+      });
+    });
+
+    /* ── Mobile submenu toggle ── */
+    function toggleMobileSubmenu(submenuId, toggleId) {
+      const submenu = document.getElementById(submenuId);
+      const toggle  = document.getElementById(toggleId);
+      const isOpen  = submenu.classList.contains('open');
+      submenu.classList.toggle('open', !isOpen);
+      toggle.classList.toggle('open', !isOpen);
+    }
+
+    async function populateFooter() {
+      let products = [];
+      try {
+        const r = await fetch('products.json?v=' + Date.now(), { cache: 'no-store' });
+        products = await r.json();
+      } catch(e) { return; }
+
+      const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+      const firstCat = 'Scissors';
+      const rest = categories.filter(c => c !== firstCat).sort((a, b) => a.localeCompare(b));
+      const orderedCategories = categories.includes(firstCat) ? [firstCat, ...rest] : rest;
+      const col = document.getElementById('footer-products-col');
+      if (!col) return;
+
+      col.innerHTML = orderedCategories.map(cat =>
+        `<a href="products.html?cat=${encodeURIComponent(cat)}">${cat}</a>`
+      ).join('');
+    }
+
+    populateFooter();
+  </script>
+  <script src="cart.js"></script>
+  <script src="mobile-nav.js"></script>
+  <script src="site-search.js"></script>
+
+  <script>
+  (function () {
+    var PS = window.PeakSearch, params = new URLSearchParams(location.search);
+    var q = (params.get('q') || '').trim(), tab = params.get('tab') || 'all', rtype = 'all', shown = 20;
+    var input = document.getElementById('sr-input'), summary = document.getElementById('sr-summary'),
+        tabsEl = document.getElementById('sr-tabs'), chipsEl = document.getElementById('sr-chips'),
+        list = document.getElementById('sr-list'), moreWrap = document.getElementById('sr-more-wrap'), moreBtn = document.getElementById('sr-more');
+    input.value = q; PS.inject();
+    var R = null;
+    var TABS = [['all', 'All'], ['products', 'Products'], ['resources', 'Resources'], ['pages', 'Pages & categories']];
+
+    function pagesAll() { return R.categories.concat(R.pages); }
+    function countFor(k) { return k === 'all' ? R.total : k === 'products' ? R.products.length : k === 'resources' ? R.resources.length : pagesAll().length; }
+    function rows(items) { return items.map(function (r) { return PS.rowHTML(r, q, true); }).join(''); }
+
+    function setURL() {
+      var u = 'search.html' + (q ? '?q=' + encodeURIComponent(q) + (tab !== 'all' ? '&tab=' + tab : '') : '');
+      history.replaceState(null, '', u);
+      document.title = (q ? '“' + q + '” – ' : '') + 'Search – PEAK MDI';
+    }
+
+    function render() {
+      setURL();
+      moreWrap.hidden = true; chipsEl.innerHTML = '';
+      if (!q) {
+        summary.innerHTML = ''; tabsEl.innerHTML = '';
+        list.innerHTML = '<div class="sr__empty">Type a keyword, product name or SKU above to search products, resources, and pages across the site.</div>';
+        return;
+      }
+      if (!R) { summary.textContent = 'Searching…'; return; }
+      summary.innerHTML = R.total ? '<strong>' + R.total + '</strong> result' + (R.total === 1 ? '' : 's') + ' for <strong>“' + PS.esc(q) + '”</strong>' : 'No results for <strong>“' + PS.esc(q) + '”</strong>';
+      tabsEl.innerHTML = TABS.map(function (t) {
+        return '<button type="button" role="tab" class="sr__tab' + (t[0] === tab ? ' is-active' : '') + '" data-tab="' + t[0] + '">' + t[1] + '<span>' + countFor(t[0]) + '</span></button>';
+      }).join('');
+      if (!R.total) {
+        list.innerHTML = '<div class="sr__empty">Nothing matched. Check the spelling, try fewer or more general words, or <a href="products.html">browse all products</a>.<br>Looking for something specialized? <a href="products.html?help=1">Ask a PEAK product specialist</a> or <a href="contact.html">contact us</a>.</div>';
+        return;
+      }
+      if (tab === 'all') {
+        var html = '';
+        [['products', 'Products', R.products], ['resources', 'Resources', R.resources], ['pages', 'Pages & categories', pagesAll()]].forEach(function (g) {
+          if (!g[2].length) return;
+          html += '<section class="sr__group"><div class="sr__group-head"><h2>' + g[1] + '</h2>' + (g[2].length > 5 ? '<button type="button" data-tab="' + g[0] + '">See all ' + g[2].length + '</button>' : '') + '</div>' + rows(g[2].slice(0, 5)) + '</section>';
+        });
+        list.innerHTML = html; return;
+      }
+      var items = tab === 'products' ? R.products : tab === 'resources' ? R.resources : pagesAll();
+      if (tab === 'resources') {
+        var types = [['all', 'All'], ['pdf', 'Catalogs'], ['article', 'Educational Materials'], ['ifu', 'Product IFUs'], ['video', 'Videos']];
+        chipsEl.innerHTML = types.map(function (t) { return '<button type="button" class="sr__chip' + (t[0] === rtype ? ' is-active' : '') + '" data-rtype="' + t[0] + '">' + t[1] + '</button>'; }).join('');
+        if (rtype !== 'all') items = items.filter(function (r) { return r.rtype === rtype; });
+      }
+      list.innerHTML = items.length ? rows(items.slice(0, shown)) : '<div class="sr__empty">No matches in this section.</div>';
+      moreWrap.hidden = items.length <= shown;
+      moreBtn.textContent = 'Show more results (' + (items.length - shown) + ' remaining)';
+    }
+
+    document.getElementById('sr-form').addEventListener('submit', function (e) { e.preventDefault(); q = input.value.trim(); shown = 20; tab = 'all'; run(); });
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-tab]'); if (t) { tab = t.getAttribute('data-tab'); shown = 20; rtype = 'all'; render(); return; }
+      var c = e.target.closest('[data-rtype]'); if (c) { rtype = c.getAttribute('data-rtype'); shown = 20; render(); }
+    });
+    moreBtn.addEventListener('click', function () { shown += 20; render(); });
+
+    function run() { render(); PS.load().then(function () { R = PS.run(q); render(); }); }
+    run(); if (!q) input.focus();
+  })();
+  </script>
+</body>
+</html>
