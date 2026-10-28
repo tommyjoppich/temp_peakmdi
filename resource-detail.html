@@ -21,7 +21,7 @@
       --gold: #F2C300; --gold-dark: #EFA500; --gold-active: #FFDE55;
       --cyan: #68EAEA; --cream: #F3EDDB;
       --white: #ffffff; --off-white: #f8f8f8; --card-hover: #eceef1;
-      --text: #1a1a1a; --muted: #666; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666; --border: #e0e0e0; --rule: #cacaca;
       --card-shadow: 0 2px 8px rgba(0,0,0,0.09);
       --card-shadow-hover: 0 6px 22px rgba(0,0,0,0.14);
       --radius: 12px;
@@ -37,7 +37,8 @@
     .navbar__logo img { height: 52px; width: auto; }
     .navbar__center { display: flex; justify-content: center; }
     .navbar__right { justify-self: end; display: flex; align-items: center; gap: 14px; }
-    @media (min-width: 1024px) { .navbar { height: 80px; } .navbar__logo img { height: 68px; } }
+    @media (min-width: 769px) and (max-width: 1023px) { .navbar { height: 88px; } }
+    @media (min-width: 1024px) { .navbar { height: 96px; } .navbar__logo img { height: 68px; } }
 
     .navbar__desktop { display: none; }
     .nav-group { display: flex; align-items: center; gap: 34px; }
@@ -86,8 +87,7 @@
     .mega-resources__mountain { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 110px; pointer-events: none; background-color: var(--navy); opacity: 0.7; -webkit-mask-image: url('mountain-graphic.png'); mask-image: url('mountain-graphic.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: bottom; mask-position: bottom; }
 
     .btn-quote { display: flex; align-items: center; gap: 10px; border: none; border-radius: 0; padding: 11px 22px; font-size: 14px; font-weight: 700; color: var(--navy); background: var(--gold); transition: background 0.15s, color 0.15s; white-space: nowrap; position: relative; }
-    .btn-quote:hover { background: var(--navy); color: var(--white); }
-    .btn-quote:hover img { filter: brightness(0) invert(1); }
+    .btn-quote:hover { background: var(--gold-dark); color: var(--navy); }
     .btn-quote:active { background: var(--gold-active); color: var(--navy); }
     .btn-quote:active img { filter: none; }
     .navbar__tablet { display: none; }
@@ -116,10 +116,10 @@
     .detail-type-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--coral); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
     .detail-title { font-size: 28px; font-weight: 800; color: var(--peak-navy); margin-bottom: 14px; line-height: 1.25; }
     .detail-description { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 0; white-space: pre-line; }
-    .detail-info { position: sticky; top: 100px; }
+    .detail-info { position: sticky; top: 116px; }
     .detail-meta { margin: 24px 0 8px; }
-    .fs-row { display: flex; gap: 16px; padding: 12px 6px; border-bottom: 1px solid var(--border); font-size: 14px; }
-    .fs-row:first-of-type { border-top: 1px solid var(--border); }
+    .fs-row { display: flex; gap: 16px; padding: 12px 6px; border-bottom: 1px solid var(--rule); font-size: 14px; }
+    .fs-row:first-of-type { border-top: 1px solid var(--rule); }
     .fs-label { width: 45%; flex-shrink: 0; color: var(--muted); font-weight: 500; }
     .fs-value { flex: 1; color: var(--text); font-weight: 600; line-height: 1.4; }
     .detail-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
@@ -138,13 +138,14 @@
     .resource-embed--article { padding: 56px 32px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; }
     .resource-embed--empty { padding: 56px 32px; text-align: center; border: 1.5px dashed var(--border); color: var(--muted); font-size: 14px; font-weight: 500; background: var(--off-white); }
     .detail-loading { text-align: center; padding: 80px 32px; color: var(--muted); font-size: 15px; }
-    .related-resources { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--border); }
+    .related-resources { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--rule); }
     .related-resources__title { font-size: 18px; font-weight: 700; color: var(--blue); margin-bottom: 20px; }
     .related-resources__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
     .related-card { cursor: pointer; display: flex; flex-direction: column; border: 1px solid var(--border); background: var(--white); transition: box-shadow 0.15s, border-color 0.15s; }
     .related-card:hover { box-shadow: var(--card-shadow-hover); border-color: rgba(0,0,0,0.3); }
     .related-card__img { height: 140px; background: var(--off-white); display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .related-card__img img { width: 100%; height: 100%; object-fit: cover; }
+    .related-card__img img.is-placeholder { width: 62%; height: 62%; object-fit: contain; }
     .related-card__body { padding: 14px 16px 18px; }
     .related-card__name { font-size: 14px; font-weight: 700; color: var(--peak-navy); margin-bottom: 4px; line-height: 1.35; }
 
@@ -189,13 +190,13 @@
     .mobile-menu__header img { height: 48px; }
     .mobile-menu__close { background: none; border: none; color: var(--navy); display: flex; align-items: center; }
     .mobile-menu__panel nav { display: flex; flex-direction: column; width: 100%; }
-    .mobile-menu__panel nav a { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 18px; padding: 16px 0; border-bottom: 1px solid var(--border); color: var(--text); text-decoration: none; }
-    .mobile-nav-row { display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+    .mobile-menu__panel nav a { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 18px; padding: 16px 0; border-bottom: 1px solid var(--rule); color: var(--text); text-decoration: none; }
+    .mobile-nav-row { display: flex; align-items: center; border-bottom: 1px solid var(--rule); }
     .mobile-nav-link { flex: 1; font-weight: 600; font-size: 18px; padding: 16px 0; color: var(--text); display: block; text-decoration: none; }
     .mobile-nav-chevron { background: none; border: none; padding: 16px 8px; cursor: pointer; display: flex; align-items: center; color: var(--navy); }
     .mobile-nav-chevron .chevron { width: 16px; height: 16px; stroke: var(--navy); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s; }
     .mobile-nav-chevron.open .chevron { transform: rotate(180deg); }
-    .mobile-submenu { display: none; flex-direction: column; padding: 4px 0 4px 16px; border-bottom: 1px solid var(--border); }
+    .mobile-submenu { display: none; flex-direction: column; padding: 4px 0 4px 16px; border-bottom: 1px solid var(--rule); }
     .mobile-submenu.open { display: flex; }
     .mobile-submenu a { font-size: 13px; font-weight: 500; color: var(--muted); padding: 10px 0; border-bottom: 1px solid #f0f0f0; text-decoration: none; display: block; }
     .mobile-submenu a:last-child { border-bottom: none; }
@@ -211,6 +212,17 @@
     .mega-resources__promo { background: rgba(243,237,219,0.4); }
     .mega-resources__mountain { opacity: 0.8; left: 50%; right: auto; width: 347px; height: 118px; bottom: 40px; transform: translateX(-50%); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: bottom center; mask-position: bottom center; }
     .footer__rule { width: 75%; height: 0; border-top: 1px solid rgba(255,255,255,0.75); margin: 26px 0; }
+  
+    /* ── Oct 27 review — nav dropdown states, Resources panel, cart badge ── */
+    .mega-col__link.active, .mega-resources__list a.active { background: transparent; color: #F15A45; }
+    .mega-col__link:hover, .mega-resources__list a:hover { background: #fbe4e4; color: var(--navy); }
+    .mega-menu--resources { max-width: min(765px, 95vw); width: 765px; }
+    .mega-resources__promo { flex: 0 0 225px; max-width: 225px; }
+    .mega-resources__desc { max-width: none; }
+    @media (min-width: 1024px) {
+      .mega-menu--resources { max-width: min(775px, 95vw); width: 775px; }
+      .mega-resources__promo { flex: 0 0 275px; max-width: 275px; }
+    }
   </style>
 </head>
 <body>
@@ -248,9 +260,9 @@
                     <a href="resources.html?type=video" data-type="video">Video Library</a>
                   </div>
                   <div class="mega-resources__promo">
-                    <div class="mega-resources__eyebrow">PEAK Products</div>
-                    <div class="mega-resources__title">Built for the Surgeon</div>
-                    <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                    <div class="mega-resources__eyebrow">PEAK Resources</div>
+                    <div class="mega-resources__title">Support Beyond the Products</div>
+                    <div class="mega-resources__desc">Find product information, educational materials and resources designed to support you before and after purchase.</div>
                     <div class="mega-resources__mountain"></div>
                   </div>
                 </div>
@@ -290,9 +302,9 @@
                     <a href="resources.html?type=video" data-type="video">Video Library</a>
                   </div>
                   <div class="mega-resources__promo">
-                    <div class="mega-resources__eyebrow">PEAK Products</div>
-                    <div class="mega-resources__title">Built for the Surgeon</div>
-                    <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                    <div class="mega-resources__eyebrow">PEAK Resources</div>
+                    <div class="mega-resources__title">Support Beyond the Products</div>
+                    <div class="mega-resources__desc">Find product information, educational materials and resources designed to support you before and after purchase.</div>
                     <div class="mega-resources__mountain"></div>
                   </div>
                 </div>
@@ -554,7 +566,7 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
     function renderRelated(res, cfg) {
       const related = allResources.filter(r => r.type === res.type && r.id !== res.id).slice(0, 3);
       if (!related.length) return;
-      const thumbOf = r => r.thumbnail
+      const thumbOf = r => (r.thumbnail && !/(^|\/)logo[^\/]*\.(jpe?g|png)$/i.test(r.thumbnail))
         ? (r.thumbnail.startsWith('Resource_Thumbnails/') ? r.thumbnail : 'Resource_Thumbnails/' + r.thumbnail)
         : '';
       const html = `
@@ -565,7 +577,7 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
               const thumb = thumbOf(r);
               return `
               <a class="related-card" href="resource-detail.html?id=${encodeURIComponent(r.id)}">
-                <div class="related-card__img">${thumb ? `<img src="${thumb}" alt="${r.title}" />` : ''}</div>
+                <div class="related-card__img">${thumb ? `<img src="${thumb}" alt="${r.title}" onerror="this.onerror=null;this.src='Coming_Soon-Resource.svg';this.classList.add('is-placeholder')" />` : `<img class="is-placeholder" src="Coming_Soon-Resource.svg" alt="" />`}</div>
                 <div class="related-card__body"><div class="related-card__name">${r.title}</div></div>
               </a>`;
             }).join('')}
@@ -606,47 +618,71 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
         const col3 = document.getElementById(`mega-${prefix}-col3`);
         if (!col1 || !col2 || !col3) return;
 
-        function renderCol3(cat, sub) {
+        /* Where the visitor currently is (category > sub-category > type), so the
+           menu opens on that path instead of always starting at the first category. */
+        const qs = new URLSearchParams(location.search);
+        let ctx = { cat: '', sub: '', type: '' };
+        if (/product-detail/.test(location.pathname)) {
+          const cur = products.find(x => String(x.id) === qs.get('id'));
+          if (cur) ctx = { cat: cur.category || '', sub: cur.subcategory || '', type: cur.type || '' };
+        } else if (/products\.html$/.test(location.pathname) || /\/products$/.test(location.pathname)) {
+          ctx = { cat: qs.get('cat') || '', sub: qs.get('sub') || '', type: qs.get('type') || '' };
+        }
+        if (!tree[ctx.cat]) ctx = { cat: '', sub: '', type: '' };
+        if (!tree[ctx.cat] || !tree[ctx.cat][ctx.sub]) ctx.type = '';
+
+        const on = (cond) => cond ? ' active' : '';
+
+        function renderCol3(cat, sub, activeType) {
           const types = peakAlpha([...(tree[cat][sub] || [])]);
           col3.innerHTML =
             `<div class="mega-col__header">${sub}</div>` +
-            types.map(type => `<a class="mega-col__link" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
+            types.map(type => `<a class="mega-col__link${on(type === activeType)}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
         }
 
-        function renderCol2(cat) {
+        function renderCol2(cat, activeSub, activeType) {
           const subs = peakSortSubs(Object.keys(tree[cat]), cat);
           col2.innerHTML =
             `<div class="mega-col__header">${cat}</div>` +
-            subs.map((sub, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}" data-idx="${i}">${sub}</a>`).join('');
+            subs.map(sub => `<a class="mega-col__link${on(sub === activeSub)}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}">${sub}</a>`).join('');
 
           col2.querySelectorAll('.mega-col__link').forEach(el => {
             el.addEventListener('mouseenter', () => {
               col2.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
               el.classList.add('active');
-              renderCol3(el.dataset.cat, el.dataset.sub);
+              renderCol3(el.dataset.cat, el.dataset.sub, '');
             });
           });
 
-          if (subs.length) renderCol3(cat, subs[0]);
+          const show = (activeSub && tree[cat][activeSub]) ? activeSub : subs[0];
+          if (show) renderCol3(cat, show, show === activeSub ? activeType : '');
           else col3.innerHTML = '';
         }
 
-        function renderCol1() {
+        function renderCol1(activeCat) {
           col1.innerHTML =
             `<div class="mega-col__header">Products</div>` +
-            categories.map((cat, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}" data-cat="${cat}" data-idx="${i}">${cat}</a>`).join('');
+            categories.map(cat => `<a class="mega-col__link${on(cat === activeCat)}" href="products.html?cat=${encodeURIComponent(cat)}" data-cat="${cat}">${cat}</a>`).join('');
 
           col1.querySelectorAll('.mega-col__link').forEach(el => {
             el.addEventListener('mouseenter', () => {
               col1.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
               el.classList.add('active');
-              renderCol2(el.dataset.cat);
+              renderCol2(el.dataset.cat, '', '');
             });
           });
         }
 
-        renderCol1();
-        if (categories.length) renderCol2(categories[0]);
+        /* Items never change order; this just (re)marks the current page's path. */
+        function showCurrent() {
+          renderCol1(ctx.cat);
+          const cat = ctx.cat || categories[0];
+          if (cat) renderCol2(cat, ctx.cat ? ctx.sub : '', ctx.cat ? ctx.type : '');
+        }
+
+        showCurrent();
+        const dd = col1.closest('.nav-dropdown');
+        if (dd) dd.addEventListener('mouseleave', showCurrent);
       }
 
       initMegaProducts('products-desktop');

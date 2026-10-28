@@ -39,7 +39,7 @@
       --card-hover: #eceef1;
       --text:       #1a1a1a;
       --muted:      #666;
-      --border:     #e0e0e0;
+      --border:     #e0e0e0; --rule: #cacaca;
       --card-shadow: 0 2px 8px rgba(0,0,0,0.09);
       --card-shadow-hover: 0 6px 22px rgba(0,0,0,0.14);
       --radius:     12px;
@@ -83,8 +83,11 @@
       gap: 14px;
     }
 
+    @media (min-width: 769px) and (max-width: 1023px) {
+      .navbar { height: 88px; }
+    }
     @media (min-width: 1024px) {
-      .navbar { height: 80px; }
+      .navbar { height: 96px; }
       .navbar__logo img { height: 68px; }
     }
 
@@ -306,7 +309,7 @@
       display: block;
     }
 
-    /* Quote Cart button — gold default, navy on hover */
+    /* Quote Cart button — gold default, --gold-dark on hover (same as all yellow buttons) */
     .btn-quote {
       display: flex;
       align-items: center;
@@ -322,8 +325,7 @@
       white-space: nowrap;
       position: relative;
     }
-    .btn-quote:hover { background: var(--navy); color: var(--white); }
-    .btn-quote:hover img { filter: brightness(0) invert(1); }
+    .btn-quote:hover { background: var(--gold-dark); color: var(--navy); }
     .btn-quote:active { background: var(--gold-active); color: var(--navy); }
     .btn-quote:active img { filter: none; }
 
@@ -394,16 +396,16 @@
     .mobile-menu__panel nav a {
       display: flex; justify-content: space-between; align-items: center;
       font-weight: 600; font-size: 18px; padding: 16px 0;
-      border-bottom: 1px solid var(--border); color: var(--text);
+      border-bottom: 1px solid var(--rule); color: var(--text);
       text-decoration: none;
     }
     .mobile-menu__panel nav a.active { color: var(--coral); }
-    .mobile-nav-row { display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+    .mobile-nav-row { display: flex; align-items: center; border-bottom: 1px solid var(--rule); }
     .mobile-nav-link { flex: 1; font-weight: 600; font-size: 18px; padding: 16px 0; color: var(--text); display: block; text-decoration: none; }
     .mobile-nav-chevron { background: none; border: none; padding: 16px 8px; cursor: pointer; display: flex; align-items: center; color: var(--navy); }
     .mobile-nav-chevron .chevron { width: 16px; height: 16px; stroke: var(--navy); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s; }
     .mobile-nav-chevron.open .chevron { transform: rotate(180deg); }
-    .mobile-submenu { display: none; flex-direction: column; padding: 4px 0 4px 16px; border-bottom: 1px solid var(--border); }
+    .mobile-submenu { display: none; flex-direction: column; padding: 4px 0 4px 16px; border-bottom: 1px solid var(--rule); }
     .mobile-submenu.open { display: flex; }
     .mobile-submenu a { font-size: 13px; font-weight: 500; color: var(--muted); padding: 10px 0; border-bottom: 1px solid #f0f0f0; text-decoration: none; display: block; }
     .mobile-submenu a:last-child { border-bottom: none; }
@@ -589,7 +591,7 @@
     .sr__go:hover { background: #EFA500; }
     .sr__summary { margin: 22px 0 14px; font-size: 15px; font-weight: 500; color: #555; }
     .sr__summary strong { color: #1F2E5C; font-weight: 600; }
-    .sr__tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid rgba(0,0,0,.15); margin-bottom: 18px; }
+    .sr__tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid rgba(0,0,0,.235); margin-bottom: 18px; }
     .sr__tab { background: none; border: none; padding: 12px 16px; font: 500 14px Montserrat, Arial, sans-serif; color: #1F2E5C; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -1px; }
     .sr__tab:hover { background: #F2F4F8; }
     .sr__tab.is-active { font-weight: 600; border-bottom-color: #F15A45; }
@@ -599,11 +601,11 @@
     .sr__chip { padding: 7px 14px; border: 1px solid rgba(0,0,0,.25); border-radius: 999px; background: #fff; color: #1F2E5C; font: 500 13px Montserrat, Arial, sans-serif; cursor: pointer; }
     .sr__chip.is-active, .sr__chip:hover { background: #1F2E5C; color: #fff; border-color: #1F2E5C; }
     .sr__group { margin-bottom: 30px; }
-    .sr__group-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,.12); }
+    .sr__group-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,.21); }
     .sr__group-head h2 { font-size: 18px; font-weight: 600; color: #1F2E5C; }
     .sr__group-head button { background: none; border: none; color: #247294; font: 600 13px Montserrat, Arial, sans-serif; cursor: pointer; }
     .sr__group-head button:hover { text-decoration: underline; }
-    .sr__list .ss-item { padding: 14px 12px; border-bottom: 1px solid rgba(0,0,0,.08); border-radius: 0; }
+    .sr__list .ss-item { padding: 14px 12px; border-bottom: 1px solid rgba(0,0,0,.17); border-radius: 0; }
     .sr__list .ss-media { width: 72px; height: 72px; }
     .sr__list .ss-title { font-size: 16px; }
     .sr__more { text-align: center; margin-top: 12px; }
@@ -619,6 +621,28 @@
       .sr__go { padding: 0 16px; }
       .sr__list .ss-media { width: 56px; height: 56px; }
     }
+  
+    /* ── Oct 27 review — nav dropdown states, Resources panel, cart badge ── */
+    .mega-col__link.active, .mega-resources__list a.active { background: transparent; color: #F15A45; }
+    .mega-col__link:hover, .mega-resources__list a:hover { background: #fbe4e4; color: var(--navy); }
+    .mega-menu--resources { max-width: min(765px, 95vw); width: 765px; }
+    .mega-resources__promo { flex: 0 0 225px; max-width: 225px; }
+    .mega-resources__desc { max-width: none; }
+    @media (min-width: 1024px) {
+      .mega-menu--resources { max-width: min(775px, 95vw); width: 775px; }
+      .mega-resources__promo { flex: 0 0 275px; max-width: 275px; }
+    }
+
+    /* ── Numbered page navigation (Previous 1 2 3 4 5 Next) ── */
+    .pager { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px 26px; margin: 44px 0 12px; width: 100%; font-family: 'Montserrat', Arial, sans-serif; font-size: 14px; font-weight: 500; }
+    .pager:empty { display: none; }
+    .pager button { background: none; border: none; padding: 4px 2px; font: inherit; color: var(--navy, #1F2E5C); cursor: pointer; }
+    .pager button:hover { text-decoration: underline; }
+    .pager .pager__num { opacity: 0.68; }
+    .pager .pager__num:hover { opacity: 1; }
+    .pager .pager__num.is-current { opacity: 1; font-weight: 700; cursor: default; text-decoration: none; }
+    .pager .pager__edge[aria-disabled="true"] { cursor: default; text-decoration: none; }
+    .pager .pager__gap { color: var(--navy, #1F2E5C); opacity: 0.68; }
   </style>
 </head>
 <body>
@@ -658,9 +682,9 @@
                     <a href="resources.html?type=video">Video Library</a>
                   </div>
                   <div class="mega-resources__promo">
-                    <div class="mega-resources__eyebrow">PEAK Products</div>
-                    <div class="mega-resources__title">Built for the Surgeon</div>
-                    <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                    <div class="mega-resources__eyebrow">PEAK Resources</div>
+                    <div class="mega-resources__title">Support Beyond the Products</div>
+                    <div class="mega-resources__desc">Find product information, educational materials and resources designed to support you before and after purchase.</div>
                     <div class="mega-resources__mountain"></div>
                   </div>
                 </div>
@@ -700,9 +724,9 @@
                     <a href="resources.html?type=video">Video Library</a>
                   </div>
                   <div class="mega-resources__promo">
-                    <div class="mega-resources__eyebrow">PEAK Products</div>
-                    <div class="mega-resources__title">Built for the Surgeon</div>
-                    <div class="mega-resources__desc">Explore surgical instruments designed for precision, performance and reliability.</div>
+                    <div class="mega-resources__eyebrow">PEAK Resources</div>
+                    <div class="mega-resources__title">Support Beyond the Products</div>
+                    <div class="mega-resources__desc">Find product information, educational materials and resources designed to support you before and after purchase.</div>
                     <div class="mega-resources__mountain"></div>
                   </div>
                 </div>
@@ -783,7 +807,7 @@
       <div class="sr__tabs" id="sr-tabs" role="tablist"></div>
       <div class="sr__chips" id="sr-chips"></div>
       <div class="sr__list" id="sr-list" role="list"></div>
-      <div class="sr__more" id="sr-more-wrap" hidden><button type="button" id="sr-more">Show more results</button></div>
+      <div class="pager" id="sr-pager"></div>
     </div>
   </main>
 
@@ -876,47 +900,71 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
         const col3 = document.getElementById(`mega-${prefix}-col3`);
         if (!col1 || !col2 || !col3) return;
 
-        function renderCol3(cat, sub) {
+        /* Where the visitor currently is (category > sub-category > type), so the
+           menu opens on that path instead of always starting at the first category. */
+        const qs = new URLSearchParams(location.search);
+        let ctx = { cat: '', sub: '', type: '' };
+        if (/product-detail/.test(location.pathname)) {
+          const cur = products.find(x => String(x.id) === qs.get('id'));
+          if (cur) ctx = { cat: cur.category || '', sub: cur.subcategory || '', type: cur.type || '' };
+        } else if (/products\.html$/.test(location.pathname) || /\/products$/.test(location.pathname)) {
+          ctx = { cat: qs.get('cat') || '', sub: qs.get('sub') || '', type: qs.get('type') || '' };
+        }
+        if (!tree[ctx.cat]) ctx = { cat: '', sub: '', type: '' };
+        if (!tree[ctx.cat] || !tree[ctx.cat][ctx.sub]) ctx.type = '';
+
+        const on = (cond) => cond ? ' active' : '';
+
+        function renderCol3(cat, sub, activeType) {
           const types = peakAlpha([...(tree[cat][sub] || [])]);
           col3.innerHTML =
             `<div class="mega-col__header">${sub}</div>` +
-            types.map(type => `<a class="mega-col__link" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
+            types.map(type => `<a class="mega-col__link${on(type === activeType)}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}&type=${encodeURIComponent(type)}">${type}</a>`).join('');
         }
 
-        function renderCol2(cat) {
+        function renderCol2(cat, activeSub, activeType) {
           const subs = peakSortSubs(Object.keys(tree[cat]), cat);
           col2.innerHTML =
             `<div class="mega-col__header">${cat}</div>` +
-            subs.map((sub, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}" data-idx="${i}">${sub}</a>`).join('');
+            subs.map(sub => `<a class="mega-col__link${on(sub === activeSub)}" href="products.html?cat=${encodeURIComponent(cat)}&sub=${encodeURIComponent(sub)}" data-sub="${sub}" data-cat="${cat}">${sub}</a>`).join('');
 
           col2.querySelectorAll('.mega-col__link').forEach(el => {
             el.addEventListener('mouseenter', () => {
               col2.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
               el.classList.add('active');
-              renderCol3(el.dataset.cat, el.dataset.sub);
+              renderCol3(el.dataset.cat, el.dataset.sub, '');
             });
           });
 
-          if (subs.length) renderCol3(cat, subs[0]);
+          const show = (activeSub && tree[cat][activeSub]) ? activeSub : subs[0];
+          if (show) renderCol3(cat, show, show === activeSub ? activeType : '');
           else col3.innerHTML = '';
         }
 
-        function renderCol1() {
+        function renderCol1(activeCat) {
           col1.innerHTML =
             `<div class="mega-col__header">Products</div>` +
-            categories.map((cat, i) => `<a class="mega-col__link${i === 0 ? ' active' : ''}" href="products.html?cat=${encodeURIComponent(cat)}" data-cat="${cat}" data-idx="${i}">${cat}</a>`).join('');
+            categories.map(cat => `<a class="mega-col__link${on(cat === activeCat)}" href="products.html?cat=${encodeURIComponent(cat)}" data-cat="${cat}">${cat}</a>`).join('');
 
           col1.querySelectorAll('.mega-col__link').forEach(el => {
             el.addEventListener('mouseenter', () => {
               col1.querySelectorAll('.mega-col__link').forEach(x => x.classList.remove('active'));
               el.classList.add('active');
-              renderCol2(el.dataset.cat);
+              renderCol2(el.dataset.cat, '', '');
             });
           });
         }
 
-        renderCol1();
-        if (categories.length) renderCol2(categories[0]);
+        /* Items never change order; this just (re)marks the current page's path. */
+        function showCurrent() {
+          renderCol1(ctx.cat);
+          const cat = ctx.cat || categories[0];
+          if (cat) renderCol2(cat, ctx.cat ? ctx.sub : '', ctx.cat ? ctx.type : '');
+        }
+
+        showCurrent();
+        const dd = col1.closest('.nav-dropdown');
+        if (dd) dd.addEventListener('mouseleave', showCurrent);
       }
 
       initMegaProducts('products-desktop');
@@ -1001,12 +1049,31 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
   <script src="site-search.js"></script>
 
   <script>
+    /* ── Numbered pager helper ── */
+    function pagerHTML(page, pages, fn) {
+      if (pages <= 1) return '';
+      const set = new Set([1, pages, page, page - 1, page + 1]);
+      if (page <= 3) [2, 3, 4, 5].forEach(n => set.add(n));
+      if (page >= pages - 2) [pages - 1, pages - 2, pages - 3, pages - 4].forEach(n => set.add(n));
+      const nums = [...set].filter(n => n >= 1 && n <= pages).sort((a, b) => a - b);
+      let h = `<button type="button" class="pager__edge" ${page === 1 ? 'aria-disabled="true"' : `onclick="${fn}(${page - 1})"`}>Previous</button>`;
+      let prev = 0;
+      nums.forEach(n => {
+        if (prev && n - prev > 1) h += '<span class="pager__gap">&hellip;</span>';
+        h += `<button type="button" class="pager__num${n === page ? ' is-current' : ''}" ${n === page ? 'aria-current="page"' : `onclick="${fn}(${n})"`}>${n}</button>`;
+        prev = n;
+      });
+      h += `<button type="button" class="pager__edge" ${page === pages ? 'aria-disabled="true"' : `onclick="${fn}(${page + 1})"`}>Next</button>`;
+      return h;
+    }
+</script>
+  <script>
   (function () {
     var PS = window.PeakSearch, params = new URLSearchParams(location.search);
     var q = (params.get('q') || '').trim(), tab = params.get('tab') || 'all', rtype = 'all', shown = 20;
     var input = document.getElementById('sr-input'), summary = document.getElementById('sr-summary'),
         tabsEl = document.getElementById('sr-tabs'), chipsEl = document.getElementById('sr-chips'),
-        list = document.getElementById('sr-list'), moreWrap = document.getElementById('sr-more-wrap'), moreBtn = document.getElementById('sr-more');
+        list = document.getElementById('sr-list'), pagerEl = document.getElementById('sr-pager'), page = 1;
     input.value = q; PS.inject();
     var R = null;
     var TABS = [['all', 'All'], ['products', 'Products'], ['resources', 'Resources'], ['pages', 'Pages & categories']];
@@ -1023,7 +1090,7 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
 
     function render() {
       setURL();
-      moreWrap.hidden = true; chipsEl.innerHTML = '';
+      pagerEl.innerHTML = ''; chipsEl.innerHTML = '';
       if (!q) {
         summary.innerHTML = ''; tabsEl.innerHTML = '';
         list.innerHTML = '<div class="sr__empty">Type a keyword, product name or SKU above to search products, resources, and pages across the site.</div>';
@@ -1052,17 +1119,18 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
         chipsEl.innerHTML = types.map(function (t) { return '<button type="button" class="sr__chip' + (t[0] === rtype ? ' is-active' : '') + '" data-rtype="' + t[0] + '">' + t[1] + '</button>'; }).join('');
         if (rtype !== 'all') items = items.filter(function (r) { return r.rtype === rtype; });
       }
-      list.innerHTML = items.length ? rows(items.slice(0, shown)) : '<div class="sr__empty">No matches in this section.</div>';
-      moreWrap.hidden = items.length <= shown;
-      moreBtn.textContent = 'Show more results (' + (items.length - shown) + ' remaining)';
+      var pages = Math.max(1, Math.ceil(items.length / shown));
+      if (page > pages) page = pages;
+      list.innerHTML = items.length ? rows(items.slice((page - 1) * shown, page * shown)) : '<div class="sr__empty">No matches in this section.</div>';
+      pagerEl.innerHTML = pagerHTML(page, pages, 'srGo');
     }
 
-    document.getElementById('sr-form').addEventListener('submit', function (e) { e.preventDefault(); q = input.value.trim(); shown = 20; tab = 'all'; run(); });
+    document.getElementById('sr-form').addEventListener('submit', function (e) { e.preventDefault(); q = input.value.trim(); shown = 20; page = 1; tab = 'all'; run(); });
     document.addEventListener('click', function (e) {
-      var t = e.target.closest('[data-tab]'); if (t) { tab = t.getAttribute('data-tab'); shown = 20; rtype = 'all'; render(); return; }
-      var c = e.target.closest('[data-rtype]'); if (c) { rtype = c.getAttribute('data-rtype'); shown = 20; render(); }
+      var t = e.target.closest('[data-tab]'); if (t) { tab = t.getAttribute('data-tab'); shown = 20; page = 1; rtype = 'all'; render(); return; }
+      var c = e.target.closest('[data-rtype]'); if (c) { rtype = c.getAttribute('data-rtype'); shown = 20; page = 1; render(); }
     });
-    moreBtn.addEventListener('click', function () { shown += 20; render(); });
+    window.srGo = function (n) { page = n; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
     function run() { render(); PS.load().then(function () { R = PS.run(q); render(); }); }
     run(); if (!q) input.focus();

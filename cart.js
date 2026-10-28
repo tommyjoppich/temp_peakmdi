@@ -99,7 +99,7 @@ function cartInjectStyles() {
     }
     #quote-modal-overlay .qc-header {
       display: flex !important; align-items: center !important; justify-content: space-between !important;
-      gap: 16px !important; padding: 28px 34px !important; border-bottom: 1.5px solid var(--border, #e2e2e2) !important;
+      gap: 16px !important; padding: 28px 34px !important; border-bottom: 1.5px solid var(--rule, #cbcbcb) !important;
       background: #fff !important; flex-shrink: 0 !important; margin: 0 !important;
     }
     #quote-modal-overlay .qc-header-title { font-size: 28px !important; font-weight: 600 !important; color: var(--peak-navy, #1F2E5C) !important; line-height: 34px !important; }
@@ -141,7 +141,7 @@ function cartInjectStyles() {
       text-align: center !important; font-size: 12px !important; font-weight: 600 !important;
       color: #000 !important; letter-spacing: normal !important; text-transform: none !important;
     }
-    #quote-modal-overlay .qc-table tbody td { padding: 32px 8px !important; border-bottom: 1px solid #f0f0f0 !important; vertical-align: middle !important; }
+    #quote-modal-overlay .qc-table tbody td { padding: 32px 8px !important; border-bottom: 1px solid #d8d8d8 !important; vertical-align: middle !important; }
     #quote-modal-overlay .qc-table tbody tr:last-child td { border-bottom: none !important; }
     #quote-modal-overlay .qc-product-cell { display: flex !important; align-items: center !important; gap: 16px !important; }
     #quote-modal-overlay .qc-product-thumb {
@@ -150,6 +150,9 @@ function cartInjectStyles() {
       border: none !important;
     }
     #quote-modal-overlay .qc-product-thumb img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+    #quote-modal-overlay .qc-product-thumb img[src$="Coming_Soon-01.svg"] { width: 60% !important; height: 60% !important; }
+    /* tablet header is shorter, so keep the count badge a little lower there */
+    @media (max-width: 1023px) { .btn-quote .cart-badge { top: -16px !important; left: calc(100% + 0px) !important; } }
     #quote-modal-overlay .qc-product-title { font-size: 16px !important; font-weight: 600 !important; color: #000 !important; line-height: 22px !important; }
     #quote-modal-overlay .qc-product-sku { font-size: 16px !important; font-weight: 400 !important; line-height: 22px !important; color: #000 !important; margin-top: 2px !important; }
     #quote-modal-overlay .qc-qty-input {
@@ -301,9 +304,7 @@ function cartShowView(view) {
     const count = cartItemCount();
     headerTitle.textContent = 'Your Quote Cart';
     if (count > 0) { headerSub.textContent = `${count} Item${count === 1 ? '' : 's'}`; headerSub.style.display = 'block'; }
-    headerRight.innerHTML = count > 0
-      ? `<button class="qc-header-right qc-header-right--browse" onclick="cartCloseModal()">Continue Browsing Products ${xIcon}</button>`
-      : `<button class="qc-close-x" onclick="cartCloseModal()" aria-label="Close">${xIcon}</button>`;
+    headerRight.innerHTML = `<button class="qc-close-x" onclick="cartCloseModal()" aria-label="Close">${xIcon}</button>`;
     cartRenderCartView();
   } else if (view === 'form') {
     document.getElementById('quote-modal')?.classList.remove('quote-modal--empty');
@@ -430,9 +431,7 @@ function cartShowViewHeaderOnly(view) {
     headerSub.textContent = count > 0 ? `${count} Item${count === 1 ? '' : 's'}` : '';
     headerSub.style.display = count > 0 ? 'block' : 'none';
   }
-  headerRight.innerHTML = count > 0
-    ? `<button class="qc-header-right qc-header-right--browse" onclick="cartCloseModal()">Continue Browsing Products ${xIcon}</button>`
-    : `<button class="qc-close-x" onclick="cartCloseModal()" aria-label="Close">${xIcon}</button>`;
+  headerRight.innerHTML = `<button class="qc-close-x" onclick="cartCloseModal()" aria-label="Close">${xIcon}</button>`;
 }
 
 /* ── View: Quote request form ────────────────────────────────── */
@@ -591,7 +590,6 @@ function cartRenderConfirmView() {
     <div class="qc-confirm">
       <h2>Thank you.</h2>
       <p>A PEAK Representative will review your request and contact you shortly.</p>
-      <button class="qc-btn-gold" onclick="cartCloseModal()">Continue Browsing Products</button>
     </div>
   `;
 }
@@ -609,12 +607,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const badge = document.createElement('span');
     badge.className = 'cart-badge';
     badge.style.cssText = `
-      display:none; position:absolute; top:-7px; right:-7px;
+      display:none; position:absolute; top:-20px; left:calc(100% - 2px); z-index:2;
       background:#F15A45; color:#fff; border-radius:999px;
-      font-size:10px; font-weight:800; min-width:18px; height:18px;
-      align-items:center; justify-content:center; padding:0 4px;
+      font-size:13px; font-weight:800; line-height:1; min-width:22px; height:22px;
+      align-items:center; justify-content:center; padding:0 5px; box-sizing:border-box;
       font-family:'Montserrat',sans-serif; pointer-events:none;
-      border:2px solid #fff;
     `;
     btn.appendChild(badge);
 

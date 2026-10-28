@@ -130,7 +130,7 @@
       var resRecs = resources.map(function (r) {
         return {
           kind: 'resource', id: r.id, rtype: r.type, title: r.title || '', label: RES_LABEL[r.type] || 'Resource',
-          desc: r.description || '', thumb: r.thumbnail || '', url: 'resource-detail.html?id=' + encodeURIComponent(r.id),
+          desc: r.description || '', thumb: /(^|\/)logo[^\/]*\.(jpe?g|png)$/i.test(r.thumbnail || '') ? '' : (r.thumbnail || ''), url: 'resource-detail.html?id=' + encodeURIComponent(r.id),
           t: norm(r.title), s: '', sc: '', c: norm((RES_LABEL[r.type] || '') + ' ' + (RES_KEYWORDS[r.type] || '')), d: norm(r.description)
         };
       });
@@ -230,14 +230,13 @@
       var src = rec.thumb.indexOf('Resource_Thumbnails/') === 0 ? rec.thumb : 'Resource_Thumbnails/' + rec.thumb;
       return '<img src="' + esc(src) + '" alt="" loading="lazy" data-rt="' + esc(rec.rtype) + '" />';
     }
-    return ICONS[rec.rtype] || ICONS.page;
+    return '<img src="Coming_Soon-Resource.svg" alt="" loading="lazy" class="is-placeholder" />';
   }
   // If a resource thumbnail can't load, fall back to the type icon.
   document.addEventListener('error', function (e) {
     var t = e.target;
     if (t && t.tagName === 'IMG' && t.hasAttribute('data-rt') && t.parentNode) {
-      t.parentNode.className = 'ss-media ss-media--icon';
-      t.parentNode.innerHTML = ICONS[t.getAttribute('data-rt')] || ICONS.page;
+      t.parentNode.innerHTML = '<img src="Coming_Soon-Resource.svg" alt="" class="is-placeholder" />';
     }
   }, true);
 
@@ -249,7 +248,7 @@
       meta = (rec.sku ? '<span class="ss-sku">' + highlight(rec.sku, q) + '</span>' : '') + (rec.meta ? '<span>' + esc(rec.meta) + '</span>' : '');
       if (big && rec.desc) body = '<div class="ss-snippet">' + highlight(snippet(rec.desc, q, 160), q) + '</div>';
     } else if (rec.kind === 'resource') {
-      media = '<span class="ss-media ' + (rec.thumb ? 'ss-media--img' : 'ss-media--icon') + '">' + resThumb(rec) + '</span>';
+      media = '<span class="ss-media ss-media--img">' + resThumb(rec) + '</span>';
       meta = '<span class="ss-tag">' + esc(rec.label) + '</span>';
       if (rec.desc) body = '<div class="ss-snippet">' + highlight(snippet(rec.desc, q, big ? 160 : 90), q) + '</div>';
     } else if (rec.kind === 'category') {
@@ -271,7 +270,7 @@
   '.ss-item{display:flex;align-items:center;gap:14px;padding:10px 12px;border-radius:4px;color:#1F2E5C;text-decoration:none;font-family:Montserrat,Arial,sans-serif}' +
   '.ss-item:hover,.ss-item.is-active{background:#F2F4F8}.ss-item.is-active .ss-chev,.ss-item:hover .ss-chev{color:#1F2E5C}' +
   '.ss-media{flex:none;width:52px;height:52px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,0,0,.12);background:#fff;overflow:hidden}' +
-  '.ss-media img{max-width:100%;max-height:100%;object-fit:contain;display:block}.ss-media img.is-placeholder{opacity:.7}' +
+  '.ss-media img{max-width:100%;max-height:100%;object-fit:contain;display:block}.ss-media img.is-placeholder{opacity:.7;max-width:62%;max-height:62%}' +
   '.ss-media--icon{background:#F2F4F8;border-color:transparent;color:#1F2E5C}' +
   '.ss-media svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}' +
   '.ss-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}' +
