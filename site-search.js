@@ -63,12 +63,14 @@
     { title: 'Video Library', meta: 'Resources', url: 'resources.html?type=video', kw: 'video videos library technique' },
     { title: 'About PEAK Medical', meta: 'Company', url: 'about.html', kw: 'about us story company peak medical' },
     { title: 'Contact Us', meta: 'Company', url: 'contact.html', kw: 'contact us phone email fax address help' },
+    { title: 'Privacy Policy', meta: 'Company', url: 'privacy-policy.html', kw: 'privacy policy personal information data cookies analytics' },
     { title: 'Get Expert Help', meta: 'Talk to a product specialist', url: 'products.html?help=1', kw: 'expert help product specialist representative' }
   ];
   var CONTENT_PAGES = [
     { title: 'Home', url: 'index.html' },
     { title: 'About', url: 'about.html' },
-    { title: 'Contact', url: 'contact.html' }
+    { title: 'Contact', url: 'contact.html' },
+    { title: 'Privacy Policy', url: 'privacy-policy.html' }
   ];
 
   var DATA = null, loading = null;
@@ -196,6 +198,19 @@
     return out.map(function (x) { return x.r; });
   }
 
+  // Every match, best first: closeness of match, then Products > Resources > everything else.
+  function runAll(q) {
+    var toks = tokens(q), out = [];
+    if (!DATA || !toks.length) return out;
+    function add(list, g) { list.forEach(function (rec) { var s = score(rec, toks, q); if (s > 0) out.push({ rec: rec, s: s, g: g }); }); }
+    add(DATA.products, 0); add(DATA.categories, 0); add(DATA.resources, 1);
+    var pg = []; DATA.pages.forEach(function (rec) { var s = score(rec, toks, q); if (s > 0) pg.push({ rec: rec, s: s, g: 2 }); });
+    pg.sort(function (a, b) { return b.s - a.s; });
+    var per = {}; pg.forEach(function (x) { if (x.rec.isChunk) { per[x.rec.url] = (per[x.rec.url] || 0) + 1; if (per[x.rec.url] > 2) return; } out.push(x); });
+    out.sort(function (a, b) { return (b.s - a.s) || (a.g - b.g); });
+    return out;
+  }
+
   function run(q) {
     var toks = tokens(q);
     if (!DATA || !toks.length) return { products: [], resources: [], categories: [], pages: [], total: 0 };
@@ -285,7 +300,7 @@
   '.ss-backdrop.open{opacity:1;pointer-events:auto}' +
   '.ss-panel{position:fixed;left:0;right:0;z-index:199;background:#fff;box-shadow:0 18px 40px rgba(0,0,0,.22);transform:translateY(-12px);opacity:0;pointer-events:none;transition:transform .18s,opacity .18s;font-family:Montserrat,Arial,sans-serif;border-top:1px solid rgba(0,0,0,.08)}' +
   '.ss-panel.open{transform:none;opacity:1;pointer-events:auto}' +
-  '.ss-panel__inner{max-width:900px;margin:0 auto;padding:22px 24px 8px}' +
+  '.ss-panel__inner{max-width:900px;margin:0 auto;padding:22px 24px 16px}' +
   '.ss-form{display:flex;align-items:center;gap:12px;border:1px solid #1F2E5C;background:#fff;padding:0 6px 0 16px;height:56px}' +
   '.ss-form:focus-within{box-shadow:0 0 0 3px rgba(31,46,92,.15)}' +
   '.ss-form svg.ss-mag{width:22px;height:22px;flex:none;fill:none;stroke:#1F2E5C;stroke-width:2;stroke-linecap:round}' +
@@ -305,11 +320,9 @@
   '.ss-chips{display:flex;flex-wrap:wrap;gap:8px;padding:6px 12px 10px}' +
   '.ss-chip{display:inline-block;padding:8px 14px;border:1px solid rgba(0,0,0,.25);border-radius:999px;color:#1F2E5C;text-decoration:none;font:500 13px Montserrat,Arial,sans-serif;background:#fff}' +
   '.ss-chip:hover,.ss-chip.is-active{background:#1F2E5C;color:#fff;border-color:#1F2E5C}' +
-  '.ss-hint{display:flex;gap:16px;justify-content:flex-end;padding:8px 12px 12px;font:500 11px Montserrat,Arial,sans-serif;color:#98a2b3}' +
-  '.ss-hint kbd{font:600 11px Montserrat,Arial,sans-serif;border:1px solid #d0d5dd;border-bottom-width:2px;border-radius:3px;padding:1px 5px;color:#667085;background:#fff}' +
   '.nav-search-link[aria-expanded="true"]{color:#F15A45}' +
   '@media (max-width:768px){.ss-panel,.ss-backdrop{display:none!important}}' +
-  '@media (max-width:1023px){.ss-panel__inner{padding:16px 16px 4px}.ss-hint{display:none}.ss-form{height:50px}.ss-form input{font-size:16px}}';
+  '@media (max-width:1023px){.ss-panel__inner{padding:16px 16px 4px}.ss-form{height:50px}.ss-form input{font-size:16px}}';
 
   /* ───────────────────────── dropdown panel ───────────────────────── */
   var panel, backdrop, input, results, clearBtn, openBtns = [], activeIdx = -1, lastFocus = null, debounce;
@@ -330,7 +343,6 @@
           '<button type="button" class="ss-close" aria-label="Close search">' + X + '</button>' +
         '</form>' +
         '<div class="ss-results" id="ss-results" role="listbox"></div>' +
-        '<div class="ss-hint"><span><kbd>↑</kbd> <kbd>↓</kbd> to move</span><span><kbd>Enter</kbd> to open</span><span><kbd>Esc</kbd> to close</span></div>' +
       '</div>';
     document.body.appendChild(backdrop); document.body.appendChild(panel);
     input = panel.querySelector('#ss-input'); results = panel.querySelector('#ss-results'); clearBtn = panel.querySelector('.ss-clear');
@@ -443,9 +455,150 @@
         cats.slice(0, 12).map(function (c) { return '<a class="ss-chip" href="' + esc(c.url) + '">' + esc(c.title) + '</a>'; }).join('') + '</div></div>' : '');
   }
 
+
+  /* ───────────────────────── inline nav search (desktop + tablet) ─────────────────────────
+     Clicking "Search" swaps the label for a text box that fills the space up to the Quote Cart
+     button, with a compact autocomplete list (max 5) underneath. Mobile keeps the full panel. */
+  var inl, inlInput, inlList, inlBtn = null, inlIdx = -1, inlTimer, inlOpen = false;
+  var INL_MAX = 5;
+  var INL_MAG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+  var INL_CSS = '' +
+    '.ns-wrap{position:absolute;z-index:260;display:none;align-items:center;gap:8px;height:44px;box-sizing:border-box;padding:0 8px 0 12px;background:#fff;border:1.5px solid #1F2E5C;border-radius:4px;font-family:Montserrat,Arial,sans-serif}' +
+    '.ns-wrap.open{display:flex}' +
+    '.ns-wrap>svg{flex:none;color:#F15A45}' +
+    '.ns-wrap.ns-compact{padding:0 8px;gap:6px}.ns-wrap.ns-compact .ns-close{display:none}' +
+    '.ns-input{flex:1 1 auto;min-width:0;border:0;outline:0;background:transparent;font:500 14px Montserrat,Arial,sans-serif;color:#1F2E5C;padding:0;height:100%}' +
+    '.ns-input::placeholder{color:rgba(31,46,92,.55);font-weight:400}' +
+    '.ns-close{flex:none;border:0;background:none;cursor:pointer;color:#1F2E5C;padding:4px;display:flex;line-height:0}' +
+    '.ns-close:hover{color:#F15A45}.ns-close svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}' +
+    '.ns-list{position:absolute;z-index:259;display:none;background:#fff;border:1.5px solid #d0d5dd;border-top:0;border-radius:0 0 8px 8px;box-shadow:0 8px 24px rgba(0,0,0,.16);overflow:hidden;font-family:Montserrat,Arial,sans-serif;text-align:left}' +
+    '.ns-list.open{display:block}' +
+    '.ns-item{display:flex;align-items:center;gap:12px;padding:9px 16px;border-bottom:1px solid #f0f0f0;color:#1a1a1a;text-decoration:none;cursor:pointer}' +
+    '.ns-item svg{flex:none;color:#aaa}' +
+    '.ns-item:hover,.ns-item.is-active{background:#f4f7fb}' +
+    '.ns-text{display:flex;flex-direction:column;gap:1px;min-width:0}' +
+    '.ns-name{font-size:13px;font-weight:600;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+    '.ns-name mark{background:none;color:#2e6da4;font-weight:700}' +
+    '.ns-meta{font-size:11px;font-weight:400;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+    '.ns-all{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#f8f9fc;font-size:12px;font-weight:700;color:#2e6da4;text-decoration:none;cursor:pointer}' +
+    '.ns-all svg{flex:none}.ns-all:hover,.ns-all.is-active{background:#edf2fa}' +
+    '.ns-empty{padding:12px 16px;font-size:12px;color:#667085}' +
+    '.navbar .nav-search-link.ns-hidden{visibility:hidden}';
+
+  // Pick up to 5: at least one from every location that has a match (Products, Resources, other pages),
+  // then fill the rest Products first, then Resources, then other pages.
+  function pickInline(r) {
+    var prod = r.products.concat(r.categories);
+    var navRes = [], other = [];
+    r.pages.forEach(function (p) { (/^resources\.html/.test(p.url) && !p.isChunk ? navRes : other).push(p); });
+    var groups = [prod, r.resources.concat(navRes), other], take = [[], [], []], n = 0, g, i;
+    for (g = 0; g < 3; g++) if (groups[g].length && n < INL_MAX) { take[g].push(groups[g][0]); n++; }
+    for (g = 0; g < 3; g++) { for (i = take[g].length; i < groups[g].length && n < INL_MAX; i++) { take[g].push(groups[g][i]); n++; } }
+    return [].concat(take[0], take[1], take[2]);
+  }
+
+  function inlMeta(rec) {
+    if (rec.kind === 'product') return rec.meta || 'Product';
+    if (rec.kind === 'resource') return 'Resources › ' + rec.label;
+    if (rec.kind === 'category') return rec.meta;
+    return rec.meta || 'Page';
+  }
+
+  function buildInline() {
+    if (inl) return;
+    var st = document.createElement('style'); st.id = 'ns-styles'; st.textContent = INL_CSS; document.head.appendChild(st);
+    var hdr = document.querySelector('header.navbar') || document.querySelector('.navbar');
+    if (getComputedStyle(hdr).position === 'static') hdr.style.position = 'relative';
+    inl = document.createElement('form'); inl.className = 'ns-wrap'; inl.setAttribute('role', 'search'); inl.setAttribute('autocomplete', 'off');
+    inl.innerHTML = INL_MAG +
+      '<input class="ns-input" type="text" placeholder="Search products, resources, and pages" aria-label="Search" aria-autocomplete="list" autocomplete="off" />' +
+      '<button type="button" class="ns-close" aria-label="Close search">' + X + '</button>';
+    inlList = document.createElement('div'); inlList.className = 'ns-list'; inlList.setAttribute('role', 'listbox');
+    hdr.appendChild(inl); hdr.appendChild(inlList);
+    inlInput = inl.querySelector('.ns-input');
+
+    inl.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var act = inlList.querySelector('.is-active');
+      if (act) { window.location.href = act.getAttribute('href'); return; }
+      var q = inlInput.value.trim();
+      window.location.href = 'search.html' + (q ? '?q=' + encodeURIComponent(q) : '');
+    });
+    inl.querySelector('.ns-close').addEventListener('click', closeInline);
+    inlInput.addEventListener('input', function () { clearTimeout(inlTimer); inlTimer = setTimeout(updateInline, 80); });
+    inlInput.addEventListener('keydown', function (e) {
+      var items = Array.prototype.slice.call(inlList.querySelectorAll('.ns-item,.ns-all'));
+      if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && items.length) {
+        e.preventDefault();
+        inlIdx = e.key === 'ArrowDown' ? Math.min(inlIdx + 1, items.length - 1) : Math.max(inlIdx - 1, -1);
+        items.forEach(function (el, i) { el.classList.toggle('is-active', i === inlIdx); });
+      }
+    });
+    inlList.addEventListener('mousemove', function (e) {
+      var it = e.target.closest('.ns-item,.ns-all'); if (!it) return;
+      var items = Array.prototype.slice.call(inlList.querySelectorAll('.ns-item,.ns-all'));
+      inlIdx = items.indexOf(it); items.forEach(function (el, i) { el.classList.toggle('is-active', i === inlIdx); });
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && inlOpen) closeInline(); });
+    document.addEventListener('mousedown', function (e) {
+      if (!inlOpen) return;
+      if (inl.contains(e.target) || inlList.contains(e.target) || (inlBtn && inlBtn.contains(e.target))) return;
+      closeInline();
+    });
+    window.addEventListener('resize', function () { if (!inlOpen) return; if (window.innerWidth <= 768) closeInline(); else placeInline(); });
+  }
+
+  function placeInline() {
+    var hdr = inl.parentNode, hr = hdr.getBoundingClientRect();
+    // Desktop and tablet each have their own Search button; after a resize the old one is hidden, so re-pick the visible one.
+    inlBtn = openBtns.filter(function (b) { return b.offsetParent !== null && b.closest('.navbar'); })[0] || inlBtn;
+    var q = document.querySelector('.navbar .navbar__right .btn-quote') || document.querySelector('.navbar .btn-quote');
+    var br = inlBtn.getBoundingClientRect(), qr = q ? q.getBoundingClientRect() : { left: hr.right - 28 };
+    var left = br.left - hr.left, right = qr.left - hr.left - 16;   // always: search icon -> Quote Cart, never over the nav links
+    var h = 44, top = Math.round((hr.height - h) / 2);
+    inl.style.left = left + 'px'; inl.style.width = Math.max(right - left, 0) + 'px'; inl.classList.toggle('ns-compact', right - left < 150); inl.style.top = top + 'px';
+    var lw = Math.max(right - left, 380), ll = left;
+    if (ll + lw > hr.width - 12) ll = Math.max(12, hr.width - 12 - lw);
+    inlList.style.left = ll + 'px'; inlList.style.width = lw + 'px'; inlList.style.top = '100%';
+  }
+
+  function openInline() {
+    if (inlOpen) { inlInput.focus(); return; }
+    buildInline();
+    inlBtn = openBtns.filter(function (b) { return b.offsetParent !== null && b.closest('.navbar'); })[0];
+    if (!inlBtn) { openPanel(); return; }
+    inlOpen = true;
+    placeInline();
+    inl.classList.add('open'); inlBtn.classList.add('ns-hidden');
+    openBtns.forEach(function (b) { b.setAttribute('aria-expanded', 'true'); });
+    load().then(updateInline);
+    setTimeout(function () { inlInput.focus(); }, 20);
+  }
+
+  function closeInline() {
+    if (!inl || !inlOpen) return;
+    inlOpen = false;
+    inl.classList.remove('open'); inlList.classList.remove('open'); inlList.innerHTML = ''; inlInput.value = ''; inlIdx = -1;
+    openBtns.forEach(function (b) { b.classList.remove('ns-hidden'); b.setAttribute('aria-expanded', 'false'); });
+  }
+
+  function updateInline() {
+    if (!inlOpen) return;
+    var q = inlInput.value.trim(); inlIdx = -1;
+    if (!q || !DATA) { inlList.classList.remove('open'); inlList.innerHTML = ''; return; }
+    var picks = pickInline(run(q)), enc = encodeURIComponent(q);
+    var html = picks.map(function (rec) {
+      return '<a class="ns-item" role="option" href="' + esc(rec.url) + '">' + INL_MAG +
+        '<span class="ns-text"><span class="ns-name">' + highlight(rec.title, q) + '</span><span class="ns-meta">' + esc(inlMeta(rec)) + '</span></span></a>';
+    }).join('');
+    if (!picks.length) html = '<div class="ns-empty">No results for “' + esc(q) + '”.</div>';
+    html += '<a class="ns-all" href="search.html?q=' + enc + '">' + INL_MAG + '<span>See all results for “<strong>' + esc(q) + '</strong>”</span></a>';
+    inlList.innerHTML = html; inlList.classList.add('open');
+  }
+
   /* ───────────────────────── wire up the nav button(s) ───────────────────────── */
   function wireNav() {
-    var searchSVG = '<img class="nav-search-icon" src="Magnify.png" alt="" />';
+    var searchSVG = '<svg class="nav-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="6.8" cy="6.8" r="5"/><path d="M10.6 10.6L14.6 14.6"/></svg>';
     // Tablet nav doesn't have a Search button on every page — add one.
     document.querySelectorAll('.navbar__tablet').forEach(function (nav) {
       if (nav.querySelector('.nav-search-link')) return;
@@ -457,7 +610,8 @@
       b.setAttribute('type', 'button'); b.setAttribute('aria-haspopup', 'dialog'); b.setAttribute('aria-expanded', 'false');
       b.addEventListener('click', function (e) {
         e.preventDefault(); e.stopPropagation();
-        if (panel && panel.classList.contains('open')) closePanel(); else openPanel();
+        if (window.innerWidth > 768) { if (inlOpen) closeInline(); else openInline(); }
+        else if (panel && panel.classList.contains('open')) closePanel(); else openPanel();
       });
       openBtns.push(b);
     });
@@ -467,7 +621,7 @@
       var t = e.target, tag = (t && t.tagName) || '';
       if (/INPUT|TEXTAREA|SELECT/.test(tag) || (t && t.isContentEditable)) return;
       if (window.innerWidth <= 768 || !openBtns.length) return;
-      e.preventDefault(); openPanel();
+      e.preventDefault(); openInline();
     });
     // prefetch data when idle so the first search feels instant
     (window.requestIdleCallback || function (f) { setTimeout(f, 1200); })(function () { load(); });
@@ -475,9 +629,9 @@
 
   /* ───────────────────────── public API (used by search.html) ───────────────────────── */
   window.PeakSearch = {
-    load: load, run: run, rowHTML: rowHTML, highlight: highlight, tokens: tokens, esc: esc,
+    load: load, run: run, runAll: runAll, rowHTML: rowHTML, highlight: highlight, tokens: tokens, esc: esc,
     css: CSS, inject: function () { if (!document.getElementById('ss-styles')) { var st = document.createElement('style'); st.id = 'ss-styles'; st.textContent = CSS; document.head.appendChild(st); } },
-    open: openPanel, close: closePanel
+    open: function () { if (window.innerWidth > 768) openInline(); else openPanel(); }, close: function () { closeInline(); closePanel(); }
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireNav); else wireNav();

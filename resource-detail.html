@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="peak-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -161,6 +161,7 @@
     .footer__logo img { height: 130px; }
     .footer__columns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
     .footer__col { display: flex; flex-direction: column; gap: 14px; max-width: 90%; }
+    .footer__col .footer__col-title { cursor: default; }
     .footer__col .footer__col-title { font-weight: 600; font-size: 13px; letter-spacing: 0.02em; text-transform: uppercase; color: #ffffff; margin-bottom: 4px; display: block; }
     .footer__col a, .footer__col span { font-size: 12px; font-weight: 400; color: #ffffff; cursor: pointer; transition: opacity 0.15s; display: block; }
     .footer__col a:hover { opacity: 0.75; text-decoration: underline; }
@@ -169,6 +170,10 @@
     .footer__watermark { max-width: 1440px; margin: 0 auto; padding: 4px 32px 8px; box-sizing: border-box; }
     .footer__watermark-svg { display: block; width: 100%; height: auto; user-select: none; }
     .footer__bottom { border-top: 1px solid rgba(255,255,255,0.15); padding: 18px 32px 22px; max-width: 1440px; margin: 0 auto; font-size: 13px; color: #ffffff; }
+    .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; row-gap: 6px; }
+    .footer__policy-link { color: #ffffff; text-decoration: none; }
+    .footer__policy-link:hover { text-decoration: underline; }
+    .footer__bottom-divider { width: 1px; height: 14px; background: rgba(255,255,255,0.45); margin: 0 14px; flex: none; }
     @media (max-width: 1023px) { .footer__columns { grid-template-columns: 1fr 1fr; gap: 28px; } .footer__logo img { height: 92px; } }
     @media (max-width: 768px) {
       .navbar__inner { padding: 0 16px; } .navbar__logo img { height: 44px; }
@@ -205,6 +210,7 @@
     .nav-dropdown > a, .nav-group > a, .nav-search-link { font-size: 14px; font-weight: 500; line-height: 22px; }
     .nav-dropdown > a:hover, .nav-group > a:hover, .nav-search-link:hover { color: var(--coral); }
     .btn-quote { font-weight: 600; }
+    @media (min-width: 769px) { .btn-quote { padding-left: 14px; padding-right: 14px; } } /* ~10% narrower on desktop + tablet */
     .mega-col__link, .mega-resources__list a { border-radius: 0; }
     .mega-col__header, .mega-resources__header { font-weight: 600; }
     .mega-resources__title { font-size: 18px; }
@@ -272,7 +278,7 @@
             <a href="contact.html">Contact</a>
           </div>
           <button class="nav-search-link" onclick="window.location.href='products.html'" aria-label="Search">
-            <img class="nav-search-icon" src="Magnify.png" alt="" />
+            <svg class="nav-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="6.8" cy="6.8" r="5"/><path d="M10.6 10.6L14.6 14.6"/></svg>
             Search
           </button>
         </nav>
@@ -434,7 +440,7 @@
     </div>
 
     <div class="footer__bottom">
-      ©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
+      <a class="footer__policy-link" href="privacy-policy.html">Privacy Policy</a><span class="footer__bottom-divider" aria-hidden="true"></span>©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
     </div>
   </footer>
 
@@ -551,7 +557,7 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
             <p class="detail-description">${res.description}</p>
             <div class="detail-meta">
               <div class="fs-row"><div class="fs-label">Category</div><div class="fs-value">${cfg.label}</div></div>
-              ${res.sku ? `<div class="fs-row"><div class="fs-label">Related SKU</div><div class="fs-value">${res.sku}</div></div>` : ''}
+              ${res.sku ? `<div class="fs-row"><div class="fs-label">Related Product Number</div><div class="fs-value">${res.sku}</div></div>` : ''}
             </div>
             <div class="detail-actions">
               ${actionsHTML}
@@ -564,7 +570,7 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
     }
 
     function renderRelated(res, cfg) {
-      const related = allResources.filter(r => r.type === res.type && r.id !== res.id).slice(0, 3);
+      const related = peakAlpha(allResources.filter(r => r.type === res.type && r.id !== res.id), r => r.title || '').slice(0, 3);
       if (!related.length) return;
       const thumbOf = r => (r.thumbnail && !/(^|\/)logo[^\/]*\.(jpe?g|png)$/i.test(r.thumbnail))
         ? (r.thumbnail.startsWith('Resource_Thumbnails/') ? r.thumbnail : 'Resource_Thumbnails/' + r.thumbnail)

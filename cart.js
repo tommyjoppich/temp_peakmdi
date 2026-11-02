@@ -558,7 +558,7 @@ function cartSubmitQuoteForm(event) {
 
   const cart = cartGet();
   const itemLines = cart.map((p, i) =>
-    `${i + 1}. ${p.title} (SKU: ${p.sku})${p.qty > 1 ? ' x' + p.qty : ''}`
+    `${i + 1}. ${p.title} (Product Number: ${p.sku})${p.qty > 1 ? ' x' + p.qty : ''}`
   ).join('%0A');
 
   const subject = encodeURIComponent('Quote Request from ' + firstName + ' ' + lastName);
