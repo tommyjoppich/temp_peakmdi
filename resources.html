@@ -443,14 +443,14 @@
       cursor: pointer;
       border-radius: 4px;
     }
-    /* Hover = the solid vermillion pill; current page = vermillion text only (matches the nav tabs) */
-    .sidebar-flat__link:hover { background: var(--coral); color: var(--white); }
+    /* Hover = soft pink (same as the nav dropdown hover); current page = vermillion text only (matches the nav tabs) */
+    .sidebar-flat__link:hover { background: #fbe4e4; color: var(--navy); }
     .sidebar-flat__link.current {
       background: transparent;
       color: var(--coral);
       font-weight: 500;
     }
-    .sidebar-flat__link.current:hover { background: var(--coral); color: var(--white); }
+    .sidebar-flat__link.current:hover { background: #fbe4e4; color: var(--navy); }
 
     /* ── Main header ── */
     .resources-main { min-width: 0; padding-top: 4px; }
@@ -702,10 +702,9 @@
       font-size: 13px;
       color: #ffffff;
     }
-    .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; row-gap: 6px; }
+    .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 24px; }
     .footer__policy-link { color: #ffffff; text-decoration: none; }
     .footer__policy-link:hover { text-decoration: underline; }
-    .footer__bottom-divider { width: 1px; height: 14px; background: rgba(255,255,255,0.45); margin: 0 14px; flex: none; }
     @media (max-width: 1023px) {
       .footer__columns { grid-template-columns: 1fr 1fr; gap: 28px; }
       .footer__logo img { height: 92px; }
@@ -971,8 +970,8 @@
           <div class="resource-card__name">Video Library</div>
         </div>
         <div class="resource-card" onclick="selectType('pdf')">
-          <div class="resource-card__img"><img src="resource-card-catalogs.png" alt="Catalog PDFs" /></div>
-          <div class="resource-card__name">Catalog PDFs</div>
+          <div class="resource-card__img"><img src="resource-card-catalogs.png" alt="Catalogs" /></div>
+          <div class="resource-card__name">Catalogs</div>
         </div>
         <div class="resource-card" onclick="selectType('article')">
           <div class="resource-card__img"><img src="resource-card-education.png" alt="Educational Materials" /></div>
@@ -999,10 +998,6 @@
 
   <footer>
     <div class="footer__top">
-
-      <div class="footer__logo">
-        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" style="filter:brightness(0) invert(1);" />
-      </div>
 
       <div class="footer__columns">
 
@@ -1040,12 +1035,13 @@
 
     <div class="footer__watermark">
       <svg class="footer__watermark-svg" viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.4)">BUILT FOR THE SURGEON</text>
+        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.32)">BUILT FOR THE SURGEON</text>
       </svg>
     </div>
 
     <div class="footer__bottom">
-      <a class="footer__policy-link" href="privacy-policy.html">Privacy Policy</a><span class="footer__bottom-divider" aria-hidden="true"></span>©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
+      <span class="footer__copy">©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL</span>
+      <a class="footer__policy-link" href="privacy-policy.html">Privacy Policy</a>
     </div>
   </footer>
   <script>
@@ -1068,7 +1064,7 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
 
     const TYPE_ORDER = ['pdf', 'article', 'ifu', 'video'];
     const TYPE_META = {
-      pdf:     { sidebarLabel: 'Catalogs',            title: 'Catalog PDFs',        crumb: 'Catalogs' },
+      pdf:     { sidebarLabel: 'Catalogs',            title: 'Catalogs',        crumb: 'Catalogs' },
       article: { sidebarLabel: 'Educational Materials', title: 'Educational Materials', crumb: 'Educational Materials' },
       ifu:     { sidebarLabel: 'Product IFUs',        title: 'Product IFUs',        crumb: 'Product IFUs' },
       video:   { sidebarLabel: 'Video Library',       title: 'Video Library',       crumb: 'Video Library' }

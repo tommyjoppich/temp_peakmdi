@@ -485,10 +485,9 @@
       font-size: 13px;
       color: #ffffff;
     }
-    .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; row-gap: 6px; }
+    .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 24px; }
     .footer__policy-link { color: #ffffff; text-decoration: none; }
     .footer__policy-link:hover { text-decoration: underline; }
-    .footer__bottom-divider { width: 1px; height: 14px; background: rgba(255,255,255,0.45); margin: 0 14px; flex: none; }
 
     @media (max-width: 1023px) {
       .footer__columns { grid-template-columns: 1fr 1fr; gap: 28px; }
@@ -580,7 +579,7 @@
       cursor: pointer;
       border-radius: 4px;
     }
-    .sidebar-flat__link:hover { background: var(--coral); color: var(--white); }
+    .sidebar-flat__link:hover { background: #fbe4e4; color: var(--navy); }
     .sidebar-flat__subs {
       display: flex;
       flex-direction: column;
@@ -597,7 +596,7 @@
       cursor: pointer;
       border-radius: 4px;
     }
-    .sidebar-flat__sub:hover { background: var(--coral); color: var(--white); }
+    .sidebar-flat__sub:hover { background: #fbe4e4; color: var(--navy); }
     .sidebar-flat__types {
       display: flex;
       flex-direction: column;
@@ -614,8 +613,8 @@
       cursor: pointer;
       border-radius: 4px;
     }
-    .sidebar-flat__type:hover { background: var(--coral); color: var(--white); }
-    /* Current = vermillion text only (matches the nav tabs); hover = solid vermillion pill with white text */
+    .sidebar-flat__type:hover { background: #fbe4e4; color: var(--navy); }
+    /* Current = vermillion text only (matches the nav tabs); hover = soft pink (same as the nav dropdown hover) */
     .sidebar-flat__link.current,
     .sidebar-flat__sub.current,
     .sidebar-flat__type.current {
@@ -625,7 +624,7 @@
     }
     .sidebar-flat__link.current:hover,
     .sidebar-flat__sub.current:hover,
-    .sidebar-flat__type.current:hover { background: var(--coral); color: var(--white); }
+    .sidebar-flat__type.current:hover { background: #fbe4e4; color: var(--navy); }
 
     @media (max-width: 1100px) {
       .page-header { padding: 24px 28px 8px; }
@@ -1032,10 +1031,6 @@
   <footer>
     <div class="footer__top">
 
-      <div class="footer__logo">
-        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" style="filter:brightness(0) invert(1);" />
-      </div>
-
       <div class="footer__columns">
 
         <div class="footer__col">
@@ -1072,12 +1067,13 @@
 
     <div class="footer__watermark">
       <svg class="footer__watermark-svg" viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.4)">BUILT FOR THE SURGEON</text>
+        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.32)">BUILT FOR THE SURGEON</text>
       </svg>
     </div>
 
     <div class="footer__bottom">
-      <a class="footer__policy-link" href="privacy-policy.html">Privacy Policy</a><span class="footer__bottom-divider" aria-hidden="true"></span>©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
+      <span class="footer__copy">©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL</span>
+      <a class="footer__policy-link" href="privacy-policy.html">Privacy Policy</a>
     </div>
   </footer>
 

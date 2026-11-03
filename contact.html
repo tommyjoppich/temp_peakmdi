@@ -444,9 +444,9 @@
       background: #F7F8FA;
       padding: 28px 26px 26px;
       cursor: pointer;
-      transition: background 0.15s, transform 0.15s;
+      transition: background 0.15s, box-shadow 0.15s;
     }
-    .contact-tile:hover { background: rgba(241,90,69,0.10); transform: translateY(-2px); }   /* vermillion at the same 10% strength the yellow used */
+    .contact-tile:hover { background: #fdf6e3; box-shadow: inset 0 0 0 1px #ecdca8; }   /* same hover as the hero quick-link cards on the home page */
     .contact-tile:hover .contact-tile__value { color: var(--blue); }
     .contact-tile__icon {
       width: 48px;
@@ -567,7 +567,7 @@
       .expert-cta__image { width: 42%; }
     }
     @media (max-width: 768px) {
-      .expert-cta { margin: 32px 20px 56px; padding: 32px 24px; max-width: none; }
+      .expert-cta { margin: 32px 20px 56px; padding: 32px 24px; max-width: none; width: auto; }
       .expert-cta__image { display: none; }
       .expert-cta__content { max-width: none; }
       .expert-cta__title { font-size: 22px; }
@@ -651,10 +651,9 @@
       font-size: 13px;
       color: #ffffff;
     }
-    .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; row-gap: 6px; }
+    .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 24px; }
     .footer__policy-link { color: #ffffff; text-decoration: none; }
     .footer__policy-link:hover { text-decoration: underline; }
-    .footer__bottom-divider { width: 1px; height: 14px; background: rgba(255,255,255,0.45); margin: 0 14px; flex: none; }
 
     @media (max-width: 1023px) {
       .footer__columns { grid-template-columns: 1fr 1fr; gap: 28px; }
@@ -904,10 +903,6 @@
   <footer>
     <div class="footer__top">
 
-      <div class="footer__logo">
-        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" style="filter:brightness(0) invert(1);" />
-      </div>
-
       <div class="footer__columns">
 
         <div class="footer__col">
@@ -944,12 +939,13 @@
 
     <div class="footer__watermark">
       <svg class="footer__watermark-svg" viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.4)">BUILT FOR THE SURGEON</text>
+        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.32)">BUILT FOR THE SURGEON</text>
       </svg>
     </div>
 
     <div class="footer__bottom">
-      <a class="footer__policy-link" href="privacy-policy.html">Privacy Policy</a><span class="footer__bottom-divider" aria-hidden="true"></span>©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
+      <span class="footer__copy">©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL</span>
+      <a class="footer__policy-link" href="privacy-policy.html">Privacy Policy</a>
     </div>
   </footer>
 

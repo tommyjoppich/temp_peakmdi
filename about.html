@@ -469,7 +469,7 @@
 
     @media (min-width: 769px) {
       /* left-align with the hero text column (1080px centered container) */
-      .glance-graphic { max-width: 910px; margin: 0 auto 0 max(0px, calc((100% - 1080px) / 2)); }
+      .glance-graphic { max-width: 819px; margin: 0 auto 0 max(0px, calc((100% - 1080px) / 2)); }
     }
     @media (min-width: 769px) and (max-width: 900px) { .glance-wrap { padding-left: 32px; padding-right: 32px; } }
     @media (max-width: 640px) {
@@ -553,10 +553,9 @@
       font-size: 13px;
       color: #ffffff;
     }
-    .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; row-gap: 6px; }
+    .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 24px; }
     .footer__policy-link { color: #ffffff; text-decoration: none; }
     .footer__policy-link:hover { text-decoration: underline; }
-    .footer__bottom-divider { width: 1px; height: 14px; background: rgba(255,255,255,0.45); margin: 0 14px; flex: none; }
 
     @media (max-width: 1023px) {
       .footer__columns { grid-template-columns: 1fr 1fr; gap: 28px; }
@@ -778,10 +777,6 @@
   <footer>
     <div class="footer__top">
 
-      <div class="footer__logo">
-        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" style="filter:brightness(0) invert(1);" />
-      </div>
-
       <div class="footer__columns">
 
         <div class="footer__col">
@@ -818,12 +813,13 @@
 
     <div class="footer__watermark">
       <svg class="footer__watermark-svg" viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.4)">BUILT FOR THE SURGEON</text>
+        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.32)">BUILT FOR THE SURGEON</text>
       </svg>
     </div>
 
     <div class="footer__bottom">
-      <a class="footer__policy-link" href="privacy-policy.html">Privacy Policy</a><span class="footer__bottom-divider" aria-hidden="true"></span>©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
+      <span class="footer__copy">©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL</span>
+      <a class="footer__policy-link" href="privacy-policy.html">Privacy Policy</a>
     </div>
   </footer>
 

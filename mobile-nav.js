@@ -161,3 +161,109 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
+
+
+/* ════════════════════════════════════════════════════════════
+   PEAK — mobile footer accordion (phones, ≤640px)
+   Products / Resources / About / Support collapse into tappable rows.
+   Desktop and tablet footers are untouched.
+═════════════════════════════════════════════════════════════ */
+(function () {
+  var NAVY = '#1F2E5C';
+  var CSS = '' +
+  '.footer__all-products,.footer__contact-mobile{display:none}' +
+  '@media (max-width:640px){' +
+  'footer .footer__top{padding:0 8px 0}' +
+  'footer .footer__columns{display:block}' +
+  'footer .footer__col{display:flex;flex-direction:column;gap:0;max-width:none;border-bottom:1px solid rgba(255,255,255,.3)}' +
+  'footer .footer__col:not(.is-open)>*:not(.footer__col-title){display:none!important}' +
+  'footer .footer__col.is-open{padding-bottom:8px}' +
+  'footer .footer__col .footer__col-title{order:-2;display:flex;align-items:center;justify-content:space-between;height:55px;margin:0 -3px;padding:0 15px 0 15px;font-size:15px;font-weight:600;letter-spacing:.03em;color:#fff;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:none}' +
+  'footer .footer__col .footer__col-title::after{content:"";flex:none;width:9px;height:9px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-5px}' +
+  'footer .footer__col.is-open .footer__col-title::after{transform:rotate(-135deg);margin-top:5px}' +
+  'footer .footer__col .footer__col-title:active{background:#F7F7F7;color:' + NAVY + '}' +
+  'footer .footer__col .footer__col-title:focus-visible{outline:2px solid #fff;outline-offset:-2px}' +
+  'footer .footer__col a,footer .footer__col button{display:flex;align-items:center;width:100%;height:40px;padding:0 12px 0 24px;font-size:14px;font-weight:400;color:rgba(255,255,255,.82);text-align:left;text-decoration:none;opacity:1;cursor:pointer;-webkit-tap-highlight-color:transparent}' +
+  'footer .footer__col a:hover,footer .footer__col button:hover{opacity:1;text-decoration:none}' +
+  'footer .footer__col a:active,footer .footer__col button:active{background:#F7F7F7;color:' + NAVY + '}' +
+  'footer .footer__col a.is-current{font-weight:700;color:#fff}' +
+  'footer .footer__col a.is-current:active{color:' + NAVY + '}' +
+  'footer .footer__col a[href$="type=video"]{order:-1}' +
+  'footer .footer__col .footer__rule,footer .footer__col>span:not(.footer__col-title){display:none!important}' +
+  'footer .footer__all-products{display:flex}' +
+  'footer .footer__contact-mobile{display:block;padding:24px 12px 4px}' +
+  'footer .footer__contact-mobile span{display:block;font-size:14px;line-height:1.5;color:#fff;margin-bottom:10px}' +
+  'footer .footer__watermark{margin-top:22px}' +
+  'footer .footer__bottom{flex-direction:column-reverse;align-items:flex-start;justify-content:flex-start;gap:10px;margin:0 20px;max-width:none;padding:18px 0 28px;font-size:12px}' +
+  'footer .footer__policy-link{font-size:12px}' +
+  '}';
+
+  var mq = window.matchMedia('(max-width:640px)');
+
+  function setupMarkup() {
+    var cols = document.querySelector('footer .footer__columns');
+    if (!cols || cols.getAttribute('data-mf')) return null;
+    cols.setAttribute('data-mf', '1');
+    // "All Products" row at the top of the Products list
+    var holder = document.getElementById('footer-products-col');
+    if (holder) {
+      var all = document.createElement('a'); all.href = 'products.html'; all.className = 'footer__all-products'; all.textContent = 'All Products';
+      holder.parentNode.insertBefore(all, holder);
+    }
+    // Contact details live below the accordion on phones
+    var rule = cols.querySelector('.footer__rule');
+    if (rule) {
+      var box = document.createElement('div'); box.className = 'footer__contact-mobile';
+      var n = rule.nextElementSibling;
+      while (n && n.tagName === 'SPAN') { var s = document.createElement('span'); s.textContent = n.textContent; box.appendChild(s); n = n.nextElementSibling; }
+      cols.parentNode.insertBefore(box, cols.nextSibling);
+    }
+    return cols;
+  }
+
+  function markCurrent() {
+    var here = new URL(location.href), file = here.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('footer .footer__col a[href]').forEach(function (a) {
+      var u = new URL(a.getAttribute('href'), location.href), f = u.pathname.split('/').pop();
+      var cur = f === file;
+      if (cur && f === 'products.html') cur = (u.searchParams.get('cat') || '') === (here.searchParams.get('cat') || '');
+      if (cur && f === 'resources.html') cur = (u.searchParams.get('type') || '') === (here.searchParams.get('type') || '');
+      a.classList.toggle('is-current', cur);
+    });
+  }
+
+  function syncA11y() {
+    document.querySelectorAll('footer .footer__col-title').forEach(function (t) {
+      if (mq.matches) {
+        t.setAttribute('role', 'button'); t.setAttribute('tabindex', '0');
+        t.setAttribute('aria-expanded', t.parentNode.classList.contains('is-open') ? 'true' : 'false');
+      } else { t.removeAttribute('role'); t.removeAttribute('tabindex'); t.removeAttribute('aria-expanded'); }
+    });
+  }
+
+  function toggle(title) {
+    var col = title.parentNode;
+    col.classList.toggle('is-open');
+    title.setAttribute('aria-expanded', col.classList.contains('is-open') ? 'true' : 'false');
+    markCurrent();
+  }
+
+  function init() {
+    var st = document.createElement('style'); st.id = 'mf-styles'; st.textContent = CSS; document.head.appendChild(st);
+    if (!setupMarkup()) return;
+    syncA11y(); markCurrent();
+    var foot = document.querySelector('footer');
+    foot.addEventListener('click', function (e) {
+      var t = e.target.closest('.footer__col-title'); if (t && mq.matches) toggle(t);
+    });
+    foot.addEventListener('keydown', function (e) {
+      var t = e.target.closest && e.target.closest('.footer__col-title');
+      if (t && mq.matches && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toggle(t); }
+    });
+    if (mq.addEventListener) mq.addEventListener('change', syncA11y);
+    var holder = document.getElementById('footer-products-col');
+    if (holder && window.MutationObserver) new MutationObserver(markCurrent).observe(holder, { childList: true });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();

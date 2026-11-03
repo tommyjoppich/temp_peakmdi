@@ -114,7 +114,7 @@
     .detail-wrap { max-width: 1400px; margin: 16px auto 64px; padding: 0 40px; width: 100%; flex: 1; }
     .detail-layout { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: start; }
     .detail-type-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--coral); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
-    .detail-title { font-size: 28px; font-weight: 800; color: var(--peak-navy); margin-bottom: 14px; line-height: 1.25; }
+    .detail-title { font-size: 28px; font-weight: 500; color: var(--peak-navy); margin-bottom: 14px; line-height: 1.25; }
     .detail-description { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 0; white-space: pre-line; }
     .detail-info { position: sticky; top: 116px; }
     .detail-meta { margin: 24px 0 8px; }
@@ -170,10 +170,9 @@
     .footer__watermark { max-width: 1440px; margin: 0 auto; padding: 4px 32px 8px; box-sizing: border-box; }
     .footer__watermark-svg { display: block; width: 100%; height: auto; user-select: none; }
     .footer__bottom { border-top: 1px solid rgba(255,255,255,0.15); padding: 18px 32px 22px; max-width: 1440px; margin: 0 auto; font-size: 13px; color: #ffffff; }
-    .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; row-gap: 6px; }
+    .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 24px; }
     .footer__policy-link { color: #ffffff; text-decoration: none; }
     .footer__policy-link:hover { text-decoration: underline; }
-    .footer__bottom-divider { width: 1px; height: 14px; background: rgba(255,255,255,0.45); margin: 0 14px; flex: none; }
     @media (max-width: 1023px) { .footer__columns { grid-template-columns: 1fr 1fr; gap: 28px; } .footer__logo img { height: 92px; } }
     @media (max-width: 768px) {
       .navbar__inner { padding: 0 16px; } .navbar__logo img { height: 44px; }
@@ -395,10 +394,6 @@
   <footer>
     <div class="footer__top">
 
-      <div class="footer__logo">
-        <img src="peak-logo.png" alt="PEAK – Built for the Surgeon" style="filter:brightness(0) invert(1);" />
-      </div>
-
       <div class="footer__columns">
 
         <div class="footer__col">
@@ -435,12 +430,13 @@
 
     <div class="footer__watermark">
       <svg class="footer__watermark-svg" viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.4)">BUILT FOR THE SURGEON</text>
+        <text x="0" y="60" textLength="1000" lengthAdjust="spacingAndGlyphs" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-weight="200" font-size="70" fill="rgba(255,255,255,0.32)">BUILT FOR THE SURGEON</text>
       </svg>
     </div>
 
     <div class="footer__bottom">
-      <a class="footer__policy-link" href="privacy-policy.html">Privacy Policy</a><span class="footer__bottom-divider" aria-hidden="true"></span>©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL
+      <span class="footer__copy">©2026 PEAK Medical Distribution, Inc.&ensp;&bull;&ensp;Glen Ellyn, IL</span>
+      <a class="footer__policy-link" href="privacy-policy.html">Privacy Policy</a>
     </div>
   </footer>
 
@@ -496,7 +492,7 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
           embedHTML = `<div class="resource-embed resource-embed--video">
             <iframe src="${src}" title="${res.title}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
           </div>`;
-          actionsHTML = `<a href="${res.resource}" target="_blank" rel="noopener" class="btn-detail-secondary">Watch on YouTube ↗</a>`;
+          actionsHTML = `<a href="${res.resource}" target="_blank" rel="noopener" class="btn-detail-secondary">Watch on YouTube</a>`;
         } else {
           embedHTML = `<div class="resource-embed resource-embed--empty">No video link has been provided yet.</div>`;
         }
@@ -512,8 +508,8 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
             </object>
           </div>`;
           actionsHTML = `
-            <a href="${pdfSrc}" download class="btn-detail-primary">Download PDF ↓</a>
-            <a href="${pdfSrc}" target="_blank" class="btn-detail-secondary">Open in New Tab ↗</a>
+            <a href="${pdfSrc}" download class="btn-detail-primary">Download PDF</a>
+            <a href="${pdfSrc}" target="_blank" class="btn-detail-secondary">Open in New Tab</a>
           `;
         } else {
           embedHTML = `<div class="resource-embed resource-embed--empty">No PDF has been provided yet.</div>`;
@@ -532,15 +528,15 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
             </object>
           </div>`;
           actionsHTML = `
-            <a href="${pdfSrc}" download class="btn-detail-primary">Download PDF ↓</a>
-            <a href="${pdfSrc}" target="_blank" class="btn-detail-secondary">Open in New Tab ↗</a>
+            <a href="${pdfSrc}" download class="btn-detail-primary">Download PDF</a>
+            <a href="${pdfSrc}" target="_blank" class="btn-detail-secondary">Open in New Tab</a>
           `;
         } else if (res.resource) {
           embedHTML = `<div class="resource-embed resource-embed--article">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--peak-navy)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             <p style="font-size:14px;color:var(--muted);max-width:360px;">This article is hosted externally. Open it in a new tab to read the full content.</p>
           </div>`;
-          actionsHTML = `<a href="${res.resource}" target="_blank" rel="noopener" class="btn-detail-primary">Read Article ↗</a>`;
+          actionsHTML = `<a href="${res.resource}" target="_blank" rel="noopener" class="btn-detail-primary">Read Article</a>`;
         } else {
           embedHTML = `<div class="resource-embed resource-embed--empty">No article link or PDF has been provided yet.</div>`;
         }
