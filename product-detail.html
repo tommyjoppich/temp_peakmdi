@@ -797,7 +797,8 @@
       margin-bottom: 12px;
       overflow: hidden;
     }
-    .related-card__img img { width: 135px; height: 277px; max-width: none; max-height: none; object-fit: contain; transform: rotate(-90deg); }
+    .related-card__img img { max-width: 100%; max-height: 100%; object-fit: contain; }   /* non-scissors: shown upright, as photographed */
+    .related-card__img img.is-rotated { width: 135px; height: 277px; max-width: none; max-height: none; transform: rotate(-90deg); }   /* scissors only */
     .related-card__img img.is-placeholder { width: 56%; height: 56%; transform: none; }
     .related-card__name { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 3px; line-height: 1.35; }
     .related-card__sku { font-size: 13px; font-weight: 400; color: var(--navy); }
@@ -1296,6 +1297,8 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
        falling back to category), shows up to 3 others, and the whole
        section disappears when there are none to show.
     ══════════════════════════════════════════════════════════ */
+    function escAttr(t) { return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
     function renderRelatedProducts(p, allProducts) {
       const container = document.getElementById('related-container');
       if (!container) return;
@@ -1328,10 +1331,10 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
             ${others.map(o => `
               <div class="related-card" onclick="goToProduct('${o.id}')">
                 <div class="related-card__img">
-                  ${o.image ? `<img src="${imgSrc(o.image)}" alt="${o.title}" onerror="this.onerror=null;this.src='Coming_Soon-01.svg';this.classList.add('is-placeholder')" />` : `<img class="is-placeholder" src="Coming_Soon-01.svg" alt="${o.title}" />`}
+                  ${o.image ? `<img${o.category === 'Scissors' ? ' class="is-rotated"' : ''} src="${imgSrc(o.image)}" alt="${escAttr(o.title)}" onerror="this.onerror=null;this.src='Coming_Soon-01.svg';this.classList.add('is-placeholder')" />` : `<img class="is-placeholder" src="Coming_Soon-01.svg" alt="${escAttr(o.title)}" />`}
                 </div>
-                <div class="related-card__name">${o.title}</div>
-                <div class="related-card__sku">${o.sku}</div>
+                <div class="related-card__name">${escAttr(o.title)}</div>
+                <div class="related-card__sku">${escAttr(o.sku)}</div>
               </div>
             `).join('')}
           </div>
@@ -1355,7 +1358,7 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
       cards.forEach((c, i) => { c.style.display = i < cols ? '' : 'none'; });
       const cardW = (grid.clientWidth - gap * (cols - 1)) / cols;
       const scale = Math.min(1, (cardW - 32) / 277);
-      grid.querySelectorAll('.related-card__img img:not(.is-placeholder)').forEach(img => {
+      grid.querySelectorAll('.related-card__img img.is-rotated:not(.is-placeholder)').forEach(img => {
         img.style.transform = `rotate(-90deg) scale(${scale.toFixed(3)})`;
       });
     }

@@ -483,6 +483,13 @@ function cartRenderFormView() {
         </div>
       </div>
 
+      <div class="qc-form-row">
+        <div class="qc-form-field">
+          <label class="qc-form-label">Service</label>
+          <input class="qc-form-input" type="text" id="qc-service" placeholder="Service" />
+        </div>
+      </div>
+
       <div class="qc-section-label">Additional Information</div>
 
       <div class="qc-form-group">
@@ -554,6 +561,7 @@ function cartSubmitQuoteForm(event) {
   const phone     = document.getElementById('qc-phone').value.trim();
   const facility  = document.getElementById('qc-facility').value.trim();
   const position  = document.getElementById('qc-position').value.trim();
+  const service   = document.getElementById('qc-service').value.trim();
   const comments  = document.getElementById('qc-comments').value.trim();
 
   const cart = cartGet();
@@ -568,6 +576,7 @@ function cartSubmitQuoteForm(event) {
     'Name:               ' + firstName + ' ' + lastName + '\n' +
     'Hospital / Facility: ' + facility + '\n' +
     'Title / Position:    ' + position + '\n' +
+    (service ? 'Service:              ' + service + '\n' : '') +
     'Email:               ' + email + '\n' +
     'Phone:               ' + phone + '\n' +
     (comments ? '\nComments:\n' + comments + '\n' : '') +

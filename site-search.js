@@ -285,7 +285,7 @@
   '.ss-item{display:flex;align-items:center;gap:14px;padding:10px 12px;border-radius:4px;color:#1F2E5C;text-decoration:none;font-family:Montserrat,Arial,sans-serif}' +
   '.ss-item:hover,.ss-item.is-active{background:#F2F4F8}.ss-item.is-active .ss-chev,.ss-item:hover .ss-chev{color:#1F2E5C}' +
   '.ss-media{flex:none;width:52px;height:52px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,0,0,.12);background:#fff;overflow:hidden}' +
-  '.ss-media img{max-width:100%;max-height:100%;object-fit:contain;display:block}.ss-media img.is-placeholder{opacity:.7;max-width:62%;max-height:62%}' +
+  '.ss-media img{max-width:100%;max-height:100%;object-fit:contain;display:block}.ss-media img.is-placeholder{opacity:.7;max-width:50%;max-height:50%}' +
   '.ss-media--icon{background:#F2F4F8;border-color:transparent;color:#1F2E5C}' +
   '.ss-media svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}' +
   '.ss-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}' +

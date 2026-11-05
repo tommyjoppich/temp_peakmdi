@@ -558,16 +558,31 @@
       .hero__quicklink { flex: 1 1 auto; width: 100%; padding: 12px 14px; }
     }
     @media (max-width: 640px) {
-      .hero__title { font-size: 30px; }
-      .hero__panel { padding: 20px 20px 18px; }
-      .hero__panel-label { font-size: 15px; }
-      .search-field { height: 48px; }
+      /* Phone hero: photo band with the headline on it, then the search + quick links on plain white */
+      .hero { background: #fff; }
+      .hero__bg {
+        bottom: auto; height: 76vw;
+        background:
+          linear-gradient(100deg, rgba(10,20,35,0.50) 0%, rgba(10,20,35,0.22) 55%, rgba(10,20,35,0.04) 100%),
+          url('hero-background.jpg') 66% 32% / auto 135% no-repeat;
+      }
+      .hero .hero__content { padding: 0; }
+      .hero__title {
+        box-sizing: border-box; height: 76vw; margin: 0; max-width: none;
+        padding: 0 71px 24px 24px; display: flex; align-items: flex-end;
+        font-size: 32px; line-height: 1.12; text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+      }
+      .hero .hero__panel { box-shadow: none; min-height: 0; padding: 32px 24px 8px; }
+      .hero__panel-label { font-size: 17px; margin-bottom: 16px; }
+      .search-field { height: 44px; border-width: 1px; padding: 0 14px; }
       .search-field input { font-size: 15px; }
-      .search-bar__btn { width: 48px; height: 48px; }
-      .hero-search-icon { width: 20px; height: 20px; }
-      .hero__quicklink-icon, .hero__quicklink-icon img { height: 30px; }
-      .hero__quicklink-title { font-size: 15px; }
-      .hero__quicklink-sub { font-size: 13px; }
+      .search-bar__btn { width: 50px; height: 44px; border-width: 1px; }
+      .hero-search-icon { width: 22px; height: 22px; }
+      .hero__quicklinks { gap: 14px; margin-top: 24px; }
+      .hero__quicklink { border-radius: 2px; align-items: center; gap: 18px; padding: 14px 16px; min-height: 68px; }
+      .hero__quicklink-icon, .hero__quicklink-icon img { height: 32px; }
+      .hero__quicklink-title { font-size: 16px; }
+      .hero__quicklink-sub { font-size: 13.5px; }
     }
 
     .search-bar-wrap { position: relative; width: 100%; }
@@ -754,13 +769,14 @@
       margin-bottom: 2px;
       overflow: hidden;
     }
-    .featured-thumb__img img {
+    .featured-thumb__img img { max-width: 100%; max-height: 100%; object-fit: contain; }   /* non-scissors: shown upright, as photographed */
+    .featured-thumb__img img.is-rotated {
       width: 70.6cqw;          /* pre-rotation: long side runs past the card edge so the scissors fill it (clipped part is empty photo margin) */
       height: 145cqw;
       max-width: none;
       max-height: none;
       object-fit: contain;
-      transform: rotate(-90deg);
+      transform: rotate(-90deg);   /* scissors only */
     }
     .featured-thumb__text { min-width: 0; padding: 0 12px; }
     .featured-thumb__name {
@@ -1967,7 +1983,7 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
         return `
           <div class="featured-thumb ${i === activeIdx ? 'active' : ''}" onclick="selectFeatured(${i})">
             <div class="featured-thumb__img">
-              ${img ? `<img src="${img}" alt="${p.title}" onerror="this.onerror=null;this.src='Coming_Soon-01.svg';this.style.cssText='width:58%;height:58%;max-width:58%;max-height:58%;transform:none'" />` : `<img src="Coming_Soon-01.svg" alt="${p.title}" style="width:58%;height:58%;transform:none;" />`}
+              ${img ? `<img${p.category === 'Scissors' ? ' class="is-rotated"' : ''} src="${img}" alt="${p.title}" onerror="this.onerror=null;this.src='Coming_Soon-01.svg';this.style.cssText='width:58%;height:58%;max-width:58%;max-height:58%;transform:none'" />` : `<img src="Coming_Soon-01.svg" alt="${p.title}" style="width:58%;height:58%;transform:none;" />`}
             </div>
             <div class="featured-thumb__text">
               <div class="featured-thumb__name">${p.title}</div>

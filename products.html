@@ -2154,6 +2154,11 @@
             </div>
 
             <div class="eh-group">
+              <label class="eh-label">Service</label>
+              <input class="eh-input" type="text" id="eh-service" placeholder="Service" />
+            </div>
+
+            <div class="eh-group">
               <label class="eh-label">Product name or product number, if known</label>
               <input class="eh-input" type="text" id="eh-sku" placeholder="Product name or product number, if known" />
             </div>
@@ -2860,6 +2865,7 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
       const phone     = document.getElementById('eh-phone').value.trim();
       const facility  = document.getElementById('eh-facility').value.trim();
       const position  = document.getElementById('eh-position').value.trim();
+      const service   = document.getElementById('eh-service').value.trim();
       const sku       = document.getElementById('eh-sku').value.trim();
       const message   = document.getElementById('eh-message').value.trim();
 
@@ -2870,6 +2876,7 @@ function peakSortSubs(subs, cat){ return peakAlpha(subs, function(s){ return pea
         `Hospital / Facility: ${facility}`,
         `Title / Position: ${position}`
       ];
+      if (service) lines.push(`Service: ${service}`);
       if (sku) lines.push(`Product name or product number: ${sku}`);
       if (_ehSearchQuery) lines.push(`Searched for: ${_ehSearchQuery}`);
       lines.push('', 'What they are looking for:', message);

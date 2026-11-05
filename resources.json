@@ -3,7 +3,7 @@
     "id": "r004",
     "type": "ifu",
     "title": "PremiumCut Scissors IFU",
-    "description": "Instructions for Use documentation for the PEAK Premium Scissors product line.",
+    "description": "PremiumCut Scissors Cleaning, Maintenance, & Sterilization.",
     "thumbnail": "Resource_Thumbnails/premiumcut thumbnail for IFU.jpg",
     "resource": ""
   },
@@ -11,7 +11,7 @@
     "id": "r365924",
     "type": "ifu",
     "title": "Stainless Steel Instruments IFU",
-    "description": "STAINLESS STEEL INSTRUMENTS CLEANING, MAINTENANCE & STERILIZATION",
+    "description": "Stainless Steel Instruments Cleaning, Maintenance, & Sterilization.",
     "thumbnail": "Resource_Thumbnails/Stainless Steel IFU thumbnail.jpg",
     "resource": "Resource_PDFs/IFUs/STAINLESS STEEL PEAK INSTRUMENTS CLEANING, STERILIZATION & MAINTENANCE 1.1.2023.pdf"
   },
@@ -19,7 +19,7 @@
     "id": "r971685",
     "type": "ifu",
     "title": "Stainless Steel Cannulas and Needles IFU",
-    "description": "STAINLESS STEEL CANNULAS AND NEEDLES\nCLEANING, MAINTENANCE & STERILIZATION",
+    "description": "Stainless Steel Cannulas and Needles Cleaning, Maintenance, & Sterilization.",
     "thumbnail": "Resource_Thumbnails/Rotated cannulas for thumbnail.jpg",
     "resource": "Resource_PDFs/IFUs/PEAK STAINLESS STEEL CANNULAS AND NEEDLES IFU 11.1.2021.pdf"
   },
@@ -27,7 +27,7 @@
     "id": "r509994",
     "type": "ifu",
     "title": "Cannulated Flushable Kerrison Rongeurs IFU",
-    "description": "Validated Instructions For Use (IFUs)",
+    "description": "Cannulated Flushable Kerrison Rongeurs Validated Cleaning, Maintenance, & Sterilization.",
     "thumbnail": "Resource_Thumbnails/Kerrison Thumbnail.jpg",
     "resource": "Resource_PDFs/IFUs/ClearFlush Kerrison IFU 5-25-2023.pdf"
   },
@@ -35,7 +35,7 @@
     "id": "r932468",
     "type": "ifu",
     "title": "Retract Robot Maintenance IFU",
-    "description": "",
+    "description": "Retract Robot Cleaning, Maintenance, & Sterilization.",
     "thumbnail": "Resource_Thumbnails/logo 4 for IFU copy 2.jpg",
     "resource": "Resource_PDFs/IFUs/PEAK RETRACT ROBOT MAINTENANCE – 0817.pdf"
   },
@@ -51,7 +51,7 @@
     "id": "r066539",
     "type": "pdf",
     "title": "Medical Grade Spoons - PEAK Brochure",
-    "description": "Specialty medical grade stainless steel spoon for surgical applications",
+    "description": "PEAK Specialty Medical Grade Stainless Steel Spoons for Surgical Applications.",
     "thumbnail": "Resource_Thumbnails/Pure white spoons thumbnail IFU.jpg",
     "resource": "Resource_PDFs/Catalogs/Medical Grade Spoons FNL.pdf"
   },
@@ -66,8 +66,8 @@
   {
     "id": "r067979",
     "type": "pdf",
-    "title": "Goose Neck MultiFlex Frame Retractor - PEAK Brochure",
-    "description": "PEAK Goose Neck Retractor In Laparoscopic Surgery",
+    "title": "Goose-Neck MultiFlex Frame Retractor - PEAK Brochure",
+    "description": "PEAK Goose-Neck, MultiFlex, & Frame Retractor Systems",
     "thumbnail": "Resource_Thumbnails/Retractor systems thumbnail.jpg",
     "resource": "Resource_PDFs/Catalogs/Multi-Flex, Goose-Neck, Frame Retractor Booklet PDF.pdf"
   },
@@ -75,7 +75,7 @@
     "id": "r449616",
     "type": "pdf",
     "title": "Martin's Arm - PEAK Brochure",
-    "description": "SINGLE ARM INSTRUMENT WITH FIXED UNIVERSAL INSTRUMENT CLAMP",
+    "description": "PEAK Universal & Bariatric Martin's Arms",
     "thumbnail": "Resource_Thumbnails/Martin's Arms Thumbnail.jpg",
     "resource": "Resource_PDFs/Catalogs/Martin's Arms PDF Booklet.pdf"
   },
@@ -83,7 +83,7 @@
     "id": "r862756",
     "type": "pdf",
     "title": "PremiumCut Scissors - PEAK Brochure",
-    "description": "Consistent cutting quality with sustained precision over repeated use.",
+    "description": "PEAK PremiumCut Scissors - Consistent Cutting Quality with Sustained Precision Over Repeated Use.",
     "thumbnail": "Resource_Thumbnails/PremiumCut thumbnail.jpg",
     "resource": "Resource_PDFs/Catalogs/PremiumCut Scissor Brochure.pdf"
   },
@@ -91,7 +91,7 @@
     "id": "r130342",
     "type": "ifu",
     "title": "Aluminum Trays or Containers IFU",
-    "description": "ALUMINUM TRAYS OR CONTAINERS CLEANING, STERILIZATION & MAINTENANCE",
+    "description": "Aluminum Trays or Containers Cleaning, Sterilization, & Maintenance.",
     "thumbnail": "Resource_Thumbnails/Cropped tubing holder for thumbnail.jpeg",
     "resource": "Resource_PDFs/IFUs/PEAK ALUMINUM TRAYS OR CONTAINERS STERILIZATION & MAINTENANCE PDF (1).pdf"
   },
@@ -99,7 +99,7 @@
     "id": "r072945",
     "type": "pdf",
     "title": "Robotics Kit - PEAK Brochure",
-    "description": "Sold in Set and Separately.",
+    "description": "PEAK Robotics Kit - Sold in Set and Separately.",
     "thumbnail": "Resource_Thumbnails/Robotics Kit Thumbnail.jpg",
     "resource": "Resource_PDFs/Catalogs/Updated Robotics Kit Brochure.pdf"
   },
@@ -107,7 +107,7 @@
     "id": "r097260",
     "type": "pdf",
     "title": "Wire-Cutting Scissors - PEAK Brochure",
-    "description": "",
+    "description": "PEAK Wire-Cutting Scissors - CT & Ortho Procedures",
     "thumbnail": "Resource_Thumbnails/Wire cutters.jpg",
     "resource": "Resource_PDFs/Catalogs/Updated Wire Cutting Scissors Brochure.pdf"
   },
@@ -115,7 +115,7 @@
     "id": "r811007",
     "type": "article",
     "title": "The Manufacturing Process of a TC Surgical Scissor",
-    "description": "An overview of the process it takes to manufacture a surgical scissor.",
+    "description": "The Manufacturing Process of a PEAK Tungsten Carbide Surgical Scissor",
     "thumbnail": "Resource_Thumbnails/Thumbnail scissor process.jpg",
     "resource": "Resource_PDFs/Education/Manufacturing Processes of Surgical Scissors.pdf"
   },
@@ -123,7 +123,7 @@
     "id": "r477170",
     "type": "pdf",
     "title": "Jacobson Heavy Needle Holders - PEAK Brochure",
-    "description": "",
+    "description": "PEAK Jacobson Heavy Needle Holders - TC Inserts",
     "thumbnail": "",
     "resource": "Resource_PDFs/Catalogs/PEAK Jacobson_Heavy_Needle_Holders Brochure.pdf"
   }
