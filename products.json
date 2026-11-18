@@ -71,7 +71,7 @@
   },
   {
     "id": "856809",
-    "title": "PEAK Operating Scissor, 5.75\", Sh/Bl",
+    "title": "PEAK Operating Scissor, 5.75\", Str, Sh/Bl",
     "sku": "AD0-614",
     "category": "Scissors",
     "subcategory": "Standard Scissors",
@@ -456,7 +456,7 @@
     "type": "Metzenbaum Scissors",
     "unitOfSale": "",
     "categoryThree": "CA4-3370: PEAK Metzenbaum Scissor, Curved, SuperCut Plus,  7.8\" (20cm), Blunt/Blunt Tip",
-    "image": "CA4-3370 supercut plus metz, final.PNG",
+    "image": "CA4 3370 SuperCut Plus final pic.PNG",
     "image2": "",
     "image3": "",
     "featured": false
@@ -470,7 +470,7 @@
     "type": "Metzenbaum Scissors",
     "unitOfSale": "",
     "categoryThree": "CA4-3368: PEAK Metzenbaum Scissor, Curved, Supercut Plus  7\" (18cm), Blunt/Blunt Tip",
-    "image": "CA4-3368 for website pic supercut.png",
+    "image": "CA4 3368 Website SuperCut.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -638,7 +638,7 @@
     "type": "Mayo Scissors",
     "unitOfSale": "",
     "categoryThree": "TC03-5767: PEAK Mayo Stille Operating scissor, Tungsten Carbide Blades, Curved 6.7\" (17cm), Blunt/Blunt Tips",
-    "image": "TC03-5767 chat final for website.PNG",
+    "image": "TC03 5767 Final Pic.PNG",
     "image2": "",
     "image3": "",
     "featured": false
@@ -2612,7 +2612,7 @@
     "type": "Iris Scissors",
     "unitOfSale": "",
     "categoryThree": "AC0-613: PEAK Iris Scissor, Standard Pattern, Straight, Sharp/Blunt, 4.5\" (11.4 Cm)",
-    "image": "SHarp:blunt Iris.png",
+    "image": "",
     "image2": "",
     "image3": "",
     "featured": false
@@ -2668,7 +2668,7 @@
     "type": "Iris Scissors",
     "unitOfSale": "",
     "categoryThree": "AC0-703: PEAK Iris Scissor, Sharp/Blunt, Straight, 4\" (11.5 Cm)",
-    "image": "SHarp:blunt Iris copy 2.png",
+    "image": "",
     "image2": "",
     "image3": "",
     "featured": false
@@ -2906,7 +2906,7 @@
     "type": "Knapp Iris Scissors",
     "unitOfSale": "",
     "categoryThree": "AC4-010SB: PEAK Knapp Iris Scissor, 4\" (10.2 Cm), Straight, Sharp/Blunt",
-    "image": "AC4-010SB iris scissors straight S:B.png",
+    "image": "AC4 010SB iris scissors straight.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -2948,7 +2948,7 @@
     "type": "Knapp Iris Scissors",
     "unitOfSale": "",
     "categoryThree": "AC4-012: PEAK Knapp Iris Scissor, 4.5\" (11.5CM), Straight, Sharp/Blunt",
-    "image": "AC4-012 knapp iris scissors straight S:B.png",
+    "image": "AC4 012 knapp iris scissors straight.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3480,7 +3480,7 @@
     "type": "Operating Scissors",
     "unitOfSale": "",
     "categoryThree": "AD0-511: PEAK Operating Scissor, Sharp/Sharp, Curved, 4.5\"(11.4 Cm)",
-    "image": "SHarp:Sharp operating scissors curved.png",
+    "image": "AD0 511 sharp sharp.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3494,7 +3494,7 @@
     "type": "Operating Scissors",
     "unitOfSale": "",
     "categoryThree": "AD0-514: PEAK Operating Scissor, Sharp/Sharp, Curved, 5.75\" (14.6 Cm)",
-    "image": "SHarp:Sharp operating scissors curved copy 1.png",
+    "image": "AD0 514 sharp sharp.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3508,7 +3508,7 @@
     "type": "Operating Scissors",
     "unitOfSale": "",
     "categoryThree": "AD0-515: PEAK Operating Scissor, Sharp/Sharp, Curved, 6\" (15.2 Cm)",
-    "image": "SHarp:Sharp operating scissors curved copy 2 .png",
+    "image": "AD0 515 sharp sharp.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3522,7 +3522,7 @@
     "type": "Operating Scissors",
     "unitOfSale": "",
     "categoryThree": "AD0-516: PEAK Operating Scissor, Sharp/Sharp, Curved, 6.5\" (16.5 Cm)",
-    "image": "SHarp:Sharp operating scissors curved copy 3 .png",
+    "image": "AC0 516 iris scissor correct.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3536,7 +3536,7 @@
     "type": "Operating Scissors",
     "unitOfSale": "",
     "categoryThree": "AD0-518: PEAK Operating Scissor, Sharp/Sharp, Curved, 7.25\" (18.5 Cm)",
-    "image": "SHarp:Sharp operating scissors curved copy 4 .png",
+    "image": "AD0 518 Sharp Sharp.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3634,7 +3634,7 @@
     "type": "Operating Scissors",
     "unitOfSale": "",
     "categoryThree": "AD0-711: PEAK Operating Scissor Sharp/Blunt, Curved, 4.5\" (11.4 Cm)",
-    "image": "Operating Sh:Bl Scissors.png",
+    "image": "AD0-711 best I can do.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3648,7 +3648,7 @@
     "type": "Operating Scissors",
     "unitOfSale": "",
     "categoryThree": "AD0-713: PEAK Operating Scissor, Sharp/Blunt, Curved, 5\" (12.7 Cm)",
-    "image": "Operating Sh:Bl Scissors copy 1.png",
+    "image": "AD0-713 best I can do copy.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3662,7 +3662,7 @@
     "type": "Operating Scissors",
     "unitOfSale": "",
     "categoryThree": "AD0-714: PEAK Operating Scissor, Sharp/Blunt, Curved, 5.75\"(14.6 Cm)",
-    "image": "Operating Sh:Bl Scissors copy 3.png",
+    "image": "AD0-714 best I can do copy 2.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3676,7 +3676,7 @@
     "type": "Operating Scissors",
     "unitOfSale": "",
     "categoryThree": "AD0-715: PEAK Operating Scissor, Sharp/Blunt, Curved, 6\" (15.2 Cm)",
-    "image": "Operating Sh:Bl Scissors copy 4 .png",
+    "image": "AD0-715 best I can do copy 3.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3690,7 +3690,7 @@
     "type": "Operating Scissors",
     "unitOfSale": "",
     "categoryThree": "AD0-716: PEAK Operating Scissor, Sharp/Blunt, Curved, 6.5\" (16.5 Cm)",
-    "image": "Operating Sh:Bl Scissors copy 5.png",
+    "image": "AD0-716 best I can do copy 4.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3704,7 +3704,7 @@
     "type": "Operating Scissors",
     "unitOfSale": "",
     "categoryThree": "AD0-718: PEAK Operating Scissor, Sharp/Blunt, Curved, 7.25\" (18.5 Cm)",
-    "image": "Operating Sh:Bl Scissors copy 6 .png",
+    "image": "AD0-718 best I can do copy 5.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3732,7 +3732,7 @@
     "type": "Deaver Scissors",
     "unitOfSale": "",
     "categoryThree": "AD0-864: PEAK Deaver Scissor, 5.5\" (14.0 Cm), Straight, Sharp/Sharp Point",
-    "image": "AD0-864 deaver scissors straight S:S point.png",
+    "image": "AD0 864 deaver scissors straight.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -3799,9 +3799,12 @@
     "sku": "AD3-020",
     "category": "Scissors",
     "subcategory": "Standard Scissors",
+    "type": "",
     "unitOfSale": "",
     "categoryThree": "AD3-020: PEAK Sims Scissor, 8\" (20.3 Cm), Straight, Blunt/Blunt Point",
-    "image": "AD3-020 sims scissors straight B:B points.png",
+    "image": "AD3 020 Sims Scissors Straight.png",
+    "image2": "",
+    "image3": "",
     "featured": false
   },
   {
@@ -3851,7 +3854,7 @@
     "type": "",
     "unitOfSale": "",
     "categoryThree": "AD3-420: PEAK Sims Scissor, 8\" (20.3 Cm), Straight, Sharp/Blunt Point",
-    "image": "AD3-420 sims scissors straight S:B points.png",
+    "image": "AD3 420 Sims Scissors Straight.png",
     "image2": "",
     "image3": "",
     "featured": false
@@ -4042,7 +4045,7 @@
     "type": "Mayo Scissors",
     "unitOfSale": "",
     "categoryThree": "AD5-117: PEAK Mayo Scissor, Standard Beveled Blades, Curved, 6.75\" (17.1 Cm)",
-    "image": "AD5-117 w: PEAK Brand, Mayo scissors curved 17.0cm.PNG",
+    "image": "AD5 117 PEAK Mayo scissors curved.PNG",
     "image2": "",
     "image3": "",
     "featured": false
