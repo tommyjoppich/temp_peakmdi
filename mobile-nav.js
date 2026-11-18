@@ -267,3 +267,19 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
+
+/* Product image protection (deterrent only): blocks right-click Save, drag-to-desktop
+   and phone long-press Save on product pictures (anything loaded from Product_Pictures/). */
+(function () {
+  'use strict';
+  var st = document.createElement('style');
+  st.textContent =
+    'img[src*="Product_Pictures/"]{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}';
+  (document.head || document.documentElement).appendChild(st);
+
+  function isProductImg(t) {
+    return t && t.tagName === 'IMG' && (t.getAttribute('src') || '').indexOf('Product_Pictures/') !== -1;
+  }
+  document.addEventListener('contextmenu', function (e) { if (isProductImg(e.target)) e.preventDefault(); }, true);
+  document.addEventListener('dragstart', function (e) { if (isProductImg(e.target)) e.preventDefault(); }, true);
+})();
